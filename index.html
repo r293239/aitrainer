@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chess AI Self-Play Trainer</title>
+    <title>Chess AI Self-Play Trainer - Parallel</title>
     <style>
         body {
             background: #0a0a0a;
@@ -84,16 +84,39 @@
             background: #1a1a2e;
             border-radius: 8px;
         }
+        .worker-status {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .worker {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            background: #444;
+        }
+        .worker.active {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        .worker.completed {
+            background: #00aa55;
+        }
     </style>
 </head>
 <body>
-    <h1>♔ Chess AI Self-Play Trainer</h1>
-    <p>Playing games to learn and improve. All data is saved and exportable.</p>
+    <h1>♔ Chess AI Self-Play Trainer (Parallel) ♛</h1>
+    <p>Running 100 games simultaneously using Web Workers</p>
     
     <div class="stats">
         <div class="stat">
-            <div>Games Played</div>
-            <div class="stat-value" id="games-played">0</div>
+            <div>Games Completed</div>
+            <div class="stat-value" id="games-completed">0</div>
+        </div>
+        <div class="stat">
+            <div>Total Games</div>
+            <div class="stat-value" id="total-games">100</div>
         </div>
         <div class="stat">
             <div>White Wins</div>
@@ -108,8 +131,8 @@
             <div class="stat-value" style="color: #888;" id="black-wins">0</div>
         </div>
         <div class="stat">
-            <div>Avg Moves/Game</div>
-            <div class="stat-value" id="avg-moves">0</div>
+            <div>Active Workers</div>
+            <div class="stat-value" id="active-workers">0</div>
         </div>
     </div>
     
@@ -118,11 +141,13 @@
     </div>
     <div style="display: flex; justify-content: space-between;">
         <span id="progress-text">0/100 Games</span>
-        <span>Best Win Rate: <span id="best-winrate">0%</span></span>
+        <span id="elapsed-time">00:00</span>
     </div>
     
+    <div class="worker-status" id="worker-status"></div>
+    
     <div style="margin-top: 20px;">
-        <button id="btn-start" onclick="startTraining()">▶ Start Training (100 Games)</button>
+        <button id="btn-start" onclick="startParallelTraining()">▶ Start 100 Parallel Games</button>
         <button id="btn-stop" onclick="stopTraining()" disabled>⏹ Stop</button>
         <button onclick="resetTraining()">🔄 Reset</button>
     </div>
@@ -136,10 +161,11 @@
     </div>
     
     <div id="log">
-        <div class="log-line">[System] Trainer initialized. Click Start to begin.</div>
-        <div class="log-line">[System] v2.4.1 engine loaded. Ready for self-play.</div>
+        <div class="log-line">[System] Parallel Trainer initialized</div>
+        <div class="log-line">[System] Ready to run 100 games simultaneously</div>
     </div>
 
+    <script src="chess-engine.js"></script>
     <script src="trainer.js"></script>
 </body>
 </html>
