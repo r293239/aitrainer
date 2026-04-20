@@ -1,13 +1,12 @@
-// trainer.js - Parallel Self-Play Trainer
-// Uses Web Workers to run 100 games simultaneously
+// trainer.js - Parallel Self-Play Trainer with Live Board Viewer
 
 const TRAINER_VERSION = "1.0.0";
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
     totalGames: 100,
-    maxWorkers: navigator.hardwareConcurrency || 8, // Use available CPU cores
-    timePerMove: 2000, // 2 seconds per move
+    maxWorkers: navigator.hardwareConcurrency || 4,
+    timePerMove: 1000,
     maxDepth: 3
 };
 
@@ -21,10 +20,10 @@ let trainingState = {
     startTime: null
 };
 
-// ========== WORKER POOL ==========
+// ========== GAME TRACKING ==========
+let activeGames = new Map(); // gameId -> gameState
 let workers = [];
 let gameQueue = [];
-let completedGames = [];
 let trainingData = {
     games: [],
     openings: {},
@@ -32,6 +31,207 @@ let trainingData = {
     version: TRAINER_VERSION,
     started: null
 };
+
+// ========== GET CHESS ENGINE CODE AS STRING ==========
+function getEngineCode() {
+    // Extract the chess engine code from the script tag
+    const scripts = document.getElementsByTagName('script');
+    for (let script of scripts) {
+        if (script.src && script.src.includes('chess-engine.js')) {
+            // We'll fetch it instead
+            return null;
+        }
+    }
+    
+    // Fallback: define minimal engine if not found
+    return `
+        // Chess engine functions will be injected from main thread
+        let board, currentPlayer, moveCount, gameOver;
+        
+        function initEngine() {
+            // This will be replaced by actual engine functions
+        }
+    `;
+}
+
+// ========== CREATE WORKER WITH ENGINE ==========
+async function createWorkerWithEngine() {
+    // Fetch the chess engine code
+    const response = await fetch('chess-engine.js');
+    const engineCode = await response.text();
+    
+    const workerCode = `
+        // ========== CHESS ENGINE ==========
+        ${engineCode}
+        
+        // ========== GAME RUNNER ==========
+        let gameInstance = null;
+        let moveInterval = null;
+        
+        // Capture engine functions
+        const engine = {
+            newGame: window.newGame,
+            findBestMove: window.findBestMove,
+            makeMove: window.makeMove,
+            switchPlayer: window.switchPlayer,
+            isCheckmate: window.isCheckmate,
+            isStalemate: window.isStalemate,
+            isDraw: window.isDraw,
+            getFEN: window.getFEN,
+            evaluatePositionForSearch: window.evaluatePositionForSearch,
+            getAllPossibleMoves: window.getAllPossibleMoves,
+            board: window.board,
+            currentPlayer: window.currentPlayer,
+            moveCount: window.moveCount,
+            gameOver: window.gameOver
+        };
+        
+        self.onmessage = function(e) {
+            const { type, gameId } = e.data;
+            
+            if (type === 'start') {
+                // Initialize new game
+                if (typeof window.newGame === 'function') {
+                    window.newGame();
+                }
+                
+                runGame(gameId);
+            } else if (type === 'stop') {
+                if (moveInterval) {
+                    clearTimeout(moveInterval);
+                }
+            } else if (type === 'getState') {
+                // Return current game state for UI
+                self.postMessage({
+                    type: 'state',
+                    gameId: gameId,
+                    board: window.board,
+                    currentPlayer: window.currentPlayer,
+                    moveCount: window.moveCount,
+                    gameOver: window.gameOver,
+                    fen: typeof window.getFEN === 'function' ? window.getFEN() : ''
+                });
+            }
+        };
+        
+        function runGame(gameId) {
+            const moves = [];
+            const evaluations = [];
+            let moveCount = 0;
+            
+            function makeAIMove() {
+                // Check if game is over
+                if (window.gameOver) {
+                    const result = determineResult();
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: result,
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount
+                    });
+                    return;
+                }
+                
+                // Get best move
+                let move = null;
+                if (typeof window.findBestMove === 'function') {
+                    move = window.findBestMove();
+                }
+                
+                if (!move) {
+                    window.gameOver = true;
+                    const result = determineResult();
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: result,
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount
+                    });
+                    return;
+                }
+                
+                const moveStr = toAlgebraic(move);
+                
+                // Make move
+                if (typeof window.makeMove === 'function') {
+                    window.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
+                }
+                if (typeof window.switchPlayer === 'function') {
+                    window.switchPlayer();
+                }
+                
+                moves.push(moveStr);
+                moveCount++;
+                
+                // Get current evaluation
+                let evalScore = 0;
+                if (typeof window.evaluatePositionForSearch === 'function') {
+                    evalScore = window.evaluatePositionForSearch(window.board, window.currentPlayer, window.moveCount);
+                }
+                
+                const currentFEN = typeof window.getFEN === 'function' ? window.getFEN() : '';
+                
+                // Send progress update
+                self.postMessage({
+                    type: 'progress',
+                    gameId: gameId,
+                    moveCount: moveCount,
+                    lastMove: moveStr,
+                    board: window.board,
+                    currentPlayer: window.currentPlayer,
+                    evaluation: evalScore,
+                    fen: currentFEN
+                });
+                
+                // Continue if not over
+                if (!window.gameOver && moveCount < 300) {
+                    moveInterval = setTimeout(makeAIMove, 50);
+                } else {
+                    window.gameOver = true;
+                    const result = determineResult();
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: result,
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount,
+                        board: window.board,
+                        fen: currentFEN
+                    });
+                }
+            }
+            
+            function determineResult() {
+                if (typeof window.isCheckmate === 'function' && window.isCheckmate()) {
+                    const winner = window.currentPlayer === 'white' ? 'black' : 'white';
+                    return { winner: winner, reason: 'checkmate' };
+                } else if (typeof window.isStalemate === 'function' && window.isStalemate()) {
+                    return { winner: 'draw', reason: 'stalemate' };
+                } else if (typeof window.isDraw === 'function' && window.isDraw()) {
+                    return { winner: 'draw', reason: 'draw' };
+                }
+                return { winner: 'draw', reason: 'move limit' };
+            }
+            
+            function toAlgebraic(move) {
+                const files = ['a','b','c','d','e','f','g','h'];
+                const ranks = ['8','7','6','5','4','3','2','1'];
+                return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
+            }
+            
+            // Start the game
+            setTimeout(makeAIMove, 10);
+        }
+    `;
+    
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    return new Worker(URL.createObjectURL(blob));
+}
 
 // ========== UI HELPERS ==========
 function log(message, type = '') {
@@ -50,7 +250,6 @@ function log(message, type = '') {
 
 function updateUI() {
     document.getElementById('games-completed').textContent = trainingState.gamesCompleted;
-    document.getElementById('total-games').textContent = CONFIG.totalGames;
     document.getElementById('white-wins').textContent = trainingState.whiteWins;
     document.getElementById('draws').textContent = trainingState.draws;
     document.getElementById('black-wins').textContent = trainingState.blackWins;
@@ -59,11 +258,11 @@ function updateUI() {
     document.getElementById('active-workers').textContent = activeCount;
     
     const progress = (trainingState.gamesCompleted / CONFIG.totalGames) * 100;
-    document.getElementById('progress-fill').style.width = progress + '%';
+    document.getElementById('progress-fill').style.width = Math.min(progress, 100) + '%';
     document.getElementById('progress-text').textContent = 
         `${trainingState.gamesCompleted}/${CONFIG.totalGames} Games`;
     
-    if (trainingState.startTime) {
+    if (trainingState.startTime && trainingState.isRunning) {
         const elapsed = Math.floor((Date.now() - trainingState.startTime) / 1000);
         const mins = Math.floor(elapsed / 60);
         const secs = elapsed % 60;
@@ -72,6 +271,7 @@ function updateUI() {
     }
     
     updateWorkerStatus();
+    updateGamesGrid();
 }
 
 function updateWorkerStatus() {
@@ -81,135 +281,95 @@ function updateWorkerStatus() {
     workers.forEach((worker, i) => {
         const dot = document.createElement('div');
         dot.className = `worker ${worker.busy ? 'active' : (worker.completed ? 'completed' : '')}`;
-        dot.title = `Worker ${i + 1}: ${worker.busy ? 'Playing Game ' + worker.gameId : 'Idle'}`;
+        dot.title = `Worker ${i + 1}: ${worker.busy ? 'Playing Game ' + (worker.gameId + 1) : 'Idle'}`;
         statusEl.appendChild(dot);
     });
 }
 
-// ========== WORKER CREATION ==========
-function createWorker() {
-    const workerCode = `
-        // Worker thread - runs a single chess game
-        let board = null;
-        let gameState = null;
+function updateGamesGrid() {
+    const grid = document.getElementById('games-grid');
+    grid.innerHTML = '';
+    
+    // Show active games first, then recent completions
+    const gamesToShow = [];
+    
+    activeGames.forEach((game, id) => {
+        gamesToShow.push({ id, ...game });
+    });
+    
+    // Sort by game ID
+    gamesToShow.sort((a, b) => a.id - b.id);
+    
+    // Show up to 12 games
+    gamesToShow.slice(0, 12).forEach(game => {
+        const card = document.createElement('div');
+        card.className = `game-card ${game.gameOver ? 'completed' : 'active'}`;
+        card.id = `game-card-${game.id}`;
         
-        self.onmessage = function(e) {
-            const { type, gameId } = e.data;
-            
-            if (type === 'start') {
-                // Initialize a new game using the global ChessGame class
-                gameState = new ChessGame();
-                gameState.newGame();
-                board = gameState.board;
-                
-                runGame(gameId);
-            }
-        };
+        const status = game.gameOver ? 
+            (game.winner === 'white' ? 'White Won' : game.winner === 'black' ? 'Black Won' : 'Draw') :
+            `${game.currentPlayer} to move`;
         
-        function runGame(gameId) {
-            const moves = [];
-            const evaluations = [];
-            let moveCount = 0;
-            
-            function makeAIMove() {
-                if (gameState.gameOver) {
-                    const result = determineResult();
-                    self.postMessage({
-                        type: 'complete',
-                        gameId: gameId,
-                        result: result,
-                        moves: moves,
-                        evaluations: evaluations,
-                        moveCount: moveCount
-                    });
-                    return;
-                }
-                
-                const move = gameState.findBestMove();
-                
-                if (!move) {
-                    gameState.gameOver = true;
-                    const result = determineResult();
-                    self.postMessage({
-                        type: 'complete',
-                        gameId: gameId,
-                        result: result,
-                        moves: moves,
-                        evaluations: evaluations,
-                        moveCount: moveCount
-                    });
-                    return;
-                }
-                
-                const moveStr = toAlgebraic(move);
-                gameState.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
-                gameState.switchPlayer();
-                
-                moves.push(moveStr);
-                moveCount++;
-                
-                // Record evaluation every 10 moves
-                if (moveCount % 10 === 0) {
-                    evaluations.push({
-                        moveNumber: moveCount,
-                        fen: gameState.getFEN(),
-                        evaluation: gameState.evaluatePositionForSearch(gameState.board, gameState.currentPlayer, gameState.moveCount),
-                        player: gameState.currentPlayer
-                    });
-                }
-                
-                // Progress update
-                if (moveCount % 20 === 0) {
-                    self.postMessage({
-                        type: 'progress',
-                        gameId: gameId,
-                        moveCount: moveCount,
-                        lastMove: moveStr
-                    });
-                }
-                
-                // Continue game
-                if (moveCount < 300) {
-                    setTimeout(makeAIMove, 10);
-                } else {
-                    gameState.gameOver = true;
-                    self.postMessage({
-                        type: 'complete',
-                        gameId: gameId,
-                        result: { winner: 'draw', reason: 'move limit' },
-                        moves: moves,
-                        evaluations: evaluations,
-                        moveCount: moveCount
-                    });
-                }
+        card.innerHTML = `
+            <div class="game-header">
+                <span><strong>Game ${game.id + 1}</strong></span>
+                <span>Move ${game.moveCount || 0}</span>
+            </div>
+            <div>Status: ${status}</div>
+            <div>Eval: ${game.evaluation ? (game.evaluation > 0 ? '+' : '') + game.evaluation.toFixed(0) : 'N/A'}</div>
+            <div style="margin: 5px 0;">
+                <button class="view-board" onclick="showBoardModal(${game.id})">👁 View Board</button>
+            </div>
+            ${game.lastMove ? `<div>Last: ${game.lastMove}</div>` : ''}
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+// ========== BOARD MODAL ==========
+function showBoardModal(gameId) {
+    const game = activeGames.get(gameId);
+    if (!game) return;
+    
+    document.getElementById('modal-title').textContent = `Game #${gameId + 1}`;
+    
+    const status = game.gameOver ? 
+        `Winner: ${game.winner} (${game.reason || 'complete'})` :
+        `${game.currentPlayer} to move - Move ${game.moveCount}`;
+    document.getElementById('modal-status').textContent = status;
+    
+    // Render board
+    if (game.board) {
+        let boardStr = '  a b c d e f g h\n';
+        for (let row = 0; row < 8; row++) {
+            boardStr += (8 - row) + ' ';
+            for (let col = 0; col < 8; col++) {
+                const piece = game.board[row]?.[col] || '.';
+                boardStr += piece + ' ';
             }
-            
-            function determineResult() {
-                if (gameState.isCheckmate()) {
-                    const winner = gameState.currentPlayer === 'white' ? 'black' : 'white';
-                    return { winner: winner, reason: 'checkmate' };
-                } else if (gameState.isStalemate()) {
-                    return { winner: 'draw', reason: 'stalemate' };
-                } else if (gameState.isDraw()) {
-                    return { winner: 'draw', reason: 'draw' };
-                }
-                return { winner: 'draw', reason: 'unknown' };
-            }
-            
-            function toAlgebraic(move) {
-                const files = ['a','b','c','d','e','f','g','h'];
-                const ranks = ['8','7','6','5','4','3','2','1'];
-                return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
-            }
-            
-            // Start the game
-            setTimeout(makeAIMove, 10);
+            boardStr += '\n';
         }
+        document.getElementById('modal-board').textContent = boardStr;
+    }
+    
+    document.getElementById('modal-eval').innerHTML = `
+        <strong>Evaluation:</strong> ${game.evaluation ? (game.evaluation > 0 ? '+' : '') + game.evaluation.toFixed(0) : 'N/A'}<br>
+        <strong>Last Move:</strong> ${game.lastMove || 'N/A'}<br>
+        <strong>FEN:</strong> ${game.fen || 'N/A'}
     `;
     
-    const blob = new Blob([workerCode], { type: 'application/javascript' });
-    return new Worker(URL.createObjectURL(blob));
+    document.getElementById('modal-overlay').classList.add('active');
+    document.getElementById('board-modal').classList.add('active');
 }
+
+function closeBoardModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+    document.getElementById('board-modal').classList.remove('active');
+}
+
+window.showBoardModal = showBoardModal;
+window.closeBoardModal = closeBoardModal;
 
 // ========== PARALLEL TRAINING ==========
 async function startParallelTraining() {
@@ -222,24 +382,20 @@ async function startParallelTraining() {
     document.getElementById('btn-start').disabled = true;
     document.getElementById('btn-stop').disabled = false;
     
-    log(`🚀 Starting ${CONFIG.totalGames} parallel games with ${CONFIG.maxWorkers} workers`, 'win');
+    log(`🚀 Starting ${CONFIG.totalGames} parallel games`, 'win');
     
     // Create worker pool
     for (let i = 0; i < CONFIG.maxWorkers; i++) {
-        const worker = createWorker();
+        const worker = await createWorkerWithEngine();
         worker.id = i;
         worker.busy = false;
-        worker.completed = false;
         worker.onmessage = (e) => handleWorkerMessage(worker, e.data);
         workers.push(worker);
     }
     
     // Queue all games
     for (let i = 0; i < CONFIG.totalGames; i++) {
-        gameQueue.push({
-            id: i,
-            status: 'pending'
-        });
+        gameQueue.push({ id: i });
     }
     
     // Start initial batch
@@ -260,9 +416,18 @@ function assignGamesToIdleWorkers() {
             const game = gameQueue.shift();
             worker.busy = true;
             worker.gameId = game.id;
-            worker.postMessage({ type: 'start', gameId: game.id });
             
-            log(`Game ${game.id + 1}: Started on worker ${worker.id}`, 'info');
+            // Initialize game state
+            activeGames.set(game.id, {
+                id: game.id,
+                moveCount: 0,
+                currentPlayer: 'white',
+                gameOver: false,
+                evaluation: 0
+            });
+            
+            worker.postMessage({ type: 'start', gameId: game.id });
+            log(`Game ${game.id + 1}: Started`, 'info');
         }
     });
     
@@ -271,13 +436,26 @@ function assignGamesToIdleWorkers() {
 
 function handleWorkerMessage(worker, data) {
     if (data.type === 'progress') {
-        // Just log occasionally
-        if (data.moveCount % 50 === 0) {
+        // Update game state
+        activeGames.set(data.gameId, {
+            id: data.gameId,
+            moveCount: data.moveCount,
+            currentPlayer: data.currentPlayer,
+            gameOver: false,
+            evaluation: data.evaluation,
+            lastMove: data.lastMove,
+            board: data.board,
+            fen: data.fen
+        });
+        
+        if (data.moveCount % 20 === 0) {
             log(`Game ${data.gameId + 1}: Move ${data.moveCount}`, 'info');
         }
+        
+        updateUI();
+        
     } else if (data.type === 'complete') {
         worker.busy = false;
-        worker.completed = true;
         
         // Record result
         const result = data.result;
@@ -291,18 +469,27 @@ function handleWorkerMessage(worker, data) {
         const gameData = {
             id: data.gameId,
             moves: data.moves,
-            evaluations: data.evaluations,
             winner: result.winner,
             reason: result.reason,
-            moveCount: data.moveCount,
-            timestamp: new Date().toISOString()
+            moveCount: data.moveCount
         };
         
-        completedGames.push(gameData);
         trainingData.games.push(gameData);
         
+        // Update active game as completed
+        activeGames.set(data.gameId, {
+            id: data.gameId,
+            moveCount: data.moveCount,
+            gameOver: true,
+            winner: result.winner,
+            reason: result.reason,
+            evaluation: data.evaluation,
+            board: data.board,
+            fen: data.fen
+        });
+        
         // Learn openings
-        if (data.moves.length >= 4) {
+        if (data.moves && data.moves.length >= 4) {
             const openingKey = data.moves.slice(0, 6).join(' ');
             if (!trainingData.openings[openingKey]) {
                 trainingData.openings[openingKey] = { white: 0, black: 0, draw: 0, total: 0 };
@@ -313,20 +500,12 @@ function handleWorkerMessage(worker, data) {
             else trainingData.openings[openingKey].draw++;
         }
         
-        // Store evaluations
-        data.evaluations.forEach(e => {
-            trainingData.evaluations.push({
-                gameId: data.gameId,
-                ...e
-            });
-        });
-        
-        log(`Game ${data.gameId + 1}: Complete - ${result.winner} in ${data.moveCount} moves (${trainingState.gamesCompleted}/${CONFIG.totalGames})`, 
+        log(`Game ${data.gameId + 1}: ${result.winner} wins in ${data.moveCount} moves (${trainingState.gamesCompleted}/${CONFIG.totalGames})`, 
             result.winner === 'white' ? 'win' : (result.winner === 'black' ? 'loss' : 'draw'));
         
         updateUI();
         
-        // Assign next game if available
+        // Assign next game
         assignGamesToIdleWorkers();
         
         // Save progress every 10 games
@@ -352,21 +531,24 @@ function finishTraining() {
     saveToLocalStorage();
     
     log('🎉 ========================================', 'win');
-    log(`🎉 TRAINING COMPLETE!`, 'win');
-    log(`🎉 ${CONFIG.totalGames} games finished in parallel`, 'win');
-    log(`🎉 Results: ${trainingState.whiteWins}W - ${trainingState.draws}D - ${trainingState.blackWins}L`, 'win');
+    log(`🎉 TRAINING COMPLETE! ${CONFIG.totalGames} games finished`, 'win');
+    log(`🎉 ${trainingState.whiteWins}W - ${trainingState.draws}D - ${trainingState.blackWins}L`, 'win');
     log('🎉 ========================================', 'win');
     
-    // Terminate workers
     workers.forEach(w => w.terminate());
     workers = [];
+    
+    updateUI();
 }
 
 function stopTraining() {
     trainingState.isRunning = false;
     log('Training stopped by user', 'warning');
     
-    workers.forEach(w => w.terminate());
+    workers.forEach(w => {
+        w.postMessage({ type: 'stop' });
+        w.terminate();
+    });
     workers = [];
     
     document.getElementById('btn-start').disabled = false;
@@ -374,11 +556,9 @@ function stopTraining() {
 }
 
 function resetTraining() {
-    if (!confirm('Reset all training data? This cannot be undone.')) return;
+    if (!confirm('Reset all training data?')) return;
     
-    if (trainingState.isRunning) {
-        stopTraining();
-    }
+    if (trainingState.isRunning) stopTraining();
     
     trainingState = {
         isRunning: false,
@@ -397,26 +577,23 @@ function resetTraining() {
         started: new Date().toISOString()
     };
     
-    completedGames = [];
+    activeGames.clear();
     gameQueue = [];
     
     updateUI();
     document.getElementById('log').innerHTML = '<div class="log-line">[System] Training data reset.</div>';
-    log('All training data has been reset', 'info');
+    log('Training data reset', 'info');
 }
 
 // ========== STORAGE ==========
 function saveToLocalStorage() {
     try {
-        const data = {
+        localStorage.setItem('chess_parallel_training', JSON.stringify({
             state: trainingState,
             data: trainingData,
             version: TRAINER_VERSION
-        };
-        localStorage.setItem('chess_parallel_training', JSON.stringify(data));
-    } catch (e) {
-        log('Failed to save to localStorage', 'error');
-    }
+        }));
+    } catch (e) {}
 }
 
 function loadFromLocalStorage() {
@@ -424,29 +601,19 @@ function loadFromLocalStorage() {
         const saved = localStorage.getItem('chess_parallel_training');
         if (saved) {
             const data = JSON.parse(saved);
-            if (data.version === TRAINER_VERSION) {
-                trainingState = data.state;
-                trainingData = data.data;
-                completedGames = data.data.games;
-                updateUI();
-                log(`Loaded ${trainingState.gamesCompleted} games from storage`, 'info');
-            }
+            trainingState = data.state;
+            trainingData = data.data;
+            updateUI();
+            log(`Loaded ${trainingState.gamesCompleted} games from storage`, 'info');
         }
-    } catch (e) {
-        log('No saved data found', 'info');
-    }
+    } catch (e) {}
 }
 
 // ========== EXPORT FUNCTIONS ==========
 function exportOpenings() {
-    const data = {
-        version: TRAINER_VERSION,
-        generated: new Date().toISOString(),
-        totalGames: trainingState.gamesCompleted,
-        openings: trainingData.openings
-    };
-    downloadJSON(data, `openings-${trainingState.gamesCompleted}.json`);
-    log(`Exported ${Object.keys(trainingData.openings).length} opening lines`, 'win');
+    downloadJSON({ version: TRAINER_VERSION, openings: trainingData.openings }, 
+        `openings-${trainingState.gamesCompleted}.json`);
+    log(`Exported openings`, 'win');
 }
 
 function exportEvaluations() {
@@ -455,31 +622,29 @@ function exportEvaluations() {
         csv += `${e.gameId},${e.moveNumber},"${e.fen}",${e.evaluation},${e.player}\n`;
     });
     downloadFile(csv, `evaluations-${trainingState.gamesCompleted}.csv`, 'text/csv');
-    log(`Exported ${trainingData.evaluations.length} evaluations`, 'win');
+    log(`Exported evaluations`, 'win');
 }
 
 function exportGames() {
     let pgn = '';
     trainingData.games.forEach((game, i) => {
-        pgn += `[Event "Parallel Self-Play ${i + 1}"]\n`;
-        pgn += `[Result "${game.winner === 'white' ? '1-0' : game.winner === 'black' ? '0-1' : '1/2-1/2'}"]\n`;
-        pgn += `[Termination "${game.reason}"]\n\n`;
-        
-        for (let j = 0; j < game.moves.length; j++) {
-            if (j % 2 === 0) pgn += `${Math.floor(j/2)+1}. `;
-            pgn += game.moves[j] + ' ';
-            if (j % 2 === 1) pgn += '\n';
+        pgn += `[Event "Game ${i+1}"]\n[Result "${game.winner}"]\n\n`;
+        if (game.moves) {
+            for (let j = 0; j < game.moves.length; j++) {
+                if (j % 2 === 0) pgn += `${Math.floor(j/2)+1}. `;
+                pgn += game.moves[j] + ' ';
+                if (j % 2 === 1) pgn += '\n';
+            }
         }
-        pgn += ` ${game.winner === 'white' ? '1-0' : game.winner === 'black' ? '0-1' : '1/2-1/2'}\n\n`;
+        pgn += ` ${game.winner}\n\n`;
     });
     downloadFile(pgn, `games-${trainingState.gamesCompleted}.pgn`, 'application/x-chess-pgn');
-    log(`Exported ${trainingData.games.length} games`, 'win');
+    log(`Exported games`, 'win');
 }
 
 function exportAll() {
-    const allData = {
+    downloadJSON({
         version: TRAINER_VERSION,
-        generated: new Date().toISOString(),
         stats: {
             gamesPlayed: trainingState.gamesCompleted,
             whiteWins: trainingState.whiteWins,
@@ -487,15 +652,9 @@ function exportAll() {
             draws: trainingState.draws
         },
         openings: trainingData.openings,
-        games: trainingData.games.map(g => ({
-            id: g.id,
-            winner: g.winner,
-            moveCount: g.moveCount,
-            moves: g.moves
-        }))
-    };
-    downloadJSON(allData, `training-data-${trainingState.gamesCompleted}.json`);
-    log(`Exported complete training data`, 'win');
+        games: trainingData.games
+    }, `training-data-${trainingState.gamesCompleted}.json`);
+    log(`Exported all data`, 'win');
 }
 
 function downloadJSON(data, filename) {
@@ -504,32 +663,14 @@ function downloadJSON(data, filename) {
 
 function downloadFile(content, filename, type) {
     const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
+    a.href = URL.createObjectURL(blob);
     a.download = filename;
     a.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(a.href);
 }
 
 // ========== INITIALIZATION ==========
-window.addEventListener('load', () => {
-    loadFromLocalStorage();
-    updateUI();
-    
-    // Create worker status dots
-    const statusEl = document.getElementById('worker-status');
-    for (let i = 0; i < CONFIG.maxWorkers; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'worker';
-        statusEl.appendChild(dot);
-    }
-    
-    log(`Parallel Chess Trainer v${TRAINER_VERSION} loaded`, 'win');
-    log(`Ready to run ${CONFIG.totalGames} games with ${CONFIG.maxWorkers} workers`, 'info');
-});
-
-// Global functions
 window.startParallelTraining = startParallelTraining;
 window.stopTraining = stopTraining;
 window.resetTraining = resetTraining;
@@ -537,3 +678,9 @@ window.exportOpenings = exportOpenings;
 window.exportEvaluations = exportEvaluations;
 window.exportGames = exportGames;
 window.exportAll = exportAll;
+
+window.addEventListener('load', () => {
+    loadFromLocalStorage();
+    updateUI();
+    log(`Parallel Trainer v${TRAINER_VERSION} loaded`, 'win');
+});
