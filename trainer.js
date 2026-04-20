@@ -1,38 +1,39 @@
-// trainer.js - Self-Play Trainer using v2.4.1 Engine
-// Copy your v2.4.1 chess-game.js into the section marked below
+// trainer.js - Parallel Self-Play Trainer
+// Uses Web Workers to run 100 games simultaneously
 
 const TRAINER_VERSION = "1.0.0";
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
-    gamesPerSession: 100,
-    timePerMove: 5000, // ms - 5 seconds per move
-    maxDepth: 3,
-    openingBookMoves: 8 // Use opening book for first N moves
+    totalGames: 100,
+    maxWorkers: navigator.hardwareConcurrency || 8, // Use available CPU cores
+    timePerMove: 2000, // 2 seconds per move
+    maxDepth: 3
 };
 
 // ========== TRAINING STATE ==========
 let trainingState = {
     isRunning: false,
-    gamesPlayed: 0,
+    gamesCompleted: 0,
     whiteWins: 0,
     blackWins: 0,
     draws: 0,
-    totalMoves: 0,
-    bestWinRate: 0
+    startTime: null
 };
 
-// ========== DATA STORAGE ==========
+// ========== WORKER POOL ==========
+let workers = [];
+let gameQueue = [];
+let completedGames = [];
 let trainingData = {
     games: [],
     openings: {},
     evaluations: [],
     version: TRAINER_VERSION,
-    started: null,
-    lastUpdated: null
+    started: null
 };
 
-// ========== LOGGING ==========
+// ========== UI HELPERS ==========
 function log(message, type = '') {
     const logEl = document.getElementById('log');
     const line = document.createElement('div');
@@ -42,259 +43,350 @@ function log(message, type = '') {
     logEl.appendChild(line);
     logEl.scrollTop = logEl.scrollHeight;
     
-    // Keep last 100 lines
     while (logEl.children.length > 100) {
         logEl.removeChild(logEl.firstChild);
     }
 }
 
-// ========== UI UPDATES ==========
 function updateUI() {
-    document.getElementById('games-played').textContent = trainingState.gamesPlayed;
+    document.getElementById('games-completed').textContent = trainingState.gamesCompleted;
+    document.getElementById('total-games').textContent = CONFIG.totalGames;
     document.getElementById('white-wins').textContent = trainingState.whiteWins;
     document.getElementById('draws').textContent = trainingState.draws;
     document.getElementById('black-wins').textContent = trainingState.blackWins;
     
-    const avgMoves = trainingState.gamesPlayed > 0 
-        ? Math.round(trainingState.totalMoves / trainingState.gamesPlayed) 
-        : 0;
-    document.getElementById('avg-moves').textContent = avgMoves;
+    const activeCount = workers.filter(w => w.busy).length;
+    document.getElementById('active-workers').textContent = activeCount;
     
-    const progress = (trainingState.gamesPlayed / CONFIG.gamesPerSession) * 100;
+    const progress = (trainingState.gamesCompleted / CONFIG.totalGames) * 100;
     document.getElementById('progress-fill').style.width = progress + '%';
     document.getElementById('progress-text').textContent = 
-        `${trainingState.gamesPlayed}/${CONFIG.gamesPerSession} Games`;
+        `${trainingState.gamesCompleted}/${CONFIG.totalGames} Games`;
     
-    const totalGames = trainingState.whiteWins + trainingState.blackWins + trainingState.draws;
-    if (totalGames > 0) {
-        const whiteWR = (trainingState.whiteWins / totalGames * 100).toFixed(1);
-        const blackWR = (trainingState.blackWins / totalGames * 100).toFixed(1);
-        const bestWR = Math.max(whiteWR, blackWR);
-        if (bestWR > trainingState.bestWinRate) {
-            trainingState.bestWinRate = bestWR;
-        }
-        document.getElementById('best-winrate').textContent = trainingState.bestWinRate + '%';
+    if (trainingState.startTime) {
+        const elapsed = Math.floor((Date.now() - trainingState.startTime) / 1000);
+        const mins = Math.floor(elapsed / 60);
+        const secs = elapsed % 60;
+        document.getElementById('elapsed-time').textContent = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
+    
+    updateWorkerStatus();
 }
 
-// ========== GAME RUNNER ==========
-async function runOneGame(gameId) {
-    return new Promise((resolve) => {
-        log(`Game ${gameId + 1}: Starting...`);
+function updateWorkerStatus() {
+    const statusEl = document.getElementById('worker-status');
+    statusEl.innerHTML = '';
+    
+    workers.forEach((worker, i) => {
+        const dot = document.createElement('div');
+        dot.className = `worker ${worker.busy ? 'active' : (worker.completed ? 'completed' : '')}`;
+        dot.title = `Worker ${i + 1}: ${worker.busy ? 'Playing Game ' + worker.gameId : 'Idle'}`;
+        statusEl.appendChild(dot);
+    });
+}
+
+// ========== WORKER CREATION ==========
+function createWorker() {
+    const workerCode = `
+        // Worker thread - runs a single chess game
+        let board = null;
+        let gameState = null;
         
-        // Create isolated game instance
-        const game = createGameInstance();
-        const moves = [];
-        const evaluations = [];
-        
-        // Play game with timeout protection
-        const gameInterval = setInterval(() => {
-            if (game.gameOver) {
-                clearInterval(gameInterval);
-                return;
-            }
+        self.onmessage = function(e) {
+            const { type, gameId } = e.data;
             
-            try {
-                const currentPlayer = game.currentPlayer;
-                const startTime = Date.now();
+            if (type === 'start') {
+                // Initialize a new game using the global ChessGame class
+                gameState = new ChessGame();
+                gameState.newGame();
+                board = gameState.board;
                 
-                // Get AI move
-                const move = game.findBestMove();
-                
-                if (!move) {
-                    // No legal moves - game over
-                    game.gameOver = true;
-                    clearInterval(gameInterval);
-                    
-                    const result = determineResult(game);
-                    recordGameResult(gameId, moves, evaluations, result);
-                    resolve(result);
+                runGame(gameId);
+            }
+        };
+        
+        function runGame(gameId) {
+            const moves = [];
+            const evaluations = [];
+            let moveCount = 0;
+            
+            function makeAIMove() {
+                if (gameState.gameOver) {
+                    const result = determineResult();
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: result,
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount
+                    });
                     return;
                 }
                 
-                const moveTime = Date.now() - startTime;
+                const move = gameState.findBestMove();
                 
-                // Make the move
+                if (!move) {
+                    gameState.gameOver = true;
+                    const result = determineResult();
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: result,
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount
+                    });
+                    return;
+                }
+                
                 const moveStr = toAlgebraic(move);
-                game.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
-                game.switchPlayer();
+                gameState.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
+                gameState.switchPlayer();
                 
                 moves.push(moveStr);
+                moveCount++;
                 
-                // Record evaluation (every 5 moves to save memory)
-                if (moves.length % 5 === 0) {
-                    const evalScore = game.evaluatePositionForSearch(
-                        game.board, 
-                        game.currentPlayer, 
-                        game.moveCount
-                    );
+                // Record evaluation every 10 moves
+                if (moveCount % 10 === 0) {
                     evaluations.push({
-                        moveNumber: moves.length,
-                        fen: game.getFEN(),
-                        evaluation: evalScore,
-                        player: currentPlayer
+                        moveNumber: moveCount,
+                        fen: gameState.getFEN(),
+                        evaluation: gameState.evaluatePositionForSearch(gameState.board, gameState.currentPlayer, gameState.moveCount),
+                        player: gameState.currentPlayer
                     });
                 }
                 
-                // Progress update every 10 moves
-                if (moves.length % 10 === 0) {
-                    log(`Game ${gameId + 1}: Move ${moves.length}, Eval: ${evaluations[evaluations.length-1]?.evaluation || 'N/A'}`, 'info');
+                // Progress update
+                if (moveCount % 20 === 0) {
+                    self.postMessage({
+                        type: 'progress',
+                        gameId: gameId,
+                        moveCount: moveCount,
+                        lastMove: moveStr
+                    });
                 }
                 
-                // 200 move draw rule
-                if (moves.length >= 200) {
-                    game.gameOver = true;
-                    clearInterval(gameInterval);
-                    
-                    const result = { winner: 'draw', reason: '50-move rule' };
-                    recordGameResult(gameId, moves, evaluations, result);
-                    resolve(result);
+                // Continue game
+                if (moveCount < 300) {
+                    setTimeout(makeAIMove, 10);
+                } else {
+                    gameState.gameOver = true;
+                    self.postMessage({
+                        type: 'complete',
+                        gameId: gameId,
+                        result: { winner: 'draw', reason: 'move limit' },
+                        moves: moves,
+                        evaluations: evaluations,
+                        moveCount: moveCount
+                    });
                 }
-                
-            } catch (e) {
-                clearInterval(gameInterval);
-                log(`Game ${gameId + 1}: ERROR - ${e.message}`, 'error');
-                resolve({ winner: 'error', reason: e.message });
             }
-        }, 10); // Small delay to prevent UI freeze
-        
-        // Safety timeout (5 minutes per game)
-        setTimeout(() => {
-            if (!game.gameOver) {
-                clearInterval(gameInterval);
-                game.gameOver = true;
-                log(`Game ${gameId + 1}: Timeout after 5 minutes`, 'warning');
-                resolve({ winner: 'timeout', moves: moves });
+            
+            function determineResult() {
+                if (gameState.isCheckmate()) {
+                    const winner = gameState.currentPlayer === 'white' ? 'black' : 'white';
+                    return { winner: winner, reason: 'checkmate' };
+                } else if (gameState.isStalemate()) {
+                    return { winner: 'draw', reason: 'stalemate' };
+                } else if (gameState.isDraw()) {
+                    return { winner: 'draw', reason: 'draw' };
+                }
+                return { winner: 'draw', reason: 'unknown' };
             }
-        }, 300000);
-    });
-}
-
-function recordGameResult(gameId, moves, evaluations, result) {
-    const winner = result.winner || 'draw';
-    
-    // Update stats
-    trainingState.gamesPlayed++;
-    trainingState.totalMoves += moves.length;
-    
-    if (winner === 'white') trainingState.whiteWins++;
-    else if (winner === 'black') trainingState.blackWins++;
-    else trainingState.draws++;
-    
-    // Store game data
-    const gameData = {
-        id: gameId,
-        moves: moves,
-        evaluations: evaluations,
-        winner: winner,
-        reason: result.reason,
-        moveCount: moves.length,
-        timestamp: new Date().toISOString()
-    };
-    
-    trainingData.games.push(gameData);
-    
-    // Learn from openings
-    if (moves.length >= 4) {
-        const openingKey = moves.slice(0, 6).join(' ');
-        if (!trainingData.openings[openingKey]) {
-            trainingData.openings[openingKey] = { white: 0, black: 0, draw: 0, total: 0 };
+            
+            function toAlgebraic(move) {
+                const files = ['a','b','c','d','e','f','g','h'];
+                const ranks = ['8','7','6','5','4','3','2','1'];
+                return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
+            }
+            
+            // Start the game
+            setTimeout(makeAIMove, 10);
         }
-        trainingData.openings[openingKey].total++;
-        if (winner === 'white') trainingData.openings[openingKey].white++;
-        else if (winner === 'black') trainingData.openings[openingKey].black++;
-        else trainingData.openings[openingKey].draw++;
-    }
+    `;
     
-    // Store critical evaluations
-    evaluations.forEach(e => {
-        trainingData.evaluations.push({
-            gameId: gameId,
-            ...e
-        });
-    });
-    
-    trainingData.lastUpdated = new Date().toISOString();
-    
-    // Log result
-    const resultColor = winner === 'white' ? 'win' : (winner === 'black' ? 'loss' : 'draw');
-    log(`Game ${gameId + 1}: Complete - ${winner} wins in ${moves.length} moves`, resultColor);
-    
-    updateUI();
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    return new Worker(URL.createObjectURL(blob));
 }
 
-function determineResult(game) {
-    if (game.isCheckmate()) {
-        const winner = game.currentPlayer === 'white' ? 'black' : 'white';
-        return { winner, reason: 'checkmate' };
-    } else if (game.isStalemate()) {
-        return { winner: 'draw', reason: 'stalemate' };
-    } else if (game.isDraw()) {
-        return { winner: 'draw', reason: 'draw' };
-    }
-    return { winner: 'draw', reason: 'unknown' };
-}
-
-function toAlgebraic(move) {
-    const files = ['a','b','c','d','e','f','g','h'];
-    const ranks = ['8','7','6','5','4','3','2','1'];
-    return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
-}
-
-// ========== TRAINING CONTROLLER ==========
-async function startTraining() {
+// ========== PARALLEL TRAINING ==========
+async function startParallelTraining() {
     if (trainingState.isRunning) return;
     
     trainingState.isRunning = true;
+    trainingState.startTime = Date.now();
     trainingData.started = trainingData.started || new Date().toISOString();
     
     document.getElementById('btn-start').disabled = true;
     document.getElementById('btn-stop').disabled = false;
     
-    log('=== Starting Training Session ===', 'win');
-    log(`Target: ${CONFIG.gamesPerSession} games`, 'info');
+    log(`🚀 Starting ${CONFIG.totalGames} parallel games with ${CONFIG.maxWorkers} workers`, 'win');
     
-    const startGameId = trainingState.gamesPlayed;
-    const endGameId = Math.min(startGameId + CONFIG.gamesPerSession, startGameId + 100);
-    
-    for (let i = startGameId; i < endGameId && trainingState.isRunning; i++) {
-        await runOneGame(i);
-        
-        // Save progress every 5 games
-        if ((i + 1) % 5 === 0) {
-            saveToLocalStorage();
-            log(`Progress saved: ${i + 1} games completed`, 'info');
-        }
-        
-        // Small delay between games
-        await new Promise(r => setTimeout(r, 1000));
+    // Create worker pool
+    for (let i = 0; i < CONFIG.maxWorkers; i++) {
+        const worker = createWorker();
+        worker.id = i;
+        worker.busy = false;
+        worker.completed = false;
+        worker.onmessage = (e) => handleWorkerMessage(worker, e.data);
+        workers.push(worker);
     }
     
+    // Queue all games
+    for (let i = 0; i < CONFIG.totalGames; i++) {
+        gameQueue.push({
+            id: i,
+            status: 'pending'
+        });
+    }
+    
+    // Start initial batch
+    assignGamesToIdleWorkers();
+    
+    // Update timer
+    const timerInterval = setInterval(() => {
+        if (!trainingState.isRunning) {
+            clearInterval(timerInterval);
+        }
+        updateUI();
+    }, 1000);
+}
+
+function assignGamesToIdleWorkers() {
+    workers.forEach(worker => {
+        if (!worker.busy && gameQueue.length > 0) {
+            const game = gameQueue.shift();
+            worker.busy = true;
+            worker.gameId = game.id;
+            worker.postMessage({ type: 'start', gameId: game.id });
+            
+            log(`Game ${game.id + 1}: Started on worker ${worker.id}`, 'info');
+        }
+    });
+    
+    updateUI();
+}
+
+function handleWorkerMessage(worker, data) {
+    if (data.type === 'progress') {
+        // Just log occasionally
+        if (data.moveCount % 50 === 0) {
+            log(`Game ${data.gameId + 1}: Move ${data.moveCount}`, 'info');
+        }
+    } else if (data.type === 'complete') {
+        worker.busy = false;
+        worker.completed = true;
+        
+        // Record result
+        const result = data.result;
+        trainingState.gamesCompleted++;
+        
+        if (result.winner === 'white') trainingState.whiteWins++;
+        else if (result.winner === 'black') trainingState.blackWins++;
+        else trainingState.draws++;
+        
+        // Store game data
+        const gameData = {
+            id: data.gameId,
+            moves: data.moves,
+            evaluations: data.evaluations,
+            winner: result.winner,
+            reason: result.reason,
+            moveCount: data.moveCount,
+            timestamp: new Date().toISOString()
+        };
+        
+        completedGames.push(gameData);
+        trainingData.games.push(gameData);
+        
+        // Learn openings
+        if (data.moves.length >= 4) {
+            const openingKey = data.moves.slice(0, 6).join(' ');
+            if (!trainingData.openings[openingKey]) {
+                trainingData.openings[openingKey] = { white: 0, black: 0, draw: 0, total: 0 };
+            }
+            trainingData.openings[openingKey].total++;
+            if (result.winner === 'white') trainingData.openings[openingKey].white++;
+            else if (result.winner === 'black') trainingData.openings[openingKey].black++;
+            else trainingData.openings[openingKey].draw++;
+        }
+        
+        // Store evaluations
+        data.evaluations.forEach(e => {
+            trainingData.evaluations.push({
+                gameId: data.gameId,
+                ...e
+            });
+        });
+        
+        log(`Game ${data.gameId + 1}: Complete - ${result.winner} in ${data.moveCount} moves (${trainingState.gamesCompleted}/${CONFIG.totalGames})`, 
+            result.winner === 'white' ? 'win' : (result.winner === 'black' ? 'loss' : 'draw'));
+        
+        updateUI();
+        
+        // Assign next game if available
+        assignGamesToIdleWorkers();
+        
+        // Save progress every 10 games
+        if (trainingState.gamesCompleted % 10 === 0) {
+            saveToLocalStorage();
+            log(`💾 Progress saved: ${trainingState.gamesCompleted} games`, 'info');
+        }
+        
+        // Check if all games completed
+        if (trainingState.gamesCompleted >= CONFIG.totalGames) {
+            finishTraining();
+        }
+    }
+}
+
+function finishTraining() {
     trainingState.isRunning = false;
+    trainingData.lastUpdated = new Date().toISOString();
+    
     document.getElementById('btn-start').disabled = false;
     document.getElementById('btn-stop').disabled = true;
     
     saveToLocalStorage();
-    log('=== Training Session Complete ===', 'win');
-    log(`Final: ${trainingState.whiteWins}W - ${trainingState.draws}D - ${trainingState.blackWins}L`, 'info');
+    
+    log('🎉 ========================================', 'win');
+    log(`🎉 TRAINING COMPLETE!`, 'win');
+    log(`🎉 ${CONFIG.totalGames} games finished in parallel`, 'win');
+    log(`🎉 Results: ${trainingState.whiteWins}W - ${trainingState.draws}D - ${trainingState.blackWins}L`, 'win');
+    log('🎉 ========================================', 'win');
+    
+    // Terminate workers
+    workers.forEach(w => w.terminate());
+    workers = [];
 }
 
 function stopTraining() {
     trainingState.isRunning = false;
     log('Training stopped by user', 'warning');
+    
+    workers.forEach(w => w.terminate());
+    workers = [];
+    
+    document.getElementById('btn-start').disabled = false;
+    document.getElementById('btn-stop').disabled = true;
 }
 
 function resetTraining() {
     if (!confirm('Reset all training data? This cannot be undone.')) return;
     
+    if (trainingState.isRunning) {
+        stopTraining();
+    }
+    
     trainingState = {
         isRunning: false,
-        gamesPlayed: 0,
+        gamesCompleted: 0,
         whiteWins: 0,
         blackWins: 0,
         draws: 0,
-        totalMoves: 0,
-        bestWinRate: 0
+        startTime: null
     };
     
     trainingData = {
@@ -302,9 +394,11 @@ function resetTraining() {
         openings: {},
         evaluations: [],
         version: TRAINER_VERSION,
-        started: new Date().toISOString(),
-        lastUpdated: null
+        started: new Date().toISOString()
     };
+    
+    completedGames = [];
+    gameQueue = [];
     
     updateUI();
     document.getElementById('log').innerHTML = '<div class="log-line">[System] Training data reset.</div>';
@@ -319,7 +413,7 @@ function saveToLocalStorage() {
             data: trainingData,
             version: TRAINER_VERSION
         };
-        localStorage.setItem('chess_training_data', JSON.stringify(data));
+        localStorage.setItem('chess_parallel_training', JSON.stringify(data));
     } catch (e) {
         log('Failed to save to localStorage', 'error');
     }
@@ -327,14 +421,15 @@ function saveToLocalStorage() {
 
 function loadFromLocalStorage() {
     try {
-        const saved = localStorage.getItem('chess_training_data');
+        const saved = localStorage.getItem('chess_parallel_training');
         if (saved) {
             const data = JSON.parse(saved);
             if (data.version === TRAINER_VERSION) {
                 trainingState = data.state;
                 trainingData = data.data;
+                completedGames = data.data.games;
                 updateUI();
-                log(`Loaded ${trainingState.gamesPlayed} games from storage`, 'info');
+                log(`Loaded ${trainingState.gamesCompleted} games from storage`, 'info');
             }
         }
     } catch (e) {
@@ -347,35 +442,28 @@ function exportOpenings() {
     const data = {
         version: TRAINER_VERSION,
         generated: new Date().toISOString(),
-        totalGames: trainingState.gamesPlayed,
+        totalGames: trainingState.gamesCompleted,
         openings: trainingData.openings
     };
-    
-    downloadJSON(data, `openings-${trainingState.gamesPlayed}.json`);
+    downloadJSON(data, `openings-${trainingState.gamesCompleted}.json`);
     log(`Exported ${Object.keys(trainingData.openings).length} opening lines`, 'win');
 }
 
 function exportEvaluations() {
     let csv = 'gameId,moveNumber,fen,evaluation,player\n';
-    
     trainingData.evaluations.forEach(e => {
         csv += `${e.gameId},${e.moveNumber},"${e.fen}",${e.evaluation},${e.player}\n`;
     });
-    
-    downloadFile(csv, `evaluations-${trainingState.gamesPlayed}.csv`, 'text/csv');
-    log(`Exported ${trainingData.evaluations.length} position evaluations`, 'win');
+    downloadFile(csv, `evaluations-${trainingState.gamesCompleted}.csv`, 'text/csv');
+    log(`Exported ${trainingData.evaluations.length} evaluations`, 'win');
 }
 
 function exportGames() {
     let pgn = '';
-    
     trainingData.games.forEach((game, i) => {
-        pgn += `[Event "Self-Play Game ${i + 1}"]\n`;
-        pgn += `[Site "Chess AI Trainer v${TRAINER_VERSION}"]\n`;
-        pgn += `[Date "${game.timestamp}"]\n`;
+        pgn += `[Event "Parallel Self-Play ${i + 1}"]\n`;
         pgn += `[Result "${game.winner === 'white' ? '1-0' : game.winner === 'black' ? '0-1' : '1/2-1/2'}"]\n`;
-        pgn += `[Termination "${game.reason}"]\n`;
-        pgn += `[PlyCount "${game.moveCount}"]\n\n`;
+        pgn += `[Termination "${game.reason}"]\n\n`;
         
         for (let j = 0; j < game.moves.length; j++) {
             if (j % 2 === 0) pgn += `${Math.floor(j/2)+1}. `;
@@ -384,9 +472,8 @@ function exportGames() {
         }
         pgn += ` ${game.winner === 'white' ? '1-0' : game.winner === 'black' ? '0-1' : '1/2-1/2'}\n\n`;
     });
-    
-    downloadFile(pgn, `games-${trainingState.gamesPlayed}.pgn`, 'application/x-chess-pgn');
-    log(`Exported ${trainingData.games.length} games in PGN format`, 'win');
+    downloadFile(pgn, `games-${trainingState.gamesCompleted}.pgn`, 'application/x-chess-pgn');
+    log(`Exported ${trainingData.games.length} games`, 'win');
 }
 
 function exportAll() {
@@ -394,13 +481,10 @@ function exportAll() {
         version: TRAINER_VERSION,
         generated: new Date().toISOString(),
         stats: {
-            gamesPlayed: trainingState.gamesPlayed,
+            gamesPlayed: trainingState.gamesCompleted,
             whiteWins: trainingState.whiteWins,
             blackWins: trainingState.blackWins,
-            draws: trainingState.draws,
-            avgMoves: trainingState.gamesPlayed > 0 
-                ? Math.round(trainingState.totalMoves / trainingState.gamesPlayed) 
-                : 0
+            draws: trainingState.draws
         },
         openings: trainingData.openings,
         games: trainingData.games.map(g => ({
@@ -408,17 +492,14 @@ function exportAll() {
             winner: g.winner,
             moveCount: g.moveCount,
             moves: g.moves
-        })),
-        evaluations: trainingData.evaluations.slice(0, 1000) // Limit size
+        }))
     };
-    
-    downloadJSON(allData, `training-data-${trainingState.gamesPlayed}.json`);
+    downloadJSON(allData, `training-data-${trainingState.gamesCompleted}.json`);
     log(`Exported complete training data`, 'win');
 }
 
 function downloadJSON(data, filename) {
-    const json = JSON.stringify(data, null, 2);
-    downloadFile(json, filename, 'application/json');
+    downloadFile(JSON.stringify(data, null, 2), filename, 'application/json');
 }
 
 function downloadFile(content, filename, type) {
@@ -431,99 +512,28 @@ function downloadFile(content, filename, type) {
     URL.revokeObjectURL(url);
 }
 
-// ========== CHESS ENGINE INTEGRATION ==========
-// COPY YOUR ENTIRE v2.4.1 chess-game.js BELOW THIS LINE
-// =============================================
-
-function createGameInstance() {
-    // This creates a fresh game instance using v2.4.1's logic
-    // Since v2.4.1 uses global variables, we need to carefully manage state
-    
-    // Store current state
-    const savedBoard = window.board ? JSON.parse(JSON.stringify(window.board)) : null;
-    const savedPlayer = window.currentPlayer;
-    const savedHistory = window.moveHistory ? [...window.moveHistory] : [];
-    const savedGameOver = window.gameOver;
-    
-    // Reset for new game (calls the global newGame function)
-    if (typeof window.newGame === 'function') {
-        window.newGame();
-    }
-    
-    // Return an interface to the current game state
-    return {
-        get board() { return window.board; },
-        get currentPlayer() { return window.currentPlayer; },
-        get moveCount() { return window.moveCount; },
-        get gameOver() { return window.gameOver; },
-        set gameOver(val) { window.gameOver = val; },
-        
-        findBestMove() {
-            return window.findBestMove ? window.findBestMove() : null;
-        },
-        
-        makeMove(fr, fc, tr, tc) {
-            if (typeof window.makeMove === 'function') {
-                window.makeMove(fr, fc, tr, tc);
-            }
-        },
-        
-        switchPlayer() {
-            if (typeof window.switchPlayer === 'function') {
-                window.switchPlayer();
-            }
-        },
-        
-        evaluatePositionForSearch(board, player, moveCount) {
-            if (typeof window.evaluatePositionForSearch === 'function') {
-                return window.evaluatePositionForSearch(board, player, moveCount);
-            }
-            return 0;
-        },
-        
-        getFEN() {
-            return typeof window.getFEN === 'function' ? window.getFEN() : '';
-        },
-        
-        isCheckmate() {
-            return typeof window.isCheckmate === 'function' ? window.isCheckmate() : false;
-        },
-        
-        isStalemate() {
-            return typeof window.isStalemate === 'function' ? window.isStalemate() : false;
-        },
-        
-        isDraw() {
-            return typeof window.isDraw === 'function' ? window.isDraw() : false;
-        },
-        
-        // Restore previous state when done
-        restore() {
-            if (savedBoard) {
-                window.board = savedBoard;
-                window.currentPlayer = savedPlayer;
-                window.moveHistory = savedHistory;
-                window.gameOver = savedGameOver;
-            }
-        }
-    };
-}
-
 // ========== INITIALIZATION ==========
 window.addEventListener('load', () => {
     loadFromLocalStorage();
     updateUI();
-    log(`Chess AI Self-Play Trainer v${TRAINER_VERSION} loaded`, 'win');
-    log(`Ready to train. Click Start to begin ${CONFIG.gamesPerSession} games.`, 'info');
+    
+    // Create worker status dots
+    const statusEl = document.getElementById('worker-status');
+    for (let i = 0; i < CONFIG.maxWorkers; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'worker';
+        statusEl.appendChild(dot);
+    }
+    
+    log(`Parallel Chess Trainer v${TRAINER_VERSION} loaded`, 'win');
+    log(`Ready to run ${CONFIG.totalGames} games with ${CONFIG.maxWorkers} workers`, 'info');
 });
 
-// Make functions globally available
-window.startTraining = startTraining;
+// Global functions
+window.startParallelTraining = startParallelTraining;
 window.stopTraining = stopTraining;
 window.resetTraining = resetTraining;
 window.exportOpenings = exportOpenings;
 window.exportEvaluations = exportEvaluations;
 window.exportGames = exportGames;
 window.exportAll = exportAll;
-
-console.log('✅ Trainer loaded. Paste v2.4.1 below the marked line in this file.');
