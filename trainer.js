@@ -1,13 +1,12 @@
-// trainer.js - Parallel Self-Play Trainer with Live Board Viewer
+// trainer.js - Sequential Self-Play Trainer (No Workers, Fully Compatible)
 
 const TRAINER_VERSION = "1.0.0";
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
     totalGames: 100,
-    maxWorkers: navigator.hardwareConcurrency || 4,
-    timePerMove: 1000,
-    maxDepth: 3
+    moveDelay: 50, // ms between moves
+    gameDelay: 200 // ms between games
 };
 
 // ========== TRAINING STATE ==========
@@ -17,191 +16,23 @@ let trainingState = {
     whiteWins: 0,
     blackWins: 0,
     draws: 0,
-    startTime: null
+    startTime: null,
+    currentGame: null
 };
 
-// ========== GAME TRACKING ==========
-let activeGames = new Map();
-let workers = [];
-let gameQueue = [];
+// ========== DATA STORAGE ==========
 let trainingData = {
     games: [],
     openings: {},
-    evaluations: [],
     version: TRAINER_VERSION,
     started: null
 };
 
-// ========== CREATE WORKER WITH PATCHED ENGINE ==========
-async function createWorkerWithEngine() {
-    // Fetch the chess engine code
-    const response = await fetch('chess-engine.js');
-    let engineCode = await response.text();
-    
-    // PATCH: Replace 'window' with 'self' for Worker compatibility
-    engineCode = engineCode.replace(/window\./g, 'self.');
-    engineCode = engineCode.replace(/typeof window/g, 'typeof self');
-    engineCode = engineCode.replace(/window\[/g, 'self[');
-    
-    // PATCH: Add self alias for global functions
-    engineCode = `
-        // Worker compatibility shim
-        const self = typeof window !== 'undefined' ? window : this;
-        if (typeof window === 'undefined') {
-            var window = self;
-        }
-        
-        ${engineCode}
-        
-        // Expose engine functions to worker scope
-        if (typeof newGame === 'function') self.newGame = newGame;
-        if (typeof findBestMove === 'function') self.findBestMove = findBestMove;
-        if (typeof makeMove === 'function') self.makeMove = makeMove;
-        if (typeof switchPlayer === 'function') self.switchPlayer = switchPlayer;
-        if (typeof isCheckmate === 'function') self.isCheckmate = isCheckmate;
-        if (typeof isStalemate === 'function') self.isStalemate = isStalemate;
-        if (typeof isDraw === 'function') self.isDraw = isDraw;
-        if (typeof getFEN === 'function') self.getFEN = getFEN;
-        if (typeof evaluatePositionForSearch === 'function') self.evaluatePositionForSearch = evaluatePositionForSearch;
-        if (typeof getAllPossibleMoves === 'function') self.getAllPossibleMoves = getAllPossibleMoves;
-        if (typeof isKingInCheck === 'function') self.isKingInCheck = isKingInCheck;
-    `;
-    
-    const workerCode = `
-        // Worker thread for chess game
-        let moveInterval = null;
-        let gameState = {
-            board: null,
-            currentPlayer: 'white',
-            moveCount: 1,
-            gameOver: false
-        };
-        
-        // ========== CHESS ENGINE ==========
-        ${engineCode}
-        
-        // ========== GAME RUNNER ==========
-        self.onmessage = function(e) {
-            const { type, gameId } = e.data;
-            
-            if (type === 'start') {
-                // Initialize new game
-                if (typeof self.newGame === 'function') {
-                    self.newGame();
-                }
-                runGame(gameId);
-            } else if (type === 'stop') {
-                if (moveInterval) {
-                    clearTimeout(moveInterval);
-                }
-            }
-        };
-        
-        function runGame(gameId) {
-            const moves = [];
-            let moveCount = 0;
-            
-            function makeAIMove() {
-                // Check if game is over
-                if (self.gameOver) {
-                    finishGame();
-                    return;
-                }
-                
-                // Get best move
-                let move = null;
-                if (typeof self.findBestMove === 'function') {
-                    move = self.findBestMove();
-                }
-                
-                if (!move) {
-                    self.gameOver = true;
-                    finishGame();
-                    return;
-                }
-                
-                const moveStr = toAlgebraic(move);
-                
-                // Make move
-                if (typeof self.makeMove === 'function') {
-                    self.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
-                }
-                if (typeof self.switchPlayer === 'function') {
-                    self.switchPlayer();
-                }
-                
-                moves.push(moveStr);
-                moveCount++;
-                
-                // Get current evaluation
-                let evalScore = 0;
-                if (typeof self.evaluatePositionForSearch === 'function' && self.board) {
-                    evalScore = self.evaluatePositionForSearch(self.board, self.currentPlayer, self.moveCount);
-                }
-                
-                const currentFEN = typeof self.getFEN === 'function' ? self.getFEN() : '';
-                
-                // Send progress update
-                self.postMessage({
-                    type: 'progress',
-                    gameId: gameId,
-                    moveCount: moveCount,
-                    lastMove: moveStr,
-                    board: self.board ? JSON.parse(JSON.stringify(self.board)) : null,
-                    currentPlayer: self.currentPlayer,
-                    evaluation: evalScore,
-                    fen: currentFEN
-                });
-                
-                // Continue if not over
-                if (!self.gameOver && moveCount < 300) {
-                    moveInterval = setTimeout(makeAIMove, 10);
-                } else {
-                    self.gameOver = true;
-                    finishGame();
-                }
-            }
-            
-            function finishGame() {
-                let winner = 'draw';
-                let reason = 'move limit';
-                
-                if (typeof self.isCheckmate === 'function' && self.isCheckmate()) {
-                    winner = self.currentPlayer === 'white' ? 'black' : 'white';
-                    reason = 'checkmate';
-                } else if (typeof self.isStalemate === 'function' && self.isStalemate()) {
-                    winner = 'draw';
-                    reason = 'stalemate';
-                } else if (typeof self.isDraw === 'function' && self.isDraw()) {
-                    winner = 'draw';
-                    reason = 'draw';
-                }
-                
-                self.postMessage({
-                    type: 'complete',
-                    gameId: gameId,
-                    result: { winner, reason },
-                    moves: moves,
-                    moveCount: moveCount,
-                    board: self.board ? JSON.parse(JSON.stringify(self.board)) : null,
-                    fen: typeof self.getFEN === 'function' ? self.getFEN() : ''
-                });
-            }
-            
-            function toAlgebraic(move) {
-                const files = ['a','b','c','d','e','f','g','h'];
-                const ranks = ['8','7','6','5','4','3','2','1'];
-                return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
-            }
-            
-            // Start the game
-            setTimeout(makeAIMove, 10);
-        }
-    `;
-    
-    const blob = new Blob([workerCode], { type: 'application/javascript' });
-    return new Worker(URL.createObjectURL(blob));
-}
+// Current game being played
+let currentGameEngine = null;
+let currentGameMoves = [];
+let currentGameId = 0;
+let gameInterval = null;
 
 // ========== UI HELPERS ==========
 function log(message, type = '') {
@@ -224,7 +55,7 @@ function updateUI() {
     document.getElementById('draws').textContent = trainingState.draws;
     document.getElementById('black-wins').textContent = trainingState.blackWins;
     
-    const activeCount = workers.filter(w => w.busy).length;
+    const activeCount = trainingState.isRunning ? 1 : 0;
     document.getElementById('active-workers').textContent = activeCount;
     
     const progress = (trainingState.gamesCompleted / CONFIG.totalGames) * 100;
@@ -240,131 +71,297 @@ function updateUI() {
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     
-    updateWorkerStatus();
     updateGamesGrid();
-}
-
-function updateWorkerStatus() {
-    const statusEl = document.getElementById('worker-status');
-    statusEl.innerHTML = '';
-    
-    workers.forEach((worker, i) => {
-        const dot = document.createElement('div');
-        dot.className = `worker ${worker.busy ? 'active' : (worker.completed ? 'completed' : '')}`;
-        dot.title = `Worker ${i + 1}: ${worker.busy ? 'Playing Game ' + (worker.gameId + 1) : 'Idle'}`;
-        statusEl.appendChild(dot);
-    });
 }
 
 function updateGamesGrid() {
     const grid = document.getElementById('games-grid');
     grid.innerHTML = '';
     
-    const gamesToShow = [];
-    activeGames.forEach((game, id) => {
-        gamesToShow.push({ id, ...game });
-    });
-    
-    gamesToShow.sort((a, b) => a.id - b.id);
-    
-    gamesToShow.slice(0, 12).forEach(game => {
+    // Show current game if running
+    if (currentGameEngine && trainingState.isRunning) {
         const card = document.createElement('div');
-        card.className = `game-card ${game.gameOver ? 'completed' : 'active'}`;
-        card.id = `game-card-${game.id}`;
+        card.className = 'game-card active';
         
-        const status = game.gameOver ? 
-            (game.winner === 'white' ? 'White Won' : game.winner === 'black' ? 'Black Won' : 'Draw') :
-            `${game.currentPlayer} to move`;
+        const board = currentGameEngine.board;
+        const moveCount = currentGameEngine.moveCount;
+        const currentPlayer = currentGameEngine.currentPlayer;
+        
+        let evalScore = 0;
+        if (typeof currentGameEngine.evaluatePositionForSearch === 'function') {
+            evalScore = currentGameEngine.evaluatePositionForSearch(
+                currentGameEngine.board, 
+                currentGameEngine.currentPlayer, 
+                currentGameEngine.moveCount
+            );
+        }
+        
+        card.innerHTML = `
+            <div class="game-header">
+                <span><strong>Game ${currentGameId + 1} (LIVE)</strong></span>
+                <span>Move ${moveCount}</span>
+            </div>
+            <div>Status: ${currentPlayer} to move</div>
+            <div>Eval: ${evalScore ? (evalScore > 0 ? '+' : '') + evalScore.toFixed(0) : 'N/A'}</div>
+            <div style="margin: 5px 0;">
+                <button class="view-board" onclick="showCurrentBoard()">👁 View Board</button>
+            </div>
+            <div>Last: ${currentGameMoves.slice(-1)[0] || 'N/A'}</div>
+        `;
+        
+        grid.appendChild(card);
+    }
+    
+    // Show completed games (last 3)
+    trainingData.games.slice(-3).reverse().forEach(game => {
+        const card = document.createElement('div');
+        card.className = 'game-card completed';
         
         card.innerHTML = `
             <div class="game-header">
                 <span><strong>Game ${game.id + 1}</strong></span>
-                <span>Move ${game.moveCount || 0}</span>
+                <span>${game.moveCount} moves</span>
             </div>
-            <div>Status: ${status}</div>
-            <div>Eval: ${game.evaluation ? (game.evaluation > 0 ? '+' : '') + game.evaluation.toFixed(0) : 'N/A'}</div>
-            <div style="margin: 5px 0;">
-                <button class="view-board" onclick="showBoardModal(${game.id})">👁 View Board</button>
-            </div>
-            ${game.lastMove ? `<div>Last: ${game.lastMove}</div>` : ''}
+            <div>Winner: ${game.winner}</div>
+            <div>${game.reason}</div>
         `;
         
         grid.appendChild(card);
     });
 }
 
-// ========== BOARD MODAL ==========
-function showBoardModal(gameId) {
-    const game = activeGames.get(gameId);
-    if (!game) return;
+function showCurrentBoard() {
+    if (!currentGameEngine) return;
     
-    document.getElementById('modal-title').textContent = `Game #${gameId + 1}`;
+    document.getElementById('modal-title').textContent = `Game ${currentGameId + 1} (LIVE)`;
+    document.getElementById('modal-status').textContent = 
+        `${currentGameEngine.currentPlayer} to move - Move ${currentGameEngine.moveCount}`;
     
-    const status = game.gameOver ? 
-        `Winner: ${game.winner} (${game.reason || 'complete'})` :
-        `${game.currentPlayer} to move - Move ${game.moveCount}`;
-    document.getElementById('modal-status').textContent = status;
-    
-    if (game.board) {
-        let boardStr = '  a b c d e f g h\n';
-        for (let row = 0; row < 8; row++) {
-            boardStr += (8 - row) + ' ';
-            for (let col = 0; col < 8; col++) {
-                const piece = game.board[row]?.[col] || '.';
-                boardStr += piece + ' ';
-            }
-            boardStr += '\n';
+    const board = currentGameEngine.board;
+    let boardStr = '  a b c d e f g h\n';
+    for (let row = 0; row < 8; row++) {
+        boardStr += (8 - row) + ' ';
+        for (let col = 0; col < 8; col++) {
+            const piece = board[row]?.[col] || '.';
+            boardStr += piece + ' ';
         }
-        document.getElementById('modal-board').textContent = boardStr;
+        boardStr += '\n';
+    }
+    document.getElementById('modal-board').textContent = boardStr;
+    
+    let evalScore = 0;
+    if (typeof currentGameEngine.evaluatePositionForSearch === 'function') {
+        evalScore = currentGameEngine.evaluatePositionForSearch(
+            currentGameEngine.board, 
+            currentGameEngine.currentPlayer, 
+            currentGameEngine.moveCount
+        );
     }
     
     document.getElementById('modal-eval').innerHTML = `
-        <strong>Evaluation:</strong> ${game.evaluation ? (game.evaluation > 0 ? '+' : '') + game.evaluation.toFixed(0) : 'N/A'}<br>
-        <strong>Last Move:</strong> ${game.lastMove || 'N/A'}<br>
-        <strong>FEN:</strong> ${game.fen || 'N/A'}
+        <strong>Evaluation:</strong> ${evalScore ? (evalScore > 0 ? '+' : '') + evalScore.toFixed(0) : 'N/A'}<br>
+        <strong>FEN:</strong> ${typeof currentGameEngine.getFEN === 'function' ? currentGameEngine.getFEN() : 'N/A'}<br>
+        <strong>Moves:</strong> ${currentGameMoves.join(' ') || 'N/A'}
     `;
     
     document.getElementById('modal-overlay').classList.add('active');
     document.getElementById('board-modal').classList.add('active');
 }
 
-function closeBoardModal() {
+window.showCurrentBoard = showCurrentBoard;
+window.closeBoardModal = function() {
     document.getElementById('modal-overlay').classList.remove('active');
     document.getElementById('board-modal').classList.remove('active');
+};
+
+// ========== GAME ENGINE SETUP ==========
+function createGameEngine() {
+    // Save current global state
+    const savedBoard = window.board ? JSON.parse(JSON.stringify(window.board)) : null;
+    const savedPlayer = window.currentPlayer;
+    const savedMoveCount = window.moveCount;
+    const savedGameOver = window.gameOver;
+    const savedMoveHistory = window.moveHistory ? [...window.moveHistory] : [];
+    const savedCastling = window.castlingRights ? {...window.castlingRights} : null;
+    
+    // Create new game
+    if (typeof window.newGame === 'function') {
+        window.newGame();
+    }
+    
+    // Return interface
+    return {
+        get board() { return window.board; },
+        get currentPlayer() { return window.currentPlayer; },
+        get moveCount() { return window.moveCount; },
+        get gameOver() { return window.gameOver; },
+        set gameOver(v) { window.gameOver = v; },
+        
+        findBestMove: () => window.findBestMove ? window.findBestMove() : null,
+        makeMove: (fr, fc, tr, tc) => window.makeMove ? window.makeMove(fr, fc, tr, tc) : null,
+        switchPlayer: () => window.switchPlayer ? window.switchPlayer() : null,
+        isCheckmate: () => window.isCheckmate ? window.isCheckmate() : false,
+        isStalemate: () => window.isStalemate ? window.isStalemate() : false,
+        isDraw: () => window.isDraw ? window.isDraw() : false,
+        getFEN: () => window.getFEN ? window.getFEN() : '',
+        evaluatePositionForSearch: (b, p, m) => window.evaluatePositionForSearch ? 
+            window.evaluatePositionForSearch(b, p, m) : 0,
+        
+        restore: () => {
+            if (savedBoard) {
+                window.board = savedBoard;
+                window.currentPlayer = savedPlayer;
+                window.moveCount = savedMoveCount;
+                window.gameOver = savedGameOver;
+                window.moveHistory = savedMoveHistory;
+                if (savedCastling) window.castlingRights = savedCastling;
+            }
+        }
+    };
 }
 
-window.showBoardModal = showBoardModal;
-window.closeBoardModal = closeBoardModal;
+function toAlgebraic(move) {
+    const files = ['a','b','c','d','e','f','g','h'];
+    const ranks = ['8','7','6','5','4','3','2','1'];
+    return files[move.fromCol] + ranks[move.fromRow] + files[move.toCol] + ranks[move.toRow];
+}
 
-// ========== PARALLEL TRAINING ==========
+// ========== PLAY ONE GAME ==========
+function playNextMove() {
+    if (!trainingState.isRunning) {
+        return;
+    }
+    
+    if (currentGameEngine.gameOver) {
+        finishCurrentGame();
+        return;
+    }
+    
+    // Get AI move
+    const move = currentGameEngine.findBestMove();
+    
+    if (!move) {
+        currentGameEngine.gameOver = true;
+        finishCurrentGame();
+        return;
+    }
+    
+    const moveStr = toAlgebraic(move);
+    currentGameMoves.push(moveStr);
+    
+    // Make move
+    currentGameEngine.makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
+    currentGameEngine.switchPlayer();
+    
+    // Update UI
+    updateUI();
+    
+    // Check for game over
+    if (currentGameEngine.isCheckmate() || currentGameEngine.isStalemate() || 
+        currentGameEngine.isDraw() || currentGameMoves.length >= 300) {
+        currentGameEngine.gameOver = true;
+        finishCurrentGame();
+        return;
+    }
+    
+    // Schedule next move
+    gameInterval = setTimeout(playNextMove, CONFIG.moveDelay);
+}
+
+function finishCurrentGame() {
+    clearTimeout(gameInterval);
+    
+    let winner = 'draw';
+    let reason = 'move limit';
+    
+    if (currentGameEngine.isCheckmate()) {
+        winner = currentGameEngine.currentPlayer === 'white' ? 'black' : 'white';
+        reason = 'checkmate';
+    } else if (currentGameEngine.isStalemate()) {
+        reason = 'stalemate';
+    } else if (currentGameEngine.isDraw()) {
+        reason = 'draw';
+    }
+    
+    // Update stats
+    trainingState.gamesCompleted++;
+    if (winner === 'white') trainingState.whiteWins++;
+    else if (winner === 'black') trainingState.blackWins++;
+    else trainingState.draws++;
+    
+    // Store game
+    const gameData = {
+        id: currentGameId,
+        moves: currentGameMoves,
+        winner: winner,
+        reason: reason,
+        moveCount: currentGameMoves.length
+    };
+    trainingData.games.push(gameData);
+    
+    // Learn openings
+    if (currentGameMoves.length >= 4) {
+        const openingKey = currentGameMoves.slice(0, 6).join(' ');
+        if (!trainingData.openings[openingKey]) {
+            trainingData.openings[openingKey] = { white: 0, black: 0, draw: 0, total: 0 };
+        }
+        trainingData.openings[openingKey].total++;
+        if (winner === 'white') trainingData.openings[openingKey].white++;
+        else if (winner === 'black') trainingData.openings[openingKey].black++;
+        else trainingData.openings[openingKey].draw++;
+    }
+    
+    log(`Game ${currentGameId + 1}: ${winner} in ${currentGameMoves.length} moves (${trainingState.gamesCompleted}/${CONFIG.totalGames})`,
+        winner === 'white' ? 'win' : (winner === 'black' ? 'loss' : 'draw'));
+    
+    // Restore original engine state
+    currentGameEngine.restore();
+    currentGameEngine = null;
+    currentGameMoves = [];
+    
+    updateUI();
+    
+    // Save every 10 games
+    if (trainingState.gamesCompleted % 10 === 0) {
+        saveToLocalStorage();
+        log(`💾 Progress saved: ${trainingState.gamesCompleted} games`, 'info');
+    }
+    
+    // Start next game or finish
+    if (trainingState.gamesCompleted < CONFIG.totalGames && trainingState.isRunning) {
+        currentGameId++;
+        setTimeout(startNextGame, CONFIG.gameDelay);
+    } else {
+        finishTraining();
+    }
+}
+
+function startNextGame() {
+    currentGameEngine = createGameEngine();
+    currentGameMoves = [];
+    
+    log(`Game ${currentGameId + 1}: Started`, 'info');
+    updateUI();
+    
+    // Start playing
+    gameInterval = setTimeout(playNextMove, CONFIG.moveDelay);
+}
+
+// ========== TRAINING CONTROL ==========
 async function startParallelTraining() {
     if (trainingState.isRunning) return;
     
     trainingState.isRunning = true;
     trainingState.startTime = Date.now();
     trainingData.started = trainingData.started || new Date().toISOString();
+    currentGameId = trainingState.gamesCompleted;
     
     document.getElementById('btn-start').disabled = true;
     document.getElementById('btn-stop').disabled = false;
     
-    log(`🚀 Starting ${CONFIG.totalGames} parallel games`, 'win');
+    log(`🚀 Starting ${CONFIG.totalGames} games sequentially`, 'win');
     
-    // Create worker pool
-    for (let i = 0; i < CONFIG.maxWorkers; i++) {
-        const worker = await createWorkerWithEngine();
-        worker.id = i;
-        worker.busy = false;
-        worker.onmessage = (e) => handleWorkerMessage(worker, e.data);
-        workers.push(worker);
-    }
-    
-    // Queue all games
-    for (let i = 0; i < CONFIG.totalGames; i++) {
-        gameQueue.push({ id: i });
-    }
-    
-    // Start initial batch
-    assignGamesToIdleWorkers();
+    startNextGame();
     
     // Update timer
     const timerInterval = setInterval(() => {
@@ -373,106 +370,6 @@ async function startParallelTraining() {
         }
         updateUI();
     }, 1000);
-}
-
-function assignGamesToIdleWorkers() {
-    workers.forEach(worker => {
-        if (!worker.busy && gameQueue.length > 0) {
-            const game = gameQueue.shift();
-            worker.busy = true;
-            worker.gameId = game.id;
-            
-            activeGames.set(game.id, {
-                id: game.id,
-                moveCount: 0,
-                currentPlayer: 'white',
-                gameOver: false,
-                evaluation: 0
-            });
-            
-            worker.postMessage({ type: 'start', gameId: game.id });
-            log(`Game ${game.id + 1}: Started`, 'info');
-        }
-    });
-    
-    updateUI();
-}
-
-function handleWorkerMessage(worker, data) {
-    if (data.type === 'progress') {
-        activeGames.set(data.gameId, {
-            id: data.gameId,
-            moveCount: data.moveCount,
-            currentPlayer: data.currentPlayer,
-            gameOver: false,
-            evaluation: data.evaluation,
-            lastMove: data.lastMove,
-            board: data.board,
-            fen: data.fen
-        });
-        
-        if (data.moveCount % 20 === 0) {
-            log(`Game ${data.gameId + 1}: Move ${data.moveCount}`, 'info');
-        }
-        
-        updateUI();
-        
-    } else if (data.type === 'complete') {
-        worker.busy = false;
-        
-        const result = data.result;
-        trainingState.gamesCompleted++;
-        
-        if (result.winner === 'white') trainingState.whiteWins++;
-        else if (result.winner === 'black') trainingState.blackWins++;
-        else trainingState.draws++;
-        
-        const gameData = {
-            id: data.gameId,
-            moves: data.moves,
-            winner: result.winner,
-            reason: result.reason,
-            moveCount: data.moveCount
-        };
-        
-        trainingData.games.push(gameData);
-        
-        activeGames.set(data.gameId, {
-            id: data.gameId,
-            moveCount: data.moveCount,
-            gameOver: true,
-            winner: result.winner,
-            reason: result.reason,
-            board: data.board,
-            fen: data.fen
-        });
-        
-        if (data.moves && data.moves.length >= 4) {
-            const openingKey = data.moves.slice(0, 6).join(' ');
-            if (!trainingData.openings[openingKey]) {
-                trainingData.openings[openingKey] = { white: 0, black: 0, draw: 0, total: 0 };
-            }
-            trainingData.openings[openingKey].total++;
-            if (result.winner === 'white') trainingData.openings[openingKey].white++;
-            else if (result.winner === 'black') trainingData.openings[openingKey].black++;
-            else trainingData.openings[openingKey].draw++;
-        }
-        
-        log(`Game ${data.gameId + 1}: ${result.winner} in ${data.moveCount} moves (${trainingState.gamesCompleted}/${CONFIG.totalGames})`, 
-            result.winner === 'white' ? 'win' : (result.winner === 'black' ? 'loss' : 'draw'));
-        
-        updateUI();
-        assignGamesToIdleWorkers();
-        
-        if (trainingState.gamesCompleted % 10 === 0) {
-            saveToLocalStorage();
-            log(`💾 Progress saved: ${trainingState.gamesCompleted} games`, 'info');
-        }
-        
-        if (trainingState.gamesCompleted >= CONFIG.totalGames) {
-            finishTraining();
-        }
-    }
 }
 
 function finishTraining() {
@@ -489,21 +386,19 @@ function finishTraining() {
     log(`🎉 ${trainingState.whiteWins}W - ${trainingState.draws}D - ${trainingState.blackWins}L`, 'win');
     log('🎉 ========================================', 'win');
     
-    workers.forEach(w => w.terminate());
-    workers = [];
-    
     updateUI();
 }
 
 function stopTraining() {
     trainingState.isRunning = false;
-    log('Training stopped', 'warning');
+    clearTimeout(gameInterval);
     
-    workers.forEach(w => {
-        w.postMessage({ type: 'stop' });
-        w.terminate();
-    });
-    workers = [];
+    if (currentGameEngine) {
+        currentGameEngine.restore();
+        currentGameEngine = null;
+    }
+    
+    log('Training stopped', 'warning');
     
     document.getElementById('btn-start').disabled = false;
     document.getElementById('btn-stop').disabled = true;
@@ -526,13 +421,12 @@ function resetTraining() {
     trainingData = {
         games: [],
         openings: {},
-        evaluations: [],
         version: TRAINER_VERSION,
         started: new Date().toISOString()
     };
     
-    activeGames.clear();
-    gameQueue = [];
+    currentGameId = 0;
+    currentGameMoves = [];
     
     updateUI();
     document.getElementById('log').innerHTML = '<div class="log-line">[System] Training data reset.</div>';
@@ -542,7 +436,7 @@ function resetTraining() {
 // ========== STORAGE ==========
 function saveToLocalStorage() {
     try {
-        localStorage.setItem('chess_parallel_training', JSON.stringify({
+        localStorage.setItem('chess_trainer_data', JSON.stringify({
             state: trainingState,
             data: trainingData,
             version: TRAINER_VERSION
@@ -552,11 +446,12 @@ function saveToLocalStorage() {
 
 function loadFromLocalStorage() {
     try {
-        const saved = localStorage.getItem('chess_parallel_training');
+        const saved = localStorage.getItem('chess_trainer_data');
         if (saved) {
             const data = JSON.parse(saved);
             trainingState = data.state;
             trainingData = data.data;
+            currentGameId = trainingState.gamesCompleted;
             updateUI();
             log(`Loaded ${trainingState.gamesCompleted} games from storage`, 'info');
         }
@@ -571,11 +466,7 @@ function exportOpenings() {
 }
 
 function exportEvaluations() {
-    let csv = 'gameId,evaluation\n';
-    trainingData.games.forEach(g => {
-        csv += `${g.id},${g.winner}\n`;
-    });
-    downloadFile(csv, `evaluations-${trainingState.gamesCompleted}.csv`, 'text/csv');
+    downloadJSON(trainingData.games, `evaluations-${trainingState.gamesCompleted}.json`);
     log(`Exported evaluations`, 'win');
 }
 
@@ -636,5 +527,6 @@ window.exportAll = exportAll;
 window.addEventListener('load', () => {
     loadFromLocalStorage();
     updateUI();
-    log(`Parallel Trainer v${TRAINER_VERSION} loaded`, 'win');
+    log(`Sequential Trainer v${TRAINER_VERSION} loaded`, 'win');
+    log(`Ready to play ${CONFIG.totalGames} games`, 'info');
 });
