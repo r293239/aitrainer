@@ -1,2 +1,1 @@
-
-Training ground for CentuarAI
+WIP
