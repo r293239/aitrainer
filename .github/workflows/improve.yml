@@ -1,0 +1,38 @@
+# .github/workflows/improve.yml
+name: Self-Improving AI
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # every 10 minutes
+  workflow_dispatch:
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm install
+
+      - name: Run Improvement Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/improve.js
+
+      - name: Commit & Push if changes
+        run: |
+          git config user.name "ai-bot"
+          git config user.email "ai-bot@selfimprove.dev"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 AI self-improvement $(date -u +'%Y-%m-%d %H:%M')"
+            git push
+          fi
