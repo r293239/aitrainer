@@ -6,22 +6,29 @@
       "hour": 3,
       "score": 30,
       "improvement": 30
+    },
+    {
+      "time": "2026-04-29T06:28:55.879Z",
+      "hour": 6,
+      "score": 85,
+      "improvement": 55
     }
   ],
   "stableHours": [
     3,
     3,
     5,
-    5
+    5,
+    6
   ],
-  "bestScore": 30,
-  "currentScore": 30,
-  "trainingSessions": 0,
-  "lastTrainingError": 1,
-  "totalTrainingCycles": 0,
-  "trainingPairs": 0,
-  "vocabSize": 0,
-  "selfConversations": 0,
+  "bestScore": 85,
+  "currentScore": 85,
+  "trainingSessions": 1,
+  "lastTrainingError": 0.003691940481552321,
+  "totalTrainingCycles": 2533778,
+  "trainingPairs": 15,
+  "vocabSize": 190,
+  "selfConversations": 1,
   "averageRanking": 0,
   "totalRankings": 0
 }
