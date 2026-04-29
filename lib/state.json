@@ -31,6 +31,7 @@
     11,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     11
 =======
     12
@@ -66,6 +67,19 @@
   "vocabSize": 437,
 >>>>>>> Stashed changes
   "selfConversations": 5,
+=======
+    11,
+    12
+  ],
+  "bestScore": 95,
+  "currentScore": 95,
+  "trainingSessions": 6,
+  "lastTrainingError": 0.023145846953026898,
+  "totalTrainingCycles": 8516415,
+  "trainingPairs": 68,
+  "vocabSize": 437,
+  "selfConversations": 6,
+>>>>>>> Stashed changes
   "averageRanking": 0,
   "totalRankings": 0,
   "lastCheckTime": "2026-04-29T11:13:41.587Z",
@@ -74,6 +88,7 @@
     "gpt-4o-mini",
     "Phi-3-mini-4k-instruct"
   ],
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -86,6 +101,9 @@
 >>>>>>> Stashed changes
 =======
   "lastTrainingTime": "2026-04-29T12:06:09.159Z",
+>>>>>>> Stashed changes
+=======
+  "lastTrainingTime": "2026-04-29T12:06:38.888Z",
 >>>>>>> Stashed changes
   "bestError": 0.008714621995676504,
   "trainingDuration": 540,
