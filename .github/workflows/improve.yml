@@ -8,6 +8,7 @@ on:
 jobs:
   train-and-improve:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
@@ -23,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: 🧠 Train Neural Network (10 min)
+      - name: 🧠 Multi-Model Training (10 min)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/train.js
@@ -36,19 +37,11 @@ jobs:
         run: |
           git config user.name "ai-bot"
           git config user.email "ai-bot@selfimprove.dev"
-          
-          # Pull latest changes first to avoid conflicts
           git pull origin main --rebase || git pull origin main
-          
-          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json
-          
+          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json lib/rankings.json lib/self_talk.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "🧠 Neural network training $(date -u +'%Y-%m-%d %H:%M')"
-            git push origin main || (
-              echo "Push failed, pulling and retrying..."
-              git pull origin main --rebase
-              git push origin main
-            )
+            git commit -m "🧠 Multi-model training $(date -u +'%Y-%m-%d %H:%M')"
+            git push origin main || (git pull origin main --rebase && git push origin main)
           fi
