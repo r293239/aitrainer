@@ -3,20 +3,32 @@ const path = require('path');
 
 const STATE_FILE = path.join(__dirname, '..', 'lib', 'state.json');
 const BRAIN_FILE = path.join(__dirname, '..', 'lib', 'brain_weights.json');
+const TRAINING_FILE = path.join(__dirname, '..', 'lib', 'training_data.json');
+const RANKINGS_FILE = path.join(__dirname, '..', 'lib', 'rankings.json');
+const UNCERTAIN_FILE = path.join(__dirname, '..', 'lib', 'uncertain_questions.json');
 
-let state = { 
-  failures: [], 
-  successes: [], 
-  stableHours: [], 
-  bestScore: 0, 
+let state = {
+  failures: [],
+  successes: [],
+  stableHours: [],
+  bestScore: 0,
   currentScore: 0,
   trainingSessions: 0,
-  lastTrainingError: 1
+  lastTrainingError: 1,
+  totalTrainingCycles: 0,
+  trainingPairs: 0,
+  vocabSize: 0,
+  selfConversations: 0,
+  averageRanking: 0,
+  totalRankings: 0,
+  codeFiles: 0
 };
 
 if (fs.existsSync(STATE_FILE)) {
   const raw = fs.readFileSync(STATE_FILE, 'utf-8');
-  if (raw.trim()) state = JSON.parse(raw);
+  if (raw.trim()) {
+    try { state = JSON.parse(raw); } catch (e) {}
+  }
 }
 
 const timestamp = new Date().toISOString();
@@ -26,29 +38,50 @@ console.log('='.repeat(60));
 console.log('📊 REWARD EVALUATION');
 console.log('='.repeat(60));
 
-// Check if brain exists
+// Check resources
 const brainExists = fs.existsSync(BRAIN_FILE);
 let brainSize = 0;
-if (brainExists) {
-  brainSize = fs.statSync(BRAIN_FILE).size;
+if (brainExists) brainSize = fs.statSync(BRAIN_FILE).size;
+
+let trainingPairs = 0;
+if (fs.existsSync(TRAINING_FILE)) {
+  try { trainingPairs = JSON.parse(fs.readFileSync(TRAINING_FILE, 'utf-8')).length; } catch (e) {}
 }
 
-// Score the current state
-let score = 0;
-if (brainExists) score += 20;
-if (state.trainingSessions > 0) score += 10;
-if (state.lastTrainingError < 0.3) score += 20;
-if (state.lastTrainingError < 0.2) score += 10;
-if (state.totalTrainingCycles > 100) score += 15;
-if (state.trainingPairs > 50) score += 15;
-if (brainSize > 10000) score += 10;
+let rankings = 0;
+if (fs.existsSync(RANKINGS_FILE)) {
+  try { rankings = JSON.parse(fs.readFileSync(RANKINGS_FILE, 'utf-8')).length; } catch (e) {}
+}
 
-console.log(`Brain exists: ${brainExists}`);
-console.log(`Brain size: ${brainSize} bytes`);
+let uncertainCount = 0;
+if (fs.existsSync(UNCERTAIN_FILE)) {
+  try { uncertainCount = JSON.parse(fs.readFileSync(UNCERTAIN_FILE, 'utf-8')).length; } catch (e) {}
+}
+
+// Score
+let score = 0;
+if (brainExists) score += 15;
+if (brainSize > 50000) score += 15;
+if (brainSize > 100000) score += 10;
+if (trainingPairs > 50) score += 15;
+if (trainingPairs > 200) score += 10;
+if (trainingPairs > 500) score += 10;
+if (rankings > 10) score += 10;
+if (state.averageRanking > 5) score += 10;
+if (state.averageRanking > 7) score += 15;
+if (state.lastTrainingError < 0.1) score += 15;
+if (state.lastTrainingError < 0.05) score += 10;
+if (state.vocabSize > 200) score += 10;
+if (uncertainCount < 10) score += 5; // Fewer uncertain = smarter
+
+console.log(`Brain: ${brainExists ? '✅' : '❌'} (${(brainSize / 1024).toFixed(1)} KB)`);
+console.log(`Training pairs: ${trainingPairs}`);
+console.log(`Rankings: ${rankings}`);
+console.log(`Avg ranking: ${(state.averageRanking || 0).toFixed(1)}/10`);
 console.log(`Training sessions: ${state.trainingSessions || 0}`);
-console.log(`Last error: ${(state.lastTrainingError || 1).toFixed(4)}`);
-console.log(`Total cycles: ${state.totalTrainingCycles || 0}`);
-console.log(`Training pairs: ${state.trainingPairs || 0}`);
+console.log(`Training error: ${(state.lastTrainingError || 1).toFixed(4)}`);
+console.log(`Vocab size: ${state.vocabSize || 0}`);
+console.log(`Uncertain questions: ${uncertainCount}`);
 console.log(`\n📈 Current score: ${score}/100`);
 console.log(`🏆 Best score: ${state.bestScore || 0}/100`);
 
@@ -57,7 +90,7 @@ state.currentScore = score;
 
 if (score > (state.bestScore || 0)) {
   state.bestScore = score;
-  console.log('🟢 NEW BEST SCORE! Bot is getting smarter!');
+  console.log('🟢 NEW BEST SCORE!');
 }
 
 const diff = score - prevScore;
@@ -68,7 +101,7 @@ if (diff > 0) {
   state.failures.push({ time: timestamp, hour, score, decline: Math.abs(diff) });
   console.log(`🔴 PENALTY: ${diff} points`);
 } else {
-  console.log('⚪ STABLE: No change');
+  console.log('⚪ STABLE');
 }
 
 if (!state.stableHours) state.stableHours = [];
