@@ -51,7 +51,7 @@ jobs:
             git push origin main || (git pull origin main --rebase && git push origin main)
           fi
 
-      - name: Trigger Next Training
+      - name: Trigger Next Cycle
         if: success()
         run: |
           sleep 30
