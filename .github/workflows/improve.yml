@@ -38,25 +38,11 @@ jobs:
         run: |
           git config user.name "ai-bot"
           git config user.email "ai-bot@selfimprove.dev"
-
-          # Stage the training artifacts (self_talk.json is no longer ignored)
-          git add lib/brain_weights.json lib/vocab.json lib/state.json \
-                  lib/training_data.json lib/rankings.json lib/self_talk.json
-
-          # Stash everything to get a clean working tree
+          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json lib/rankings.json lib/self_talk.json lib/uncertain_questions.json
           git stash --include-untracked
-
-          # Pull latest remote changes
           git pull origin main --rebase || git pull origin main
-
-          # Re-apply our training artifacts (they were stashed)
           git stash pop || true
-
-          # Stage them again (stash pop may have modified them)
-          git add lib/brain_weights.json lib/vocab.json lib/state.json \
-                  lib/training_data.json lib/rankings.json lib/self_talk.json
-
-          # Commit only if there's something new
+          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json lib/rankings.json lib/self_talk.json lib/uncertain_questions.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
@@ -72,4 +58,6 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/trigger.yml/dispatches" \
-            -d '{"ref":"main"}'
+            -d @- <<'EOF'
+          {"ref":"main"}
+          EOF
