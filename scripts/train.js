@@ -16,7 +16,6 @@ const HIDDEN_SIZE = 200;
 const OUTPUT_SIZE = 100;
 const TRAINING_MINUTES = 10;
 
-// Available free models
 const MODELS = [
   'gpt-4o-mini',
   'Phi-3-mini-4k-instruct',
@@ -24,7 +23,6 @@ const MODELS = [
   'AI21-Jamba-1.5-Mini'
 ];
 
-// Code files to learn ABOUT (descriptions, not raw code)
 const CODE_FILES = [
   'pages/api/chat.js',
   'pages/index.js',
@@ -53,7 +51,6 @@ async function callModel(model, messages) {
   }
 }
 
-// Get a description of what each file does (conceptual, not raw code)
 function getCodePurpose(fileName) {
   const purposes = {
     'chat.js': 'handles user messages. It receives chat input, matches it against training data for known answers, uses the neural network to generate new responses, and logs questions it cannot answer for future training.',
@@ -67,7 +64,75 @@ function getCodePurpose(fileName) {
   return purposes[fileName] || 'part of the self-improving chatbot system';
 }
 
-// Learn ABOUT code structure and purpose (no raw code words)
+// === DYNAMIC TOPIC GENERATION ===
+
+// Generate new debate topics using the AI itself
+async function generateNewTopics(count = 5) {
+  console.log('\n💡 Generating fresh topics...');
+  
+  const topicPrompts = [
+    "Give me 3 interesting questions about science that a curious person might ask.",
+    "Give me 3 thought-provoking questions about technology and its future.",
+    "Give me 3 deep questions about human nature and psychology.",
+    "Give me 3 questions about the natural world and our planet.",
+    "Give me 3 questions about learning, knowledge, and education."
+  ];
+  
+  const allNewTopics = [];
+  const usedPrompts = topicPrompts.sort(() => Math.random() - 0.5).slice(0, 3);
+  
+  for (const prompt of usedPrompts) {
+    const response = await callModel(MODELS[0], [
+      { role: 'system', content: 'You generate interesting discussion questions. Output each question on a new line starting with a number like "1. " or "- ". No other text.' },
+      { role: 'user', content: prompt }
+    ]);
+    
+    if (response) {
+      const lines = response.split('\n')
+        .map(l => l.replace(/^\d+[\.\)]\s*|- \s*/, '').trim())
+        .filter(l => l.length > 20 && l.endsWith('?'));
+      allNewTopics.push(...lines);
+    }
+  }
+  
+  const uniqueTopics = [...new Set(allNewTopics)].slice(0, count);
+  console.log(`  ✅ Generated ${uniqueTopics.length} new topics`);
+  return uniqueTopics;
+}
+
+// Generate new self-talk topics
+async function generateSelfTalkTopics(count = 3) {
+  const response = await callModel(MODELS[0], [
+    { role: 'system', content: 'Generate deep philosophical conversation starters. Output each on a new line starting with "- ". No other text.' },
+    { role: 'user', content: `Give me ${count} unique conversation starters for a deep philosophical discussion. They should be different from common topics.` }
+  ]);
+  
+  if (response) {
+    const topics = response.split('\n')
+      .map(l => l.replace(/^-\s*/, '').trim())
+      .filter(l => l.length > 15);
+    return topics.slice(0, count);
+  }
+  return [];
+}
+
+// Generate self-improvement questions
+async function generateImprovementQuestions(count = 3) {
+  const response = await callModel(MODELS[0], [
+    { role: 'system', content: 'Generate questions about AI self-improvement and chatbot development. Output each on a new line starting with "- ". No other text.' },
+    { role: 'user', content: `Give me ${count} specific questions about how a self-improving AI chatbot can get better at conversations. Make them actionable and specific.` }
+  ]);
+  
+  if (response) {
+    return response.split('\n')
+      .map(l => l.replace(/^-\s*/, '').trim())
+      .filter(l => l.length > 20 && l.endsWith('?'));
+  }
+  return [];
+}
+
+// === LEARNING FUNCTIONS ===
+
 function learnAboutCode() {
   console.log('\n📚 PHASE 1: Code Structure Awareness');
   console.log('-'.repeat(40));
@@ -88,19 +153,16 @@ function learnAboutCode() {
       const importsModules = code.includes('require(') || code.includes('import ');
       const exportsModules = code.includes('module.exports') || code.includes('export ');
 
-      // Describe what the file does (conceptual)
       codePairs.push({
         prompt: `What does ${fileName} do in the chatbot system?`,
         response: getCodePurpose(fileName)
       });
 
-      // Describe how it's built
       codePairs.push({
         prompt: `How is ${fileName} built?`,
         response: `${fileName} is ${lineCount} lines long. It ${hasAsync ? 'uses async operations' : 'runs synchronously'}, ${hasErrorHandling ? 'has error handling with try-catch' : 'has basic logic flow'}, and ${exportsModules ? 'shares its functionality with other files through exports' : 'works independently'}. It ${importsModules ? 'uses external modules' : 'is self-contained'}. ${hasLoops ? 'It uses loops for processing.' : ''}`
       });
 
-      // Describe what concepts it demonstrates
       codePairs.push({
         prompt: `What programming concepts does ${fileName} demonstrate?`,
         response: `${fileName} shows how to use ${hasAsync ? 'asynchronous operations and ' : ''}${hasErrorHandling ? 'error handling, ' : ''}${hasLoops ? 'loops for iteration, ' : ''}${importsModules ? 'module imports, ' : ''}${exportsModules ? 'module exports, ' : ''}and functional programming patterns in JavaScript.`
@@ -116,33 +178,25 @@ function learnAboutCode() {
   return codePairs;
 }
 
-// Ask the AIs how to improve the chatbot
 async function askForSelfImprovement() {
   console.log('\n🔧 PHASE: Self-Improvement Questions');
   console.log('-'.repeat(40));
 
-  const improvementQuestions = [
+  const generatedQuestions = await generateImprovementQuestions(3);
+  const questions = generatedQuestions.length >= 3 ? generatedQuestions : [
     "How can a simple chatbot improve its response quality over time?",
     "What makes a chatbot engaging and helpful to users?",
-    "How should a self-improving AI track its own progress?",
-    "What are good ways for a chatbot to handle questions it cannot answer?",
-    "How can a chatbot learn from user interactions without storing private data?",
-    "What personality traits make a chatbot pleasant to talk to?",
-    "How can a neural network be trained effectively with limited data?",
-    "What fallback strategies should a chatbot use when it's unsure?",
-    "How can a chatbot balance being helpful with being concise?",
-    "What metrics indicate a chatbot is improving?"
+    "How should a self-improving AI track its own progress?"
   ];
 
   const improvementPairs = [];
-  const shuffled = improvementQuestions.sort(() => Math.random() - 0.5).slice(0, 3);
 
-  for (let i = 0; i < shuffled.length; i++) {
-    console.log(`  Asking: "${shuffled[i]}"`);
-    const debate = await multiModelDebate(shuffled[i]);
+  for (let i = 0; i < questions.length; i++) {
+    console.log(`  Asking: "${questions[i].substring(0, 60)}..."`);
+    const debate = await multiModelDebate(questions[i]);
     if (debate && debate.combined) {
       improvementPairs.push({
-        prompt: shuffled[i],
+        prompt: questions[i],
         response: debate.combined
       });
       console.log(`  ✅ Got improvement advice`);
@@ -154,7 +208,6 @@ async function askForSelfImprovement() {
   return improvementPairs;
 }
 
-// Multiple AI models debate each other
 async function multiModelDebate(topic) {
   console.log(`\n  🎤 Multi-Model Debate: "${topic.substring(0, 60)}..."`);
 
@@ -193,24 +246,28 @@ async function multiModelDebate(topic) {
   };
 }
 
-// GPT-4o talks to itself
+// GPT-4o talks to itself with DYNAMIC topics
 async function gpt4SelfConversation() {
-  const topics = [
+  // Generate fresh topics
+  const generatedTopics = await generateSelfTalkTopics(3);
+  
+  const fallbackTopics = [
     "What is the nature of intelligence?",
     "How does learning transform understanding?",
     "What makes communication meaningful?",
     "How does creativity emerge from knowledge?",
-    "What is the role of curiosity in growth?",
-    "How do we measure understanding?",
-    "What defines a good conversation?",
-    "How can technology help people learn better?"
+    "What is the role of curiosity in growth?"
   ];
-
+  
+  const topics = generatedTopics.length >= 1 ? generatedTopics : fallbackTopics;
   const topic = topics[Math.floor(Math.random() * topics.length)];
+  
+  console.log(`\n💬 Self-Talk Topic: "${topic.substring(0, 80)}..."`);
+  
   const conversation = [];
 
   const starter = await callModel(MODELS[0], [
-    { role: 'system', content: 'You are a thoughtful conversationalist. Start with a question.' },
+    { role: 'system', content: 'You are a thoughtful conversationalist. Start a deep conversation with an open-ended question.' },
     { role: 'user', content: `Start a conversation about: ${topic}` }
   ]);
 
@@ -218,7 +275,7 @@ async function gpt4SelfConversation() {
   conversation.push({ role: 'Thinker A', content: starter });
 
   const response1 = await callModel(MODELS[1] || MODELS[0], [
-    { role: 'system', content: 'You have a different perspective. Respond thoughtfully.' },
+    { role: 'system', content: 'You have a completely different perspective. Challenge the assumptions and offer a unique view.' },
     { role: 'user', content: starter }
   ]);
 
@@ -226,16 +283,16 @@ async function gpt4SelfConversation() {
   conversation.push({ role: 'Thinker B', content: response1 });
 
   const response2 = await callModel(MODELS[0], [
-    { role: 'system', content: 'Build on the exchange. Find deeper meaning.' },
-    { role: 'user', content: `You said: ${starter}\nThey said: ${response1}\nContinue the conversation deeper.` }
+    { role: 'system', content: 'Build on their perspective. Find unexpected connections and deepen the conversation.' },
+    { role: 'user', content: `You said: ${starter}\nThey said: ${response1}\nFind a surprising connection and continue.` }
   ]);
 
   if (!response2) return conversation;
   conversation.push({ role: 'Thinker A', content: response2 });
 
   const response3 = await callModel(MODELS[1] || MODELS[0], [
-    { role: 'system', content: 'Offer a concluding insight.' },
-    { role: 'user', content: `Conversation:\nA: ${starter}\nB: ${response1}\nA: ${response2}\nConclude meaningfully.` }
+    { role: 'system', content: 'Synthesize the entire conversation into a profound concluding insight.' },
+    { role: 'user', content: `Conversation:\nA: ${starter}\nB: ${response1}\nA: ${response2}\nProvide a meaningful synthesis.` }
   ]);
 
   if (!response3) return conversation;
@@ -244,29 +301,16 @@ async function gpt4SelfConversation() {
   return conversation;
 }
 
-// Knowledge debates on varied topics
 async function generateKnowledgeDebates() {
-  const baseTopics = [
+  // Generate fresh topics dynamically
+  const generatedTopics = await generateNewTopics(5);
+  
+  const fallbackTopics = [
     "Explain how computers process information simply",
     "How does the scientific method work?",
     "Explain the water cycle in nature",
     "How does evolution by natural selection work?",
-    "What is the structure of an atom?",
-    "How does the internet transmit data?",
-    "What causes weather patterns?",
-    "How do ecosystems maintain balance?",
-    "How does photosynthesis work?",
-    "What is the difference between bacteria and viruses?",
-    "How do airplanes achieve flight?",
-    "What is the greenhouse effect?",
-    "How do batteries store energy?",
-    "How does the human brain process memories?",
-    "What is blockchain technology?",
-    "Explain supply and demand in economics",
-    "How do telescopes help us understand the universe?",
-    "What is the role of DNA in genetics?",
-    "How do vaccines train the immune system?",
-    "What causes earthquakes?"
+    "What is the structure of an atom?"
   ];
 
   // Load uncertain questions from users
@@ -277,31 +321,36 @@ async function generateKnowledgeDebates() {
     }
   } catch (e) {}
 
-  const recentUncertain = uncertainQuestions.slice(-3).map(q => q.text);
-  const allTopics = [...baseTopics, ...recentUncertain];
-
+  const recentUncertain = uncertainQuestions.slice(-5).map(q => q.text);
+  
+  // Mix: generated topics + uncertain questions + some fallbacks
+  const allTopics = [...generatedTopics, ...recentUncertain, ...fallbackTopics];
   const shuffled = allTopics.sort(() => Math.random() - 0.5);
   const selected = [];
 
-  // Always include uncertain questions
+  // Always include uncertain questions first
   if (recentUncertain.length > 0) {
-    selected.push(...recentUncertain);
+    selected.push(...recentUncertain.slice(0, 3));
   }
-  // Fill remaining slots
-  while (selected.length < 5) {
-    const topic = baseTopics[Math.floor(Math.random() * baseTopics.length)];
+  
+  // Fill with unique topics
+  while (selected.length < 6) {
+    const topic = shuffled[Math.floor(Math.random() * shuffled.length)];
     if (!selected.includes(topic)) selected.push(topic);
   }
 
-  console.log('\n🎤 PHASE 2: Knowledge Debates');
+  console.log('\n🎤 PHASE: Knowledge Debates');
   console.log('-'.repeat(40));
   if (recentUncertain.length > 0) {
-    console.log(`  Including ${recentUncertain.length} uncertain question(s): "${recentUncertain.join('", "')}"`);
+    console.log(`  📝 Including ${Math.min(recentUncertain.length, 3)} uncertain question(s)`);
+  }
+  if (generatedTopics.length > 0) {
+    console.log(`  💡 Using ${Math.min(generatedTopics.length, 3)} AI-generated topics`);
   }
 
   const debates = [];
   for (let i = 0; i < selected.length; i++) {
-    console.log(`  Debate ${i + 1}/5:`);
+    console.log(`  Debate ${i + 1}/${selected.length}:`);
     const debate = await multiModelDebate(selected[i]);
     if (debate && debate.combined) {
       debates.push({
@@ -321,7 +370,6 @@ async function generateKnowledgeDebates() {
   return debates;
 }
 
-// Rank your own AI's responses
 async function rankMyAI(brain, tp) {
   console.log('\n⭐ PHASE: Self-Evaluation & Ranking');
   console.log('-'.repeat(40));
@@ -332,9 +380,7 @@ async function rankMyAI(brain, tp) {
     "What makes something intelligent?",
     "Explain the concept of growth",
     "How do computers solve problems?",
-    "What is the meaning of knowledge?",
-    "How do you improve yourself?",
-    "What is the future of technology?"
+    "What is the meaning of knowledge?"
   ];
 
   const newRankings = [];
@@ -395,7 +441,6 @@ async function rankMyAI(brain, tp) {
   return newRankings;
 }
 
-// Helper: word overlap
 function getWordOverlap(text1, text2) {
   if (!text1 || !text2) return 0;
   const words1 = new Set(text1.toLowerCase().split(/\s+/).filter(w => w.length > 2));
@@ -409,12 +454,13 @@ async function train() {
   const startTime = Date.now();
 
   console.log('='.repeat(70));
-  console.log('🧠 MULTI-MODEL NEURAL NETWORK TRAINING');
+  console.log('🧠 DYNAMIC MULTI-MODEL NEURAL NETWORK TRAINING');
   console.log('='.repeat(70));
   console.log(`Models: ${MODELS.slice(0, 2).join(' + ')}`);
   console.log(`Training duration: ${TRAINING_MINUTES} minutes`);
   console.log(`Network: ${INPUT_SIZE} → ${HIDDEN_SIZE} → ${OUTPUT_SIZE}`);
-  console.log(`Start: ${new Date().toISOString()}\n`);
+  console.log(`Start: ${new Date().toISOString()}`);
+  console.log(`Topics: AI-generated (fresh each cycle)\n`);
 
   // Load or create brain
   let brain;
@@ -455,58 +501,62 @@ async function train() {
     try { selfTalks = JSON.parse(fs.readFileSync(SELF_TALK_FILE, 'utf-8')); } catch (e) {}
   }
 
-  // === PHASE 1: Learn ABOUT code (not raw code) ===
+  // === PHASE 1: Code awareness ===
   const codePairs = learnAboutCode();
   trainingPairs.push(...codePairs);
 
-  // === PHASE 2: Self-improvement questions ===
+  // === PHASE 2: Dynamic self-improvement questions ===
   const improvementPairs = await askForSelfImprovement();
   trainingPairs.push(...improvementPairs);
 
-  // === PHASE 3: Knowledge debates (including uncertain questions) ===
+  // === PHASE 3: Dynamic knowledge debates ===
   const debatePairs = await generateKnowledgeDebates();
   trainingPairs.push(...debatePairs);
 
-  // === PHASE 4: Self-talk ===
+  // === PHASE 4: Dynamic self-talk ===
   console.log('\n💬 PHASE: AI Self-Conversation');
   console.log('-'.repeat(40));
   const selfConvo = await gpt4SelfConversation();
 
-  selfTalks.push({
-    timestamp: new Date().toISOString(),
-    conversation: selfConvo
-  });
-  if (selfTalks.length > 30) selfTalks = selfTalks.slice(-30);
-
-  for (let i = 0; i < selfConvo.length - 1; i++) {
-    trainingPairs.push({
-      prompt: selfConvo[i].content,
-      response: selfConvo[i + 1].content
+  if (selfConvo.length > 0) {
+    selfTalks.push({
+      timestamp: new Date().toISOString(),
+      conversation: selfConvo,
+      topic: selfConvo[0]?.content?.substring(0, 100) || 'unknown'
     });
-  }
-  console.log(`  Self-talk messages: ${selfConvo.length}`);
+    if (selfTalks.length > 30) selfTalks = selfTalks.slice(-30);
 
-  // === PHASE 5: Build ACCUMULATING vocabulary ===
+    for (let i = 0; i < selfConvo.length - 1; i++) {
+      trainingPairs.push({
+        prompt: selfConvo[i].content,
+        response: selfConvo[i + 1].content
+      });
+    }
+    console.log(`  Self-talk messages: ${selfConvo.length}`);
+  } else {
+    console.log('  ⚠️ Self-talk skipped (no topics generated)');
+  }
+
+  // === PHASE 5: Accumulating vocabulary ===
   console.log('\n📚 Building Vocabulary');
   console.log('-'.repeat(40));
 
   let tp = new TextProcessor(500);
 
-  // LOAD EXISTING VOCABULARY FIRST to preserve past knowledge
   if (fs.existsSync(VOCAB_FILE)) {
     try {
       const existingVocab = JSON.parse(fs.readFileSync(VOCAB_FILE, 'utf-8'));
       tp.wordToIndex = existingVocab.wordToIndex || {};
       tp.indexToWord = existingVocab.indexToWord || {};
       tp.vocabSize = existingVocab.vocabSize || 0;
-      console.log(`  📖 Loaded ${tp.vocabSize} existing words from past training`);
+      console.log(`  📖 Loaded ${tp.vocabSize} existing words`);
     } catch (e) {
       console.log('  📖 Starting vocabulary fresh');
     }
   }
 
-  // Add all current training text to EXPAND vocabulary (not replace)
   const allTexts = trainingPairs.map(p => p.prompt + ' ' + p.response);
+  let newWordsAdded = 0;
   allTexts.forEach(text => {
     const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 1);
     words.forEach(word => {
@@ -514,11 +564,12 @@ async function train() {
         tp.wordToIndex[word] = tp.vocabSize;
         tp.indexToWord[tp.vocabSize] = word;
         tp.vocabSize++;
+        newWordsAdded++;
       }
     });
   });
 
-  console.log(`  📚 Total vocabulary: ${tp.vocabSize} words (added ${tp.vocabSize - (JSON.parse(fs.readFileSync(VOCAB_FILE, 'utf-8')).vocabSize || 0)} new)`);
+  console.log(`  📚 Total vocabulary: ${tp.vocabSize} words (+${newWordsAdded} new)`);
 
   // === PHASE 6: Rank my AI ===
   const newRankings = await rankMyAI(brain, tp);
@@ -536,7 +587,6 @@ async function train() {
         if (getWordOverlap(p.response, rank.response) > 0.3) weight = 2;
       }
     }
-    // Improvement advice and code awareness get extra weight
     if (p.prompt.includes('chatbot') || p.prompt.includes('improve') || p.prompt.includes('.js')) {
       weight *= 1.5;
     }
@@ -638,11 +688,11 @@ async function train() {
   console.log(`   Sessions: ${state.trainingSessions}`);
   console.log(`   Cycles: ${cycles}`);
   console.log(`   Avg error: ${avgError.toFixed(4)}`);
-  console.log(`   Vocab: ${tp.vocabSize} words`);
+  console.log(`   Vocab: ${tp.vocabSize} words (+${newWordsAdded} new)`);
   console.log(`   Training pairs: ${uniquePairs.length}`);
-  console.log(`   Code awareness pairs: ${codePairs.length}`);
-  console.log(`   Improvement pairs: ${improvementPairs.length}`);
-  console.log(`   Debate pairs: ${debatePairs.length}`);
+  console.log(`   Code awareness: ${codePairs.length}`);
+  console.log(`   Improvement: ${improvementPairs.length}`);
+  console.log(`   Debates: ${debatePairs.length}`);
   console.log(`   Rankings: ${rankings.length}`);
   console.log(`   Avg ranking: ${avgRanking.toFixed(1)}/10`);
   console.log('='.repeat(70));
@@ -670,8 +720,7 @@ async function train() {
         if (response.ok) {
           console.log('  ✅ Next cycle triggered');
         } else {
-          const text = await response.text();
-          console.log(`  ⚠️ Could not trigger (${response.status}): ${text.substring(0, 100)}`);
+          console.log(`  ⚠️ Could not trigger (${response.status})`);
         }
       }
     }
