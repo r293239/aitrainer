@@ -27,14 +27,14 @@ jobs:
         run: |
           OVERDUE=$(node -e "const s=JSON.parse(require('fs').readFileSync('lib/state.json','utf-8')); console.log(s.trainingOverdue ? 'true' : 'false')")
           if [ "$OVERDUE" = "true" ]; then
-            echo "Training is overdue, triggering..."
+            echo "⚠️ Training is overdue, triggering immediately..."
             curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${{ github.repository }}/actions/workflows/improve.yml/dispatches" \
               -d '{"ref":"main"}'
           else
-            echo "Training is active"
+            echo "✅ Training is active and running"
           fi
 
       - name: Commit Status
