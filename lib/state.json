@@ -34,8 +34,13 @@
   "bestScore": 95,
   "currentScore": 95,
   "trainingSessions": 5,
+<<<<<<< Updated upstream
   "lastTrainingError": 0.028988228558615055,
   "totalTrainingCycles": 7777415,
+=======
+  "lastTrainingError": 0.029093213968371886,
+  "totalTrainingCycles": 7764554,
+>>>>>>> Stashed changes
   "trainingPairs": 67,
   "vocabSize": 436,
   "selfConversations": 5,
@@ -47,7 +52,11 @@
     "gpt-4o-mini",
     "Phi-3-mini-4k-instruct"
   ],
+<<<<<<< Updated upstream
   "lastTrainingTime": "2026-04-29T11:57:08.866Z",
+=======
+  "lastTrainingTime": "2026-04-29T11:57:31.769Z",
+>>>>>>> Stashed changes
   "bestError": 0.008714621995676504,
   "trainingDuration": 540,
   "trainingOverdue": false
