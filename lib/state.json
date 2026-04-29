@@ -9,12 +9,13 @@
     }
   ],
   "stableHours": [
+    3,
     3
   ],
   "bestScore": 70,
   "currentScore": 70,
   "triedImprovements": [],
-  "trainingSessions": 1,
+  "trainingSessions": 2,
   "lastTrainingError": 0,
   "totalTrainingCycles": 0,
   "trainingPairs": 0
