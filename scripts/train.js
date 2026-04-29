@@ -486,14 +486,39 @@ async function train() {
   }
   console.log(`  Self-talk messages: ${selfConvo.length}`);
 
-  // === PHASE 5: Build vocabulary ===
+  // === PHASE 5: Build ACCUMULATING vocabulary ===
   console.log('\n📚 Building Vocabulary');
   console.log('-'.repeat(40));
 
   let tp = new TextProcessor(500);
+
+  // LOAD EXISTING VOCABULARY FIRST to preserve past knowledge
+  if (fs.existsSync(VOCAB_FILE)) {
+    try {
+      const existingVocab = JSON.parse(fs.readFileSync(VOCAB_FILE, 'utf-8'));
+      tp.wordToIndex = existingVocab.wordToIndex || {};
+      tp.indexToWord = existingVocab.indexToWord || {};
+      tp.vocabSize = existingVocab.vocabSize || 0;
+      console.log(`  📖 Loaded ${tp.vocabSize} existing words from past training`);
+    } catch (e) {
+      console.log('  📖 Starting vocabulary fresh');
+    }
+  }
+
+  // Add all current training text to EXPAND vocabulary (not replace)
   const allTexts = trainingPairs.map(p => p.prompt + ' ' + p.response);
-  tp.buildVocabulary(allTexts);
-  console.log(`  Vocabulary: ${tp.vocabSize} words`);
+  allTexts.forEach(text => {
+    const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 1);
+    words.forEach(word => {
+      if (!(word in tp.wordToIndex)) {
+        tp.wordToIndex[word] = tp.vocabSize;
+        tp.indexToWord[tp.vocabSize] = word;
+        tp.vocabSize++;
+      }
+    });
+  });
+
+  console.log(`  📚 Total vocabulary: ${tp.vocabSize} words (added ${tp.vocabSize - (JSON.parse(fs.readFileSync(VOCAB_FILE, 'utf-8')).vocabSize || 0)} new)`);
 
   // === PHASE 6: Rank my AI ===
   const newRankings = await rankMyAI(brain, tp);
