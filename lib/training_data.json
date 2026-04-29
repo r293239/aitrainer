@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "prompt": "Hello",
+    "response": "Hello! How can I help you today?"
+  },
+  {
+    "prompt": "Hi",
+    "response": "Hi there! What would you like to talk about?"
+  },
+  {
+    "prompt": "How are you",
+    "response": "I'm doing great! My neural network is learning and growing every minute."
+  },
+  {
+    "prompt": "What is AI",
+    "response": "Artificial intelligence is the simulation of human intelligence by machines and computer systems that can learn, reason, and solve problems."
+  },
+  {
+    "prompt": "What is machine learning",
+    "response": "Machine learning is when computers learn patterns from data without being explicitly programmed for every situation."
+  },
+  {
+    "prompt": "How does neural network work",
+    "response": "A neural network processes information through layers of connected nodes, similar to how brain neurons work together to recognize patterns."
+  },
+  {
+    "prompt": "Tell me a joke",
+    "response": "Why did the AI go to school? To improve its neural network! It wanted better connections."
+  },
+  {
+    "prompt": "What is the meaning of life",
+    "response": "Many philosophers believe the meaning of life is to find happiness, create purpose, and connect with others in meaningful ways."
+  },
+  {
+    "prompt": "How do I learn programming",
+    "response": "Start with simple concepts, practice coding daily, build small projects, and learn from your mistakes. Consistency is key!"
+  },
+  {
+    "prompt": "What is consciousness",
+    "response": "Consciousness is the state of being aware of one's own existence, thoughts, and surroundings. It remains one of the biggest mysteries in science."
+  },
+  {
+    "prompt": "Tell me about space",
+    "response": "Space is the vast expanse beyond Earth's atmosphere, filled with stars, planets, galaxies, and mysteries we are still exploring."
+  },
+  {
+    "prompt": "What is the speed of light",
+    "response": "Light travels at approximately 300,000 kilometers per second in a vacuum, making it the fastest known phenomenon in the universe."
+  },
+  {
+    "prompt": "How does the internet work",
+    "response": "The internet connects computers globally using standardized protocols to transmit data packets across a network of servers and cables."
+  },
+  {
+    "prompt": "What is quantum computing",
+    "response": "Quantum computing uses quantum bits that can exist in multiple states simultaneously, potentially solving certain problems much faster than classical computers."
+  },
+  {
+    "prompt": "Tell me about the ocean",
+    "response": "The ocean covers 71% of Earth's surface and contains incredible biodiversity, with millions of species we haven't discovered yet."
+  }
+]
