@@ -38,8 +38,25 @@ jobs:
         run: |
           git config user.name "ai-bot"
           git config user.email "ai-bot@selfimprove.dev"
+
+          # Stage the training artifacts (self_talk.json is no longer ignored)
+          git add lib/brain_weights.json lib/vocab.json lib/state.json \
+                  lib/training_data.json lib/rankings.json lib/self_talk.json
+
+          # Stash everything to get a clean working tree
+          git stash --include-untracked
+
+          # Pull latest remote changes
           git pull origin main --rebase || git pull origin main
-          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json lib/rankings.json lib/self_talk.json
+
+          # Re-apply our training artifacts (they were stashed)
+          git stash pop || true
+
+          # Stage them again (stash pop may have modified them)
+          git add lib/brain_weights.json lib/vocab.json lib/state.json \
+                  lib/training_data.json lib/rankings.json lib/self_talk.json
+
+          # Commit only if there's something new
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
