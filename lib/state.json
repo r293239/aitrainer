@@ -1,14 +1,8 @@
 {
   "failures": [],
-  "successes": [
-    {
-      "time": "2026-04-29T01:28:43.895Z",
-      "hour": 1,
-      "message": "Improvement cycle completed",
-      "chatFileSize": 1541
-    }
-  ],
-  "stableHours": [
-    1
-  ]
+  "successes": [],
+  "stableHours": [],
+  "bestScore": 0,
+  "currentScore": 0,
+  "triedImprovements": []
 }
