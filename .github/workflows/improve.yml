@@ -12,6 +12,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -33,10 +36,19 @@ jobs:
         run: |
           git config user.name "ai-bot"
           git config user.email "ai-bot@selfimprove.dev"
+          
+          # Pull latest changes first to avoid conflicts
+          git pull origin main --rebase || git pull origin main
+          
           git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json
+          
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             git commit -m "🧠 Neural network training $(date -u +'%Y-%m-%d %H:%M')"
-            git push
+            git push origin main || (
+              echo "Push failed, pulling and retrying..."
+              git pull origin main --rebase
+              git push origin main
+            )
           fi
