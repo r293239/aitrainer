@@ -1,22 +1,15 @@
 {
   "failures": [],
-  "successes": [
-    {
-      "time": "2026-04-29T03:05:20.604Z",
-      "hour": 3,
-      "score": 70,
-      "improvement": 70
-    }
-  ],
-  "stableHours": [
-    3,
-    3
-  ],
-  "bestScore": 70,
-  "currentScore": 70,
-  "triedImprovements": [],
-  "trainingSessions": 2,
-  "lastTrainingError": 0,
+  "successes": [],
+  "stableHours": [],
+  "bestScore": 0,
+  "currentScore": 0,
+  "trainingSessions": 0,
+  "lastTrainingError": 1,
   "totalTrainingCycles": 0,
-  "trainingPairs": 0
+  "trainingPairs": 0,
+  "vocabSize": 0,
+  "selfConversations": 0,
+  "averageRanking": 0,
+  "totalRankings": 0
 }
