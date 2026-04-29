@@ -1,224 +1,79 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const STATE_FILE = path.join(__dirname, '..', 'lib', 'state.json');
-const CHAT_FILE = path.join(__dirname, '..', 'pages', 'api', 'chat.js');
-const BACKUP_FILE = path.join(__dirname, '..', 'pages', 'api', 'chat_backup.js');
+const BRAIN_FILE = path.join(__dirname, '..', 'lib', 'brain_weights.json');
 
-// Load state
-let state = { failures: [], successes: [], stableHours: [], bestScore: 0, currentScore: 0 };
-try {
-  if (fs.existsSync(STATE_FILE)) {
-    const raw = fs.readFileSync(STATE_FILE, 'utf-8');
-    if (raw.trim()) state = JSON.parse(raw);
-  }
-} catch (e) {}
+let state = { 
+  failures: [], 
+  successes: [], 
+  stableHours: [], 
+  bestScore: 0, 
+  currentScore: 0,
+  trainingSessions: 0,
+  lastTrainingError: 1
+};
+
+if (fs.existsSync(STATE_FILE)) {
+  const raw = fs.readFileSync(STATE_FILE, 'utf-8');
+  if (raw.trim()) state = JSON.parse(raw);
+}
 
 const timestamp = new Date().toISOString();
 const hour = new Date().getUTCHours();
 
 console.log('='.repeat(60));
-console.log('🤖 AI SELF-IMPROVEMENT WITH REWARD SYSTEM');
+console.log('📊 REWARD EVALUATION');
 console.log('='.repeat(60));
-console.log(`Time: ${timestamp}`);
-console.log(`Best score so far: ${state.bestScore || 0}`);
-console.log(`Current score: ${state.currentScore || 0}`);
 
-// === REWARD TESTING ===
-function runTests() {
-  const testQuestions = [
-    "What is 2+2? Answer with just the number.",
-    "Say 'hello' in exactly one word.",
-    "What color is the sky on a clear day? One word answer."
-  ];
-  
-  let score = 0;
-  const results = [];
-  
-  for (const question of testQuestions) {
-    try {
-      const startTime = Date.now();
-      
-      // Simulate calling the API - we test the code structure
-      const chatCode = fs.readFileSync(CHAT_FILE, 'utf-8');
-      
-      // Score based on code quality metrics
-      const hasErrorHandling = chatCode.includes('try') && chatCode.includes('catch');
-      const hasInputValidation = chatCode.includes('!message') || chatCode.includes('message.trim()');
-      const hasGoodResponse = chatCode.includes('choices?.[0]?.message?.content');
-      const hasFallbackMessage = chatCode.includes('temporarily unavailable');
-      const codeLength = chatCode.length;
-      const tooLong = codeLength > 3000;
-      const tooShort = codeLength < 500;
-      
-      if (hasErrorHandling) score += 10;
-      if (hasInputValidation) score += 10;
-      if (hasGoodResponse) score += 10;
-      if (hasFallbackMessage) score += 5;
-      if (!tooLong && !tooShort) score += 5;
-      if (chatCode.includes('temperature')) score += 5;
-      if (chatCode.includes('max_tokens')) score += 5;
-      
-      results.push({ question, score });
-    } catch (e) {
-      results.push({ question, error: e.message });
-    }
-  }
-  
-  return { score, results };
+// Check if brain exists
+const brainExists = fs.existsSync(BRAIN_FILE);
+let brainSize = 0;
+if (brainExists) {
+  brainSize = fs.statSync(BRAIN_FILE).size;
 }
 
-// === CODE IMPROVEMENT ATTEMPT ===
-function attemptImprovement() {
-  const chatCode = fs.readFileSync(CHAT_FILE, 'utf-8');
-  
-  // List of safe improvements
-  const improvements = [
-    // Better error messages
-    () => {
-      return chatCode.replace(
-        "'The AI brain is temporarily unavailable. It might be improving itself! Try again soon.'",
-        "'The AI is learning and improving itself right now. Please try again in a moment! 🔄'"
-      );
-    },
-    // Add response time logging
-    () => {
-      if (chatCode.includes('const startTime')) return chatCode;
-      return chatCode.replace(
-        'export default async function handler(req, res) {',
-        `export default async function handler(req, res) {
-  const startTime = Date.now();`
-      ) + chatCode.includes('// Log response time') ? '' : '\n  // Log response time\n  console.log(`Response took ${Date.now() - startTime}ms`);';
-    },
-    // Add request counting
-    () => {
-      if (chatCode.includes('requestCount')) return chatCode;
-      return `let requestCount = 0;\n\n${chatCode.replace(
-        'const { message } = req.body;',
-        'const { message } = req.body;\n  requestCount++;\n  console.log(`Request #${requestCount}`);'
-      )}`;
-    },
-    // Better system prompt
-    () => {
-      return chatCode.replace(
-        "'You are a helpful chatbot. Keep answers short and friendly.'",
-        "'You are a helpful, friendly, and concise assistant. Keep responses under 3 sentences.'"
-      );
-    },
-    // Add timeout handling
-    () => {
-      if (chatCode.includes('AbortController')) return chatCode;
-      return chatCode.replace(
-        "const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {",
-        "const controller = new AbortController();\n    const timeout = setTimeout(() => controller.abort(), 15000);\n    const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {\n      signal: controller.signal,"
-      );
-    }
-  ];
-  
-  // Pick improvement we haven't tried yet
-  const triedImprovements = state.triedImprovements || [];
-  const available = improvements.filter((_, i) => !triedImprovements.includes(i));
-  
-  if (available.length === 0) {
-    console.log('All improvements tried. Rotating...');
-    state.triedImprovements = [];
-    return improvements[Math.floor(Math.random() * improvements.length)]();
-  }
-  
-  const chosen = available[Math.floor(Math.random() * available.length)];
-  const index = improvements.indexOf(chosen);
-  
-  if (!state.triedImprovements) state.triedImprovements = [];
-  state.triedImprovements.push(index);
-  
-  return chosen();
+// Score the current state
+let score = 0;
+if (brainExists) score += 20;
+if (state.trainingSessions > 0) score += 10;
+if (state.lastTrainingError < 0.3) score += 20;
+if (state.lastTrainingError < 0.2) score += 10;
+if (state.totalTrainingCycles > 100) score += 15;
+if (state.trainingPairs > 50) score += 15;
+if (brainSize > 10000) score += 10;
+
+console.log(`Brain exists: ${brainExists}`);
+console.log(`Brain size: ${brainSize} bytes`);
+console.log(`Training sessions: ${state.trainingSessions || 0}`);
+console.log(`Last error: ${(state.lastTrainingError || 1).toFixed(4)}`);
+console.log(`Total cycles: ${state.totalTrainingCycles || 0}`);
+console.log(`Training pairs: ${state.trainingPairs || 0}`);
+console.log(`\n📈 Current score: ${score}/100`);
+console.log(`🏆 Best score: ${state.bestScore || 0}/100`);
+
+const prevScore = state.currentScore || 0;
+state.currentScore = score;
+
+if (score > (state.bestScore || 0)) {
+  state.bestScore = score;
+  console.log('🟢 NEW BEST SCORE! Bot is getting smarter!');
 }
 
-// === MAIN LOGIC ===
-const originalCode = fs.readFileSync(CHAT_FILE, 'utf-8');
-fs.writeFileSync(BACKUP_FILE, originalCode);
-
-// Test BEFORE improvement
-console.log('\n📊 TESTING CURRENT VERSION...');
-const beforeTest = runTests();
-console.log(`Before score: ${beforeTest.score}/50`);
-
-// Try improvement
-console.log('\n🔧 ATTEMPTING IMPROVEMENT...');
-const improvedCode = attemptImprovement();
-fs.writeFileSync(CHAT_FILE, improvedCode);
-
-// Test AFTER improvement
-console.log('\n📊 TESTING IMPROVED VERSION...');
-const afterTest = runTests();
-console.log(`After score: ${afterTest.score}/50`);
-
-// === REWARD/PUNISHMENT ===
-const scoreDiff = afterTest.score - beforeTest.score;
-console.log(`\n📈 Score change: ${scoreDiff >= 0 ? '+' : ''}${scoreDiff}`);
-
-if (scoreDiff > 0) {
-  // SMARTER! Keep the change
-  console.log('🟢 REWARD: Bot got smarter! Keeping improvement.');
-  state.successes.push({
-    time: timestamp,
-    hour: hour,
-    type: 'improvement_accepted',
-    beforeScore: beforeTest.score,
-    afterScore: afterTest.score,
-    improvement: scoreDiff
-  });
-  state.currentScore = afterTest.score;
-  if (afterTest.score > (state.bestScore || 0)) {
-    state.bestScore = afterTest.score;
-    console.log('🏆 NEW BEST SCORE!');
-  }
-  // Delete backup since we're keeping the change
-  if (fs.existsSync(BACKUP_FILE)) fs.unlinkSync(BACKUP_FILE);
-} else if (scoreDiff < 0) {
-  // DUMBER! Revert
-  console.log('🔴 PUNISHMENT: Bot got dumber. Reverting...');
-  fs.writeFileSync(CHAT_FILE, originalCode);
-  state.failures.push({
-    time: timestamp,
-    hour: hour,
-    type: 'improvement_rejected',
-    beforeScore: beforeTest.score,
-    afterScore: afterTest.score,
-    decline: Math.abs(scoreDiff)
-  });
-  // Delete backup
-  if (fs.existsSync(BACKUP_FILE)) fs.unlinkSync(BACKUP_FILE);
+const diff = score - prevScore;
+if (diff > 0) {
+  state.successes.push({ time: timestamp, hour, score, improvement: diff });
+  console.log(`🟢 REWARD: +${diff} points`);
+} else if (diff < 0) {
+  state.failures.push({ time: timestamp, hour, score, decline: Math.abs(diff) });
+  console.log(`🔴 PENALTY: ${diff} points`);
 } else {
-  // No change
-  console.log('⚪ NEUTRAL: No improvement detected. Reverting to keep things stable.');
-  fs.writeFileSync(CHAT_FILE, originalCode);
-  if (fs.existsSync(BACKUP_FILE)) fs.unlinkSync(BACKUP_FILE);
+  console.log('⚪ STABLE: No change');
 }
 
-// Track stable hours
 if (!state.stableHours) state.stableHours = [];
 state.stableHours.push(hour);
 
-// Analyze stable hours
-const hourCounts = {};
-state.stableHours.forEach(h => {
-  hourCounts[h] = (hourCounts[h] || 0) + 1;
-});
-const sortedHours = Object.entries(hourCounts).sort((a, b) => b[1] - a[1]);
-if (sortedHours.length > 0) {
-  console.log(`\n📅 Most stable hour: ${sortedHours[0][0]} UTC (${sortedHours[0][1]} runs)`);
-}
-
-// Learning summary
-console.log('\n📚 LEARNING SUMMARY:');
-console.log(`   Total improvements kept: ${state.successes.filter(s => s.type === 'improvement_accepted').length}`);
-console.log(`   Total improvements rejected: ${state.failures.filter(f => f.type === 'improvement_rejected').length}`);
-console.log(`   Best score achieved: ${state.bestScore || 0}/50`);
-console.log(`   Current score: ${state.currentScore || 0}/50`);
-
-// Save state
 fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
-console.log('\n✅ Reward cycle complete');
+console.log('✅ Evaluation complete');
 console.log('='.repeat(60));
