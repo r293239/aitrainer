@@ -1,9 +1,18 @@
 {
   "failures": [],
-  "successes": [],
-  "stableHours": [],
-  "bestScore": 0,
-  "currentScore": 0,
+  "successes": [
+    {
+      "time": "2026-04-29T03:43:30.326Z",
+      "hour": 3,
+      "score": 30,
+      "improvement": 30
+    }
+  ],
+  "stableHours": [
+    3
+  ],
+  "bestScore": 30,
+  "currentScore": 30,
   "trainingSessions": 0,
   "lastTrainingError": 1,
   "totalTrainingCycles": 0,
