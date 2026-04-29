@@ -13,321 +13,284 @@ export default function Home() {
   }, [messages]);
 
   useEffect(() => {
-    // Check brain status
-    fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'ping' }) })
-      .then(res => res.json())
-      .then(data => {
-        if (data.reply.includes('still learning')) {
-          setBrainStatus('Training...');
-        } else {
-          setBrainStatus('Active');
-        }
-      })
-      .catch(() => setBrainStatus('Offline'));
+    checkBrainStatus();
   }, []);
 
-  const send = async () => {
-    if (!input.trim() || loading) return;
-    const userMsg = input;
-    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
-    setInput('');
-    setLoading(true);
-
+  const checkBrainStatus = async () => {
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg })
+        body: JSON.stringify({ message: 'ping' })
       });
+      if (res.ok) {
+        setBrainStatus('Active');
+      } else {
+        setBrainStatus('Offline');
+      }
+    } catch {
+      setBrainStatus('Offline');
+    }
+  };
+
+  const send = async () => {
+    const message = input.trim();
+    if (!message || loading) return;
+
+    // Add user message immediately
+    setMessages(prev => [...prev, { role: 'user', text: message }]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      // EXPLICIT POST request
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message })
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.reply || '...' }]);
+      setMessages(prev => [...prev, { role: 'bot', text: data.reply || 'No response received' }]);
+      setBrainStatus('Active');
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'bot', text: 'Connection error. Try again.' }]);
+      console.error('Send error:', err);
+      setMessages(prev => [...prev, { role: 'bot', text: 'Connection error. Please try again.' }]);
+      setBrainStatus('Offline');
     } finally {
       setLoading(false);
-      inputRef.current?.focus();
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
     }
   };
 
   const brainColor = brainStatus === 'Active' ? '#10b981' : brainStatus === 'Training...' ? '#f59e0b' : '#ef4444';
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      maxWidth: '700px',
+      margin: '0 auto',
+      padding: '20px',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#0f172a',
+    }}>
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.logo}>
-          <span style={styles.logoIcon}>🧠</span>
-          <h1 style={styles.title}>Neural Chat</h1>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '16px 0',
+        borderBottom: '1px solid #1e293b',
+        marginBottom: '8px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '28px' }}>🧠</span>
+          <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f1f5f9', margin: 0 }}>Neural Chat</h1>
         </div>
-        <div style={styles.statusBadge}>
-          <span style={{ ...styles.statusDot, backgroundColor: brainColor }}></span>
-          <span style={styles.statusText}>{brainStatus}</span>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          backgroundColor: '#1e293b',
+          padding: '6px 12px',
+          borderRadius: '20px',
+        }}>
+          <span style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            display: 'inline-block',
+            backgroundColor: brainColor,
+          }}></span>
+          <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '500' }}>{brainStatus}</span>
         </div>
       </div>
 
-      {/* Subtitle */}
-      <p style={styles.subtitle}>Self-improving AI • Trains every 10 minutes</p>
+      <p style={{ textAlign: 'center', color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>
+        Self-improving AI • Trains every 10 minutes
+      </p>
 
       {/* Chat Area */}
-      <div style={styles.chatArea}>
+      <div style={{
+        flex: 1,
+        overflowY: 'auto',
+        padding: '16px 8px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+        minHeight: '400px',
+      }}>
         {messages.length === 0 && (
-          <div style={styles.welcome}>
-            <div style={styles.welcomeIcon}>🤖</div>
-            <h3 style={styles.welcomeTitle}>Your AI is Ready</h3>
-            <p style={styles.welcomeText}>
-              This chatbot runs on a neural network trained from scratch.
-              <br />It learns by watching GPT-4o conversations.
+          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤖</div>
+            <h3 style={{ fontSize: '20px', color: '#f1f5f9', marginBottom: '8px' }}>Your AI is Ready</h3>
+            <p style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
+              This chatbot runs on a neural network trained from scratch.<br />
+              It learns by watching GPT-4o conversations.
             </p>
-            <div style={styles.features}>
-              <span style={styles.feature}>🧠 Custom Brain</span>
-              <span style={styles.feature}>🔄 Self-Improving</span>
-              <span style={styles.feature}>💰 100% Free</span>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <span style={{ backgroundColor: '#1e293b', color: '#94a3b8', padding: '6px 14px', borderRadius: '16px', fontSize: '12px' }}>🧠 Custom Brain</span>
+              <span style={{ backgroundColor: '#1e293b', color: '#94a3b8', padding: '6px 14px', borderRadius: '16px', fontSize: '12px' }}>🔄 Self-Improving</span>
+              <span style={{ backgroundColor: '#1e293b', color: '#94a3b8', padding: '6px 14px', borderRadius: '16px', fontSize: '12px' }}>💰 100% Free</span>
             </div>
           </div>
         )}
-        
+
         {messages.map((m, i) => (
-          <div key={i} style={{ ...styles.messageRow, justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
-            {m.role === 'bot' && <div style={styles.botAvatar}>🧠</div>}
+          <div key={i} style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '8px',
+            justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start',
+          }}>
+            {m.role === 'bot' && (
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: '#1e293b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '16px',
+                flexShrink: 0,
+              }}>🧠</div>
+            )}
             <div style={{
-              ...styles.message,
+              maxWidth: '70%',
+              padding: '10px 16px',
+              borderRadius: '16px',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              wordBreak: 'break-word',
               backgroundColor: m.role === 'user' ? '#2563eb' : '#1e293b',
               color: m.role === 'user' ? '#ffffff' : '#e2e8f0',
-              alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start',
               borderBottomRightRadius: m.role === 'user' ? '4px' : '16px',
               borderBottomLeftRadius: m.role === 'user' ? '16px' : '4px',
             }}>
               {m.text}
             </div>
-            {m.role === 'user' && <div style={styles.userAvatar}>👤</div>}
+            {m.role === 'user' && (
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: '#2563eb',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '16px',
+                flexShrink: 0,
+              }}>👤</div>
+            )}
           </div>
         ))}
-        
+
         {loading && (
-          <div style={{ ...styles.messageRow, justifyContent: 'flex-start' }}>
-            <div style={styles.botAvatar}>🧠</div>
-            <div style={styles.typingIndicator}>
-              <span style={styles.typingDot}>●</span>
-              <span style={{ ...styles.typingDot, animationDelay: '0.2s' }}>●</span>
-              <span style={{ ...styles.typingDot, animationDelay: '0.4s' }}>●</span>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              backgroundColor: '#1e293b',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              flexShrink: 0,
+            }}>🧠</div>
+            <div style={{
+              backgroundColor: '#1e293b',
+              padding: '12px 16px',
+              borderRadius: '16px',
+              display: 'flex',
+              gap: '4px',
+            }}>
+              <span style={{ color: '#64748b', fontSize: '12px' }}>●</span>
+              <span style={{ color: '#64748b', fontSize: '12px', animationDelay: '0.2s' }}>●</span>
+              <span style={{ color: '#64748b', fontSize: '12px', animationDelay: '0.4s' }}>●</span>
             </div>
           </div>
         )}
-        
+
         <div ref={chatEndRef} />
       </div>
 
       {/* Input Area */}
-      <div style={styles.inputArea}>
+      <div style={{
+        display: 'flex',
+        gap: '8px',
+        padding: '16px 0',
+        borderTop: '1px solid #1e293b',
+        marginTop: '8px',
+      }}>
         <input
           ref={inputRef}
-          style={styles.input}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            fontSize: '14px',
+            backgroundColor: '#1e293b',
+            border: '1px solid #334155',
+            borderRadius: '12px',
+            color: '#f1f5f9',
+            outline: 'none',
+          }}
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && send()}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message..."
           disabled={loading}
           autoFocus
         />
         <button
-          style={{ ...styles.sendButton, opacity: loading ? 0.5 : 1 }}
+          style={{
+            width: '44px',
+            height: '44px',
+            backgroundColor: loading ? '#475569' : '#2563eb',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '12px',
+            fontSize: '18px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
           onClick={send}
           disabled={loading}
         >
-          {loading ? '...' : '➤'}
+          ➤
         </button>
       </div>
 
       {/* Footer */}
-      <div style={styles.footer}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '16px',
+        padding: '12px 0',
+        color: '#475569',
+        fontSize: '11px',
+      }}>
         <span>⚡ Powered by a self-training neural network</span>
         <span>🔄 Improves every 10 min</span>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: '700px',
-    margin: '0 auto',
-    padding: '20px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#0f172a',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px 0',
-    borderBottom: '1px solid #1e293b',
-    marginBottom: '8px',
-  },
-  logo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-  logoIcon: {
-    fontSize: '28px',
-  },
-  title: {
-    fontSize: '22px',
-    fontWeight: '700',
-    color: '#f1f5f9',
-    margin: 0,
-  },
-  statusBadge: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    backgroundColor: '#1e293b',
-    padding: '6px 12px',
-    borderRadius: '20px',
-  },
-  statusDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-    display: 'inline-block',
-  },
-  statusText: {
-    fontSize: '12px',
-    color: '#94a3b8',
-    fontWeight: '500',
-  },
-  subtitle: {
-    textAlign: 'center',
-    color: '#64748b',
-    fontSize: '13px',
-    marginBottom: '16px',
-  },
-  chatArea: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: '16px 8px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-  },
-  welcome: {
-    textAlign: 'center',
-    padding: '40px 20px',
-  },
-  welcomeIcon: {
-    fontSize: '48px',
-    marginBottom: '16px',
-  },
-  welcomeTitle: {
-    fontSize: '20px',
-    color: '#f1f5f9',
-    marginBottom: '8px',
-  },
-  welcomeText: {
-    color: '#94a3b8',
-    fontSize: '14px',
-    lineHeight: '1.6',
-    marginBottom: '20px',
-  },
-  features: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '12px',
-    flexWrap: 'wrap',
-  },
-  feature: {
-    backgroundColor: '#1e293b',
-    color: '#94a3b8',
-    padding: '6px 14px',
-    borderRadius: '16px',
-    fontSize: '12px',
-  },
-  messageRow: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    gap: '8px',
-  },
-  botAvatar: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    backgroundColor: '#1e293b',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '16px',
-    flexShrink: 0,
-  },
-  userAvatar: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '50%',
-    backgroundColor: '#2563eb',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '16px',
-    flexShrink: 0,
-  },
-  message: {
-    maxWidth: '70%',
-    padding: '10px 16px',
-    borderRadius: '16px',
-    fontSize: '14px',
-    lineHeight: '1.5',
-    wordBreak: 'break-word',
-  },
-  typingIndicator: {
-    backgroundColor: '#1e293b',
-    padding: '12px 16px',
-    borderRadius: '16px',
-    display: 'flex',
-    gap: '4px',
-  },
-  typingDot: {
-    color: '#64748b',
-    fontSize: '12px',
-    animation: 'pulse 1.5s infinite',
-  },
-  inputArea: {
-    display: 'flex',
-    gap: '8px',
-    padding: '16px 0',
-    borderTop: '1px solid #1e293b',
-    marginTop: '8px',
-  },
-  input: {
-    flex: 1,
-    padding: '12px 16px',
-    fontSize: '14px',
-    backgroundColor: '#1e293b',
-    border: '1px solid #334155',
-    borderRadius: '12px',
-    color: '#f1f5f9',
-    outline: 'none',
-  },
-  sendButton: {
-    width: '44px',
-    height: '44px',
-    backgroundColor: '#2563eb',
-    color: '#ffffff',
-    border: 'none',
-    borderRadius: '12px',
-    fontSize: '18px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  footer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '16px',
-    padding: '12px 0',
-    color: '#475569',
-    fontSize: '11px',
-  },
-};
