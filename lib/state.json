@@ -12,6 +12,12 @@
       "hour": 6,
       "score": 85,
       "improvement": 55
+    },
+    {
+      "time": "2026-04-29T11:47:39.555Z",
+      "hour": 11,
+      "score": 95,
+      "improvement": 10
     }
   ],
   "stableHours": [
@@ -21,16 +27,17 @@
     5,
     6,
     8,
-    10
+    10,
+    11
   ],
-  "bestScore": 85,
-  "currentScore": 85,
-  "trainingSessions": 3,
-  "lastTrainingError": 0.023248321225629226,
-  "totalTrainingCycles": 6301115,
-  "trainingPairs": 46,
-  "vocabSize": 499,
-  "selfConversations": 3,
+  "bestScore": 95,
+  "currentScore": 95,
+  "trainingSessions": 4,
+  "lastTrainingError": 0.029164688338368813,
+  "totalTrainingCycles": 7037915,
+  "trainingPairs": 67,
+  "vocabSize": 436,
+  "selfConversations": 4,
   "averageRanking": 0,
   "totalRankings": 0,
   "lastCheckTime": "2026-04-29T11:13:41.587Z",
@@ -39,7 +46,7 @@
     "gpt-4o-mini",
     "Phi-3-mini-4k-instruct"
   ],
-  "lastTrainingTime": "2026-04-29T10:46:02.517Z",
+  "lastTrainingTime": "2026-04-29T11:47:38.151Z",
   "bestError": 0.008714621995676504,
   "trainingDuration": 540,
   "trainingOverdue": false

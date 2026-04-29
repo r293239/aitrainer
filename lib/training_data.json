@@ -182,5 +182,89 @@
   {
     "prompt": "Show me example code from textProcessor.js",
     "response": "In textProcessor.js, you can see code like: const wordFreq = {}; | const words = text.toLowerCase().replace(/[^a-z0-9\\s]/g, '').split(/\\s+/); | if (word.length > 1) wordFreq[word] = (wordFreq[word] || 0) + 1;"
+  },
+  {
+    "prompt": "What does chat.js do in the chatbot system?",
+    "response": "handles user messages. It receives chat input, matches it against training data for known answers, uses the neural network to generate new responses, and logs questions it cannot answer for future training."
+  },
+  {
+    "prompt": "How is chat.js built?",
+    "response": "chat.js is 185 lines long. It uses async operations, has error handling with try-catch, and shares its functionality with other files through exports. It uses external modules. It uses loops for processing."
+  },
+  {
+    "prompt": "What programming concepts does chat.js demonstrate?",
+    "response": "chat.js shows how to use asynchronous operations and error handling, loops for iteration, module imports, module exports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does index.js do in the chatbot system?",
+    "response": "the chat interface users see. It displays messages with user and bot avatars, has a typing indicator, a dark theme, and shows brain status."
+  },
+  {
+    "prompt": "How is index.js built?",
+    "response": "index.js is 334 lines long. It uses async operations, has error handling with try-catch, and shares its functionality with other files through exports. It uses external modules. "
+  },
+  {
+    "prompt": "What programming concepts does index.js demonstrate?",
+    "response": "index.js shows how to use asynchronous operations and error handling, module imports, module exports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does improve.js do in the chatbot system?",
+    "response": "evaluates whether the AI is getting smarter. It scores the bot on vocabulary size, training data, error rates, and tracks the best score over time."
+  },
+  {
+    "prompt": "How is improve.js built?",
+    "response": "improve.js is 113 lines long. It runs synchronously, has error handling with try-catch, and works independently. It uses external modules. "
+  },
+  {
+    "prompt": "What programming concepts does improve.js demonstrate?",
+    "response": "improve.js shows how to use error handling, module imports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does train.js do in the chatbot system?",
+    "response": "the main training loop. It learns about code structure, runs multi-model debates on knowledge topics, has AI self-conversations, ranks responses, and trains the neural network."
+  },
+  {
+    "prompt": "How is train.js built?",
+    "response": "train.js is 664 lines long. It uses async operations, has error handling with try-catch, and shares its functionality with other files through exports. It uses external modules. It uses loops for processing."
+  },
+  {
+    "prompt": "What programming concepts does train.js demonstrate?",
+    "response": "train.js shows how to use asynchronous operations and error handling, loops for iteration, module imports, module exports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does keep-alive.js do in the chatbot system?",
+    "response": "monitors training. It checks if training is overdue and triggers a new cycle if needed."
+  },
+  {
+    "prompt": "How is keep-alive.js built?",
+    "response": "keep-alive.js is 39 lines long. It runs synchronously, has basic logic flow, and works independently. It uses external modules. "
+  },
+  {
+    "prompt": "What programming concepts does keep-alive.js demonstrate?",
+    "response": "keep-alive.js shows how to use module imports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does brain.js do in the chatbot system?",
+    "response": "a pure JavaScript neural network. It implements forward propagation (making predictions) and backpropagation (learning from mistakes) without any external libraries."
+  },
+  {
+    "prompt": "How is brain.js built?",
+    "response": "brain.js is 109 lines long. It runs synchronously, has basic logic flow, and shares its functionality with other files through exports. It is self-contained. It uses loops for processing."
+  },
+  {
+    "prompt": "What programming concepts does brain.js demonstrate?",
+    "response": "brain.js shows how to use loops for iteration, module exports, and functional programming patterns in JavaScript."
+  },
+  {
+    "prompt": "What does textProcessor.js do in the chatbot system?",
+    "response": "converts text into number vectors for the neural network, and manages the vocabulary of words the bot knows."
+  },
+  {
+    "prompt": "How is textProcessor.js built?",
+    "response": "textProcessor.js is 57 lines long. It runs synchronously, has basic logic flow, and shares its functionality with other files through exports. It is self-contained. "
+  },
+  {
+    "prompt": "What programming concepts does textProcessor.js demonstrate?",
+    "response": "textProcessor.js shows how to use module exports, and functional programming patterns in JavaScript."
   }
 ]
