@@ -55,7 +55,7 @@ async function callModel(model, messages) {
 
 // Multiple AI models debate each other
 async function multiModelDebate(topic) {
-  console.log(`\n  🎤 Multi-Model Debate: "${topic}"`);
+  console.log(`\n  🎤 Multi-Model Debate: "${topic.substring(0, 60)}..."`);
   
   const results = [];
   
@@ -68,7 +68,7 @@ async function multiModelDebate(topic) {
     
     if (response) {
       results.push({ model, response });
-      console.log(`  ${model}: "${response.substring(0, 80)}..."`);
+      console.log(`     ${model}: "${response.substring(0, 60)}..."`);
     }
     await new Promise(r => setTimeout(r, 500));
   }
@@ -84,7 +84,7 @@ async function multiModelDebate(topic) {
   ]);
   
   if (combined) {
-    console.log(`  ✅ COMBINED: "${combined.substring(0, 80)}..."`);
+    console.log(`     ✅ COMBINED: "${combined.substring(0, 60)}..."`);
   }
   
   return {
@@ -204,7 +204,7 @@ function learnFromCode() {
           });
         }
         
-        console.log(`  📄 ${fileName}: ${lineCount} lines, ${functionCount} functions, ${codePairs.length - (CODE_FILES.indexOf(filePath) * 4)} pairs`);
+        console.log(`  📄 ${fileName}: ${lineCount} lines, ${functionCount} functions`);
       }
     } catch (e) {
       console.log(`  ⚠️ Could not read ${filePath}: ${e.message}`);
@@ -636,7 +636,7 @@ async function train() {
   console.log('='.repeat(70));
   
   // === TRIGGER NEXT CYCLE ===
-  console.log('\n🔄 Attempting to trigger next training cycle...');
+  console.log('\n🔄 Triggering next training cycle...');
   try {
     const repoInfo = process.env.GITHUB_REPOSITORY;
     if (repoInfo) {
@@ -644,8 +644,9 @@ async function train() {
       const token = process.env.GITHUB_TOKEN;
       
       if (token) {
+        // Trigger through the separate trigger workflow
         const response = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/actions/workflows/improve.yml/dispatches`,
+          `https://api.github.com/repos/${owner}/${repo}/actions/workflows/trigger.yml/dispatches`,
           {
             method: 'POST',
             headers: {
@@ -657,14 +658,15 @@ async function train() {
           }
         );
         if (response.ok) {
-          console.log('  ✅ Next training cycle triggered successfully');
+          console.log('  ✅ Next cycle triggered via trigger workflow');
         } else {
-          console.log(`  ⚠️ Could not trigger next cycle (status: ${response.status})`);
+          const text = await response.text();
+          console.log(`  ⚠️ Could not trigger (${response.status}): ${text.substring(0, 100)}`);
         }
       }
     }
   } catch (e) {
-    console.log(`  ℹ️ Not in GitHub Actions environment, skipping auto-trigger`);
+    console.log(`  ℹ️ Not in GitHub Actions, skipping auto-trigger`);
   }
   
   console.log('\n' + '='.repeat(70) + '\n');
