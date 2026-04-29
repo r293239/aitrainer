@@ -29,11 +29,16 @@
     8,
     10,
     11,
+<<<<<<< Updated upstream
     11
+=======
+    12
+>>>>>>> Stashed changes
   ],
   "bestScore": 95,
   "currentScore": 95,
   "trainingSessions": 5,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   "lastTrainingError": 0.028988228558615055,
   "totalTrainingCycles": 7777415,
@@ -43,6 +48,12 @@
 >>>>>>> Stashed changes
   "trainingPairs": 67,
   "vocabSize": 436,
+=======
+  "lastTrainingError": 0.021510817240407674,
+  "totalTrainingCycles": 7777593,
+  "trainingPairs": 68,
+  "vocabSize": 437,
+>>>>>>> Stashed changes
   "selfConversations": 5,
   "averageRanking": 0,
   "totalRankings": 0,
@@ -53,9 +64,13 @@
     "Phi-3-mini-4k-instruct"
   ],
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "lastTrainingTime": "2026-04-29T11:57:08.866Z",
 =======
   "lastTrainingTime": "2026-04-29T11:57:31.769Z",
+>>>>>>> Stashed changes
+=======
+  "lastTrainingTime": "2026-04-29T12:05:12.490Z",
 >>>>>>> Stashed changes
   "bestError": 0.008714621995676504,
   "trainingDuration": 540,
