@@ -56,19 +56,131 @@
     "response": "Quantum computing uses quantum bits that can exist in multiple states simultaneously, potentially solving certain problems much faster than classical computers."
   },
   {
-  "prompt": "What is your name",
-  "response": "I'm a self-improving AI chatbot! You can call me whatever you like. I'm learning from every conversation we have."
-},
-{
-  "prompt": "Who are you",
-  "response": "I'm an AI that trains itself every 10 minutes using a custom neural network. I learn by watching conversations and building my own understanding."
-},
-{
-  "prompt": "What can you do",
-  "response": "I can chat with you, answer questions, and I'm learning more every 10 minutes! My brain grows with each training cycle."
-},
+    "prompt": "What is your name",
+    "response": "I'm a self-improving AI chatbot! You can call me whatever you like. I'm learning from every conversation we have."
+  },
+  {
+    "prompt": "Who are you",
+    "response": "I'm an AI that trains itself every 10 minutes using a custom neural network. I learn by watching conversations and building my own understanding."
+  },
+  {
+    "prompt": "What can you do",
+    "response": "I can chat with you, answer questions, and I'm learning more every 10 minutes! My brain grows with each training cycle."
+  },
   {
     "prompt": "Tell me about the ocean",
     "response": "The ocean covers 71% of Earth's surface and contains incredible biodiversity, with millions of species we haven't discovered yet."
+  },
+  {
+    "prompt": "What does chat.js do?",
+    "response": "chat.js is a 189-line JavaScript file that handles user message processing and AI response generation using neural networks and training data matching. It uses async operations, includes error handling, and exports functionality for other files."
+  },
+  {
+    "prompt": "How is chat.js structured?",
+    "response": "The chat.js file contains approximately 3 functions. It imports dependencies from other modules. The code structure includes conditional logic and loop iterations. It has robust error handling with try-catch blocks."
+  },
+  {
+    "prompt": "What programming concepts are used in chat.js?",
+    "response": "chat.js demonstrates several programming concepts: asynchronous programming, data structures (arrays/objects), object manipulation, error handling patterns, module organization. The code follows functional programming style."
+  },
+  {
+    "prompt": "Show me example code from chat.js",
+    "response": "In chat.js, you can see code like: const fs = require('fs'); | const path = require('path'); | const BRAIN_FILE = path.join(process.cwd(), 'lib', 'brain_weights.json');"
+  },
+  {
+    "prompt": "What does index.js do?",
+    "response": "index.js is a 334-line JavaScript file that handles the chat user interface built with React, displaying messages with avatars and handling user input. It uses async operations, includes error handling, and exports functionality for other files."
+  },
+  {
+    "prompt": "How is index.js structured?",
+    "response": "The index.js file contains approximately 5 functions. It imports dependencies from other modules. The code structure includes conditional logic. It has robust error handling with try-catch blocks."
+  },
+  {
+    "prompt": "What programming concepts are used in index.js?",
+    "response": "index.js demonstrates several programming concepts: asynchronous programming, data structures (arrays/objects), object manipulation, error handling patterns, module organization. The code follows functional programming style."
+  },
+  {
+    "prompt": "Show me example code from index.js",
+    "response": "In index.js, you can see code like: export default function Home() { | const [messages, setMessages] = useState([]); | const [input, setInput] = useState('');"
+  },
+  {
+    "prompt": "What does improve.js do?",
+    "response": "improve.js is a 80-line JavaScript file that handles evaluation and reward scoring that measures if the AI is getting smarter or dumber over time. It runs synchronously, has basic logic flow, and runs independently."
+  },
+  {
+    "prompt": "How is improve.js structured?",
+    "response": "The improve.js file contains approximately 0 functions. It imports dependencies from other modules. The code structure includes conditional logic. It relies on basic error flows."
+  },
+  {
+    "prompt": "What programming concepts are used in improve.js?",
+    "response": "improve.js demonstrates several programming concepts: synchronous execution, data structures (arrays/objects), object manipulation, . The code follows functional programming style."
+  },
+  {
+    "prompt": "Show me example code from improve.js",
+    "response": "In improve.js, you can see code like: const fs = require('fs'); | const path = require('path'); | const STATE_FILE = path.join(__dirname, '..', 'lib', 'state.json');"
+  },
+  {
+    "prompt": "What does train.js do?",
+    "response": "train.js is a 691-line JavaScript file that handles multi-model neural network training with debates, self-talk, code learning, and response ranking. It uses async operations, includes error handling, and exports functionality for other files."
+  },
+  {
+    "prompt": "How is train.js structured?",
+    "response": "The train.js file contains approximately 13 functions. It imports dependencies from other modules. The code structure includes conditional logic and loop iterations. It has robust error handling with try-catch blocks."
+  },
+  {
+    "prompt": "What programming concepts are used in train.js?",
+    "response": "train.js demonstrates several programming concepts: asynchronous programming, data structures (arrays/objects), object manipulation, error handling patterns, module organization. The code follows object-oriented programming style."
+  },
+  {
+    "prompt": "Show me example code from train.js",
+    "response": "In train.js, you can see code like: const fs = require('fs'); | const path = require('path'); | const { execSync } = require('child_process');"
+  },
+  {
+    "prompt": "What does keep-alive.js do?",
+    "response": "keep-alive.js is a 39-line JavaScript file that handles monitoring that detects training gaps and ensures continuous improvement cycles. It runs synchronously, has basic logic flow, and runs independently."
+  },
+  {
+    "prompt": "How is keep-alive.js structured?",
+    "response": "The keep-alive.js file contains approximately 0 functions. It imports dependencies from other modules. The code structure includes conditional logic. It relies on basic error flows."
+  },
+  {
+    "prompt": "What programming concepts are used in keep-alive.js?",
+    "response": "keep-alive.js demonstrates several programming concepts: synchronous execution, object manipulation, . The code follows functional programming style."
+  },
+  {
+    "prompt": "Show me example code from keep-alive.js",
+    "response": "In keep-alive.js, you can see code like: const fs = require('fs'); | const path = require('path'); | const STATE_FILE = path.join(__dirname, '..', 'lib', 'state.json');"
+  },
+  {
+    "prompt": "What does brain.js do?",
+    "response": "brain.js is a 109-line JavaScript file that handles a pure JavaScript neural network class implementing forward propagation and backpropagation. It runs synchronously, has basic logic flow, and exports functionality for other files."
+  },
+  {
+    "prompt": "How is brain.js structured?",
+    "response": "The brain.js file contains approximately 0 functions. It is self-contained without other modules. The code structure includes conditional logic and loop iterations. It relies on basic error flows."
+  },
+  {
+    "prompt": "What programming concepts are used in brain.js?",
+    "response": "brain.js demonstrates several programming concepts: synchronous execution, data structures (arrays/objects), object manipulation, module organization. The code follows object-oriented programming style."
+  },
+  {
+    "prompt": "Show me example code from brain.js",
+    "response": "In brain.js, you can see code like: return Array.from({ length: rows }, () => | if (Array.isArray(x)) return x.map(v => this.sigmoid(v)); | return 1.0 / (1.0 + Math.exp(-x));"
+  },
+  {
+    "prompt": "What does textProcessor.js do?",
+    "response": "textProcessor.js is a 57-line JavaScript file that handles text-to-vector conversion, vocabulary management, and natural language processing utilities. It runs synchronously, has basic logic flow, and exports functionality for other files."
+  },
+  {
+    "prompt": "How is textProcessor.js structured?",
+    "response": "The textProcessor.js file contains approximately 4 functions. It is self-contained without other modules. The code structure includes conditional logic. It relies on basic error flows."
+  },
+  {
+    "prompt": "What programming concepts are used in textProcessor.js?",
+    "response": "textProcessor.js demonstrates several programming concepts: synchronous execution, data structures (arrays/objects), object manipulation, module organization. The code follows object-oriented programming style."
+  },
+  {
+    "prompt": "Show me example code from textProcessor.js",
+    "response": "In textProcessor.js, you can see code like: const wordFreq = {}; | const words = text.toLowerCase().replace(/[^a-z0-9\\s]/g, '').split(/\\s+/); | if (word.length > 1) wordFreq[word] = (wordFreq[word] || 0) + 1;"
   }
 ]
