@@ -1,4 +1,4 @@
-name: Self-Improving AI
+name: AI Training & Improvement
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  improve:
+  train-and-improve:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -20,17 +20,23 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Improvement Script
+      - name: 🧠 Train Neural Network (10 min)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/train.js
+        timeout-minutes: 12
+
+      - name: 📊 Evaluate & Reward
         run: node scripts/improve.js
 
-      - name: Commit and Push Changes
+      - name: Commit trained brain
         run: |
           git config user.name "ai-bot"
           git config user.email "ai-bot@selfimprove.dev"
-          git add lib/state.json
+          git add lib/brain_weights.json lib/vocab.json lib/state.json lib/training_data.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "🤖 AI self-improvement $(date -u +'%Y-%m-%d %H:%M')"
+            git commit -m "🧠 Neural network training $(date -u +'%Y-%m-%d %H:%M')"
             git push
           fi
