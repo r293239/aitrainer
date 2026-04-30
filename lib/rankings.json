@@ -25,6 +25,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -265,4 +266,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:32:40.920Z",
+    "prompt": "What is AI?",
+    "response": "do javascript you rates brainjs immersive engage chatjs.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:32:45.994Z",
+    "prompt": "How does learning work?",
+    "response": "do javascript you rates brainjs immersive engage debates.",
+    "score": 1
+  }
+]
 >>>>>>> Stashed changes
