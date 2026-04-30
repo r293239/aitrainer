@@ -19,6 +19,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -200,4 +201,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:19:44.082Z",
+    "prompt": "What is AI?",
+    "response": "training indexjs rates interface number gpt4o neural pure.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:19:48.802Z",
+    "prompt": "How does learning work?",
+    "response": "training indexjs rates interface gpt4o number theme neural.",
+    "score": 1
+  }
+]
 >>>>>>> Stashed changes
