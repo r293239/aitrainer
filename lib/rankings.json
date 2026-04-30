@@ -52,6 +52,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -367,6 +368,18 @@
     "timestamp": "2026-04-30T13:36:48.994Z",
     "prompt": "How does learning work?",
     "response": "allowing stay response manageable rates debates connection friends.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T13:40:53.204Z",
+    "prompt": "What is AI?",
+    "response": "bot response phrase our network pure propagation humanity.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T13:40:58.057Z",
+    "prompt": "How does learning work?",
+    "response": "bot response our phrase network pure propagation humanity.",
     "score": 2
 >>>>>>> Stashed changes
   }
