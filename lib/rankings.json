@@ -30,6 +30,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -188,6 +189,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:55:34.970Z",
+    "prompt": "What is AI?",
+    "response": "generates rates messages text data chat relationships does.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:55:40.126Z",
+    "prompt": "How does learning work?",
+    "response": "rates messages generates text relationships chat data does.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
