@@ -24,6 +24,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -43,42 +44,19 @@
 =======
     "timestamp": "2026-04-30T12:28:23.612Z",
 >>>>>>> Stashed changes
-    "prompt": "What is AI?",
-    "response": "responses interface chat word something tell error variety.",
-    "score": 2
-  },
-  {
-    "timestamp": "2026-04-30T12:28:28.613Z",
-    "prompt": "How does learning work?",
-<<<<<<< Updated upstream
-    "response": "selftalk response evaluates generates updates responses does me.",
-    "score": 2
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
 =======
+    "timestamp": "2026-04-30T12:37:55.325Z",
 >>>>>>> Stashed changes
-=======
-    "timestamp": "2026-04-30T11:44:33.377Z",
     "prompt": "What is AI?",
-    "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
-=======
-    "timestamp": "2026-04-30T12:20:09.899Z",
-    "prompt": "What is AI?",
-    "response": "text check let typical manages javascript messages theme.",
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-04-30T12:28:59.138Z",
-    "prompt": "What is AI?",
-    "response": "rates scarecrow what interface ranking selftalk gpt4o joke.",
->>>>>>> Stashed changes
+    "response": "can intelligence dark openai book indicator like using.",
     "score": 1
   },
   {
-    "timestamp": "2026-04-30T12:29:04.025Z",
+    "timestamp": "2026-04-30T12:38:00.301Z",
     "prompt": "How does learning work?",
-    "response": "scarecrow rates interface what ranking selftalk gpt4o advice.",
+    "response": "can intelligence dark book openai like indicator using.",
     "score": 1
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
@@ -193,6 +171,8 @@
     "prompt": "How does learning work?",
     "response": "indicator movie bot trains thanks debates brainjs number.",
     "score": 1
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
