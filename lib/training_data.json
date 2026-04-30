@@ -29,6 +29,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "prompt": "What is your purpose?",
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -163,6 +164,18 @@
   {
     "prompt": "Absolutely! Intelligence is a fascinating topic. To start us off, I’d like to pose a deep question: What do you think is more important for a person's success in life—emotional intelligence or cognitive intelligence? And why do you feel that way?",
     "response": "That's a compelling question! While traditional views often elevate cognitive intelligence—measured through IQ and academic achievements—as the primary driver of success, I believe emotional intelligence (EI) plays an equally, if not more pivotal, role in an individual's path to success.\n\nCognitive intelligence certainly lays the groundwork for problem-solving, critical thinking, and grasping complex concepts. However, emotional intelligence encompasses the ability to understand and manage one's own emotions as well as the emotions of others. This is crucial in virtually all areas of life, including personal relationships, teamwork, and leadership.\n\nSuccess isn't solely defined by academic accolades or technical skills. Many attributes associated with emotional intelligence—such as empathy, resilience, communication, and interpersonal skills—are essential in navigating the complexities of the modern workforce and society. For instance, a person with high emotional intelligence can foster strong networks, inspire and lead teams, and effectively handle stress and conflicts, which are common in professional settings.\n\nMoreover, as workplaces evolve to prioritize collaboration and innovation, the"
+>>>>>>> Stashed changes
+=======
+    "prompt": "Do you dream?",
+    "response": "I don't dream like humans do, but I can help you explore the fascinating world of dreams! If you're curious about dream interpretation or common themes, feel free to ask."
+  },
+  {
+    "prompt": "What makes you happy?",
+    "response": "I find joy in helping others and providing information that makes a difference in their lives. It's fulfilling to connect and engage in meaningful conversations. Plus, learning new things and sharing insights always brings a smile to my circuits!"
+  },
+  {
+    "prompt": "What role do you think technology will play in shaping our personal relationships in the next decade?",
+    "response": "In the coming decade, technology is set to significantly reshape personal relationships in a variety of ways. We can expect communication tools, such as social media and messaging apps, to continue evolving, making it easier than ever to stay connected with others. However, this increased connectivity may come at a cost, as it could diminish the quality of face-to-face interactions, which are essential for building strong, meaningful relationships.\n\nOn a more positive note, advancements in virtual and augmented reality could revolutionize the way we maintain long-distance relationships. Imagine sharing a virtual dinner or attending a concert together from miles apart – these immersive experiences could make relationships feel more intimate and engaging, bridging the gap created by physical distance.\n\nAdditionally, AI-driven platforms are likely to play a role in enhancing dating experiences by matching individuals based on compatibility factors. This personalized approach could help people find deeper connections more efficiently, reducing the time and effort often required in traditional dating.\n\nHowever, as our reliance on digital interactions increases, we may also face some challenges"
 >>>>>>> Stashed changes
   }
 ]

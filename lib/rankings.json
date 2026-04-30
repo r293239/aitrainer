@@ -7,6 +7,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -55,13 +56,19 @@
     "timestamp": "2026-04-30T11:35:38.836Z",
     "prompt": "What is AI?",
     "response": "work indexjs forwardbackward smarter number word scoring understanding.",
+=======
+    "timestamp": "2026-04-30T11:46:04.856Z",
+    "prompt": "What is AI?",
+    "response": "handles selftalk trains theme youre scoring vectors connect.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-04-30T11:35:43.463Z",
+    "timestamp": "2026-04-30T11:46:10.127Z",
     "prompt": "How does learning work?",
-    "response": "work indexjs forwardbackward smarter word number scoring understanding.",
+    "response": "handles selftalk trains theme youre scoring vectors connect.",
     "score": 2
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
     "timestamp": "2026-04-30T11:37:31.917Z",
@@ -88,6 +95,8 @@
     "prompt": "How does learning work?",
     "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
