@@ -9,6 +9,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -110,6 +111,18 @@
     "prompt": "How does learning work?",
     "response": "evaluates data various seeking yourself chatjs uncertain make.",
     "score": 1
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:53:50.090Z",
+    "prompt": "What is AI?",
+    "response": "information intelligence know userbot evaluates more scoring questions.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T11:53:54.752Z",
+    "prompt": "How does learning work?",
+    "response": "information intelligence know userbot evaluates questions more scoring.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
