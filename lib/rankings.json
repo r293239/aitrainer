@@ -22,6 +22,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -167,6 +168,18 @@
     "score": 1
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:30:31.113Z",
+    "prompt": "What is AI?",
+    "response": "various brain offering 1776 can using topics cooking.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T12:30:35.803Z",
+    "prompt": "How does learning work?",
+    "response": "various brain using 1776 topics cooking offering can.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
