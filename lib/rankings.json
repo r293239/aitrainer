@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "timestamp": "2026-04-30T10:53:06.927Z",
+    "prompt": "What is AI?",
+    "response": "data 39 go computers about without why tell.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T10:53:12.180Z",
+    "prompt": "How does learning work?",
+    "response": "data 39 go about computers without why tell.",
+    "score": 1
+  }
+]
