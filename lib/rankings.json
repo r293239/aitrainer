@@ -15,6 +15,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -108,6 +109,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:11:22.556Z",
+    "prompt": "What is AI?",
+    "response": "javascript been way humans vocabulary ever questions matches.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T12:11:27.612Z",
+    "prompt": "How does learning work?",
+    "response": "javascript been way humans ever your questions vocabulary.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
