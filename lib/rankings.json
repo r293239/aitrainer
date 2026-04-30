@@ -31,6 +31,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -82,13 +83,19 @@
     "timestamp": "2026-04-30T12:11:22.556Z",
     "prompt": "What is AI?",
     "response": "javascript been way humans vocabulary ever questions matches.",
+=======
+    "timestamp": "2026-04-30T12:57:05.069Z",
+    "prompt": "What is AI?",
+    "response": "people muertos what error dead should javascript propagation.",
+>>>>>>> Stashed changes
     "score": 1
   },
   {
-    "timestamp": "2026-04-30T12:11:27.612Z",
+    "timestamp": "2026-04-30T12:57:09.902Z",
     "prompt": "How does learning work?",
-    "response": "javascript been way humans ever your questions vocabulary.",
+    "response": "people muertos what error should dead javascript propagation.",
     "score": 1
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
     "timestamp": "2026-04-30T12:12:27.452Z",
@@ -201,6 +208,8 @@
     "prompt": "How does learning work?",
     "response": "rates messages generates text relationships chat data does.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
