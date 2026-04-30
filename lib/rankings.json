@@ -6,6 +6,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -75,6 +76,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:44:33.377Z",
+    "prompt": "What is AI?",
+    "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T11:44:38.250Z",
+    "prompt": "How does learning work?",
+    "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
