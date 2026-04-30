@@ -48,6 +48,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -85,9 +86,19 @@
 =======
     "timestamp": "2026-04-30T13:24:09.517Z",
 >>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T13:33:18.416Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "trainjs delves rates meaning changed selftalk status neural.",
+    "response": "transformed changed camps harrowing selftalk text messages role.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T13:33:23.674Z",
+    "prompt": "How does learning work?",
+    "response": "transformed changed camps harrowing selftalk messages text role.",
     "score": 2
+<<<<<<< Updated upstream
   },
   {
     "timestamp": "2026-04-30T13:24:14.669Z",
@@ -339,6 +350,8 @@
     "prompt": "How does learning work?",
     "response": "might pure de lens muertos avatars day intriguing.",
     "score": 1
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
