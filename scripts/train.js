@@ -28,18 +28,29 @@ const CODE_FILES = [
 
 let apiCallCount = 0;
 let apiSuccessCount = 0;
+let lastApiCallTime = 0;
 
 function timeLeft(startTime) {
   return Math.max(0, HARD_STOP_MS - (Date.now() - startTime));
 }
 
-// 🔑 USE GH_TOKEN INSTEAD OF GITHUB_TOKEN
 async function callGPT4(messages, label = '') {
   apiCallCount++;
+  
+  // Rate limit: wait to ensure max 12 calls per minute
+  const now = Date.now();
+  const timeSinceLastCall = now - lastApiCallTime;
+  const minDelay = 5000; // 5 seconds between calls
+  if (timeSinceLastCall < minDelay && lastApiCallTime > 0) {
+    const waitTime = minDelay - timeSinceLastCall;
+    await new Promise(r => setTimeout(r, waitTime));
+  }
+  lastApiCallTime = Date.now();
+  
   const token = process.env.GH_TOKEN;
   
   if (!token) {
-    console.log(`     ❌ [${label}] No GH_TOKEN secret found`);
+    console.log(`     ❌ [${label}] No GH_TOKEN`);
     return null;
   }
   
@@ -64,9 +75,43 @@ async function callGPT4(messages, label = '') {
     
     clearTimeout(timeout);
     
+    if (response.status === 429) {
+      // Rate limited — wait and retry once
+      console.log(`     ⏳ [${label}] Rate limited, waiting 30s...`);
+      await new Promise(r => setTimeout(r, 30000));
+      
+      const retryResponse = await fetch('https://models.inference.ai.azure.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages,
+          temperature: 0.85,
+          max_tokens: 200
+        })
+      });
+      
+      if (!retryResponse.ok) {
+        console.log(`     ❌ [${label}] Retry failed with ${retryResponse.status}`);
+        return null;
+      }
+      
+      const retryData = await retryResponse.json();
+      if (retryData.error) {
+        console.log(`     ❌ [${label}] Retry API error: ${retryData.error.message}`);
+        return null;
+      }
+      
+      apiSuccessCount++;
+      return retryData.choices[0].message.content;
+    }
+    
     if (!response.ok) {
       const errorText = await response.text();
-      console.log(`     ❌ [${label}] HTTP ${response.status}: ${errorText.substring(0, 120)}`);
+      console.log(`     ❌ [${label}] HTTP ${response.status}: ${errorText.substring(0, 100)}`);
       return null;
     }
     
@@ -122,8 +167,8 @@ async function generateTopics(startTime) {
   
   console.log('\n💡 Generating topics...');
   const response = await callGPT4([
-    { role: 'system', content: 'Generate 5 interesting conversation questions. Output one per line. No numbers.' },
-    { role: 'user', content: 'Give me 5 diverse topics.' }
+    { role: 'system', content: 'Generate 3 interesting conversation questions. Output one per line. No numbers.' },
+    { role: 'user', content: 'Give me 3 diverse topics.' }
   ], 'topics');
   
   if (!response) return [];
@@ -133,7 +178,7 @@ async function generateTopics(startTime) {
     .filter(l => l.length > 15 && l.includes('?'));
   
   console.log(`  ✅ ${topics.length} topics`);
-  return topics.slice(0, 5);
+  return topics.slice(0, 3);
 }
 
 async function debate(topic) {
@@ -169,10 +214,10 @@ async function handleUncertainQuestions(startTime) {
   
   if (uncertain.length === 0) return [];
   
-  console.log(`\n❓ Answering ${Math.min(3, uncertain.length)} uncertain questions...`);
+  console.log(`\n❓ Answering ${Math.min(2, uncertain.length)} uncertain questions...`);
   
   const results = [];
-  const toAnswer = uncertain.slice(-3);
+  const toAnswer = uncertain.slice(-2);
   
   for (const q of toAnswer) {
     if (timeLeft(startTime) < 45000) break;
@@ -186,7 +231,6 @@ async function handleUncertainQuestions(startTime) {
       results.push({ prompt: q.text, response: answer });
       console.log(`  ✅ "${q.text.substring(0, 40)}..."`);
     }
-    await new Promise(r => setTimeout(r, 500));
   }
   
   const remaining = uncertain.filter(q => !toAnswer.some(a => a.text === q.text));
@@ -253,7 +297,6 @@ async function rankMyAI(brain, tp, startTime) {
       rankings.push({ timestamp: new Date().toISOString(), prompt, response: myResponse, score });
       console.log(`  "${prompt}" → ${score}/10`);
     }
-    await new Promise(r => setTimeout(r, 500));
   }
   
   return rankings;
@@ -302,24 +345,21 @@ async function train() {
   // Phase 1: Code awareness
   trainingPairs.push(...learnAboutCode());
 
-  // Phase 2: Answer uncertain questions
+  // Phase 2: Answer uncertain questions (reduced to 2 max)
   trainingPairs.push(...(await handleUncertainQuestions(startTime)));
 
-  // Phase 3: Generate topics & debate
+  // Phase 3: Generate topics & debate (reduced to 2 topics)
   const topics = await generateTopics(startTime);
   const debateTopics = topics.length >= 2 ? topics : [
     "What is artificial intelligence?",
-    "How does learning work?",
-    "What makes humans unique?",
-    "How do computers process information?"
+    "How does learning work?"
   ];
   
-  console.log(`\n🎤 Debating ${Math.min(4, debateTopics.length)} topics...`);
-  for (const topic of debateTopics.slice(0, 4)) {
+  console.log(`\n🎤 Debating ${Math.min(2, debateTopics.length)} topics...`);
+  for (const topic of debateTopics.slice(0, 2)) {
     if (timeLeft(startTime) < 45000) break;
     const result = await debate(topic);
     if (result) trainingPairs.push({ prompt: result.topic, response: result.response });
-    await new Promise(r => setTimeout(r, 800));
   }
 
   // Phase 4: Self-talk
@@ -357,7 +397,7 @@ async function train() {
   });
   console.log(`  ${tp.vocabSize} words (+${newWords} new)`);
 
-  // Phase 6: Ranking
+  // Phase 6: Ranking (reduced to only if enough time)
   const newRankings = await rankMyAI(brain, tp, startTime);
   rankings.push(...newRankings);
   if (rankings.length > 50) rankings = rankings.slice(-50);
@@ -426,7 +466,7 @@ async function train() {
   console.log(`\n${'='.repeat(65)}`);
   console.log(`✅ COMPLETE (${duration}s)`);
   console.log(`${'='.repeat(65)}`);
-  console.log(`  API: ${apiSuccessCount}/${apiCallCount} calls succeeded`);
+  console.log(`  API: ${apiSuccessCount}/${apiCallCount} succeeded`);
   console.log(`  Pairs: ${unique.length} | Vocab: ${tp.vocabSize} | Cycles: ${cycles}`);
   console.log(`${'='.repeat(65)}\n`);
 
