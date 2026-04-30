@@ -35,6 +35,7 @@
     "prompt": "How does learning work?",
     "response": "areas do past converts brainjs propagation debates how.",
     "score": 1
+<<<<<<< Updated upstream
 =======
     "timestamp": "2026-04-30T17:32:25.467Z",
     "prompt": "What is AI?",
@@ -45,6 +46,20 @@
     "timestamp": "2026-04-30T17:32:30.704Z",
     "prompt": "How does learning work?",
     "response": "shared avatars questions social play ranking indicator scoring.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+  },
+  {
+    "timestamp": "2026-04-30T17:40:43.097Z",
+    "prompt": "What is AI?",
+    "response": "our userbot status trainjs chat messages using forwardbackward.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T17:40:45.077Z",
+    "prompt": "How does learning work?",
+    "response": "our userbot trainjs status chat messages continues using.",
     "score": 2
 >>>>>>> Stashed changes
   }
