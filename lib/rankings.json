@@ -43,6 +43,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -489,4 +490,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T15:05:13.981Z",
+    "prompt": "What is AI?",
+    "response": "preferences propagation technology textprocessorjs role matches before manages.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T15:05:18.492Z",
+    "prompt": "How does learning work?",
+    "response": "preferences propagation technology textprocessorjs role matches before our.",
+    "score": 1
+  }
+]
 >>>>>>> Stashed changes
