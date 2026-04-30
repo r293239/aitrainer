@@ -20,6 +20,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -36,13 +37,17 @@
 =======
     "timestamp": "2026-04-30T12:19:26.376Z",
 >>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:28:23.612Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "selftalk response evaluates updates generates responses does prepare.",
+    "response": "responses interface chat word something tell error variety.",
     "score": 2
   },
   {
-    "timestamp": "2026-04-30T12:19:31.356Z",
+    "timestamp": "2026-04-30T12:28:28.613Z",
     "prompt": "How does learning work?",
+<<<<<<< Updated upstream
     "response": "selftalk response evaluates generates updates responses does me.",
     "score": 2
 <<<<<<< Updated upstream
@@ -149,6 +154,10 @@
     "prompt": "How does learning work?",
     "response": "get chat forecasts most brain interface do uncertain.",
     "score": 2
+>>>>>>> Stashed changes
+=======
+    "response": "responses interface word chat something tell error 1776.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
