@@ -2,16 +2,21 @@
   {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
+=======
+    "timestamp": "2026-04-30T11:35:16.293Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "network thats forwardbackward avatars 1776 do free conversations.",
+    "response": "lesson ask trains debates uncertain provide do vocabulary.",
     "score": 1
   },
   {
-    "timestamp": "2026-04-30T11:26:27.370Z",
+    "timestamp": "2026-04-30T11:35:21.035Z",
     "prompt": "How does learning work?",
-    "response": "network thats forwardbackward avatars 1776 do conversations insights.",
+    "response": "lesson ask trains uncertain debates provide do vocabulary.",
     "score": 1
+<<<<<<< Updated upstream
 =======
     "timestamp": "2026-04-30T11:26:50.504Z",
     "prompt": "What is AI?",
@@ -35,6 +40,8 @@
     "prompt": "How does learning work?",
     "response": "intelligence data vocabulary improvejs status absolutely avatars brain.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
