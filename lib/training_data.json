@@ -22,6 +22,7 @@
   {
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -591,6 +592,8 @@
 =======
     "prompt": "Absolutely, let's dive into the topic of intelligence. To start us off, I’d like to pose a deep question: \n\nWhat do you think is the true measure of intelligence— is it the ability to solve complex problems, the capacity for emotional understanding, or perhaps the ability to adapt and thrive in diverse environments? \n\nI’m curious to hear your perspective on what constitutes intelligence in our rapidly changing world.",
     "response": "That's an intriguing question, and it opens the door to a rich discussion about the nature of intelligence. While many people often focus on cognitive abilities like problem-solving or analytical reasoning as the primary indicators of intelligence, I would argue that a more holistic view is essential, especially in our rapidly changing world.\n\nOne key aspect to consider is the concept of *multiple intelligences*, as proposed by Howard Gardner. He emphasizes that intelligence isn't a singular, quantifiable trait, but rather a spectrum that includes linguistic, logical-mathematical, spatial, musical, bodily-kinesthetic, interpersonal, intrapersonal, and naturalistic intelligences. This perspective suggests that our traditional emphasis on analytical skills may overlook the myriad ways individuals can demonstrate intelligence.\n\nIn today's context, the ability to adapt and thrive in diverse environments—often referred to as *adaptive intelligence*—is increasingly becoming a vital measure. With the pace of change in technology, society, and the economy, the capacity to learn, unlearn, and rele"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
