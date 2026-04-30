@@ -13,6 +13,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -132,6 +133,18 @@
     "prompt": "How does learning work?",
     "response": "responses pure improvejs chatjs indicator however help what.",
     "score": 1
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:03:48.121Z",
+    "prompt": "What is AI?",
+    "response": "neural indicator knowledge logs number my wide network.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:03:53.501Z",
+    "prompt": "How does learning work?",
+    "response": "neural indicator knowledge logs number my wide network.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
