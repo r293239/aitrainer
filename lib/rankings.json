@@ -3,6 +3,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [
   {
 <<<<<<< Updated upstream
@@ -338,6 +339,22 @@
 []
 >>>>>>> Stashed changes
 =======
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T13:50:03.673Z",
+    "prompt": "What is AI?",
+    "response": "pure using training network one trainjs trains number.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T13:50:08.971Z",
+    "prompt": "How does learning work?",
+    "response": "pure using training network one trainjs trains number.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
