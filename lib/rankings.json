@@ -25,6 +25,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -139,6 +140,22 @@
     "prompt": "How does learning work?",
     "response": "evil traditions indicator tradition questions converts triumph captivating.",
     "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T18:33:05.716Z",
+    "prompt": "What is AI?",
+    "response": "logs brainjs fascinating number textprocessorjs status exploring text.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T18:33:11.028Z",
+    "prompt": "How does learning work?",
+    "response": "logs fascinating brainjs number textprocessorjs status exploring text.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
