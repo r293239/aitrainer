@@ -12,6 +12,7 @@
     "score": 1
   },
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:15:53.680Z",
     "prompt": "What is AI?",
     "response": "doing what my neural like network learning artificial.",
@@ -22,5 +23,17 @@
     "prompt": "How does learning work?",
     "response": "computers patterns when without solve machine data problems.",
     "score": 2
+=======
+    "timestamp": "2026-04-30T11:17:39.156Z",
+    "prompt": "What is AI?",
+    "response": "great would neural network learning intelligence growing ai.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T11:17:44.584Z",
+    "prompt": "How does learning work?",
+    "response": "patterns computers data being problems human when without.",
+    "score": 1
+>>>>>>> Stashed changes
   }
 ]
