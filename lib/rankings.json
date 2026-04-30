@@ -16,6 +16,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -121,6 +122,18 @@
     "prompt": "How does learning work?",
     "response": "javascript been way humans ever your questions vocabulary.",
     "score": 1
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:12:27.452Z",
+    "prompt": "What is AI?",
+    "response": "age manages javascript response does created main helpful.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:12:31.612Z",
+    "prompt": "How does learning work?",
+    "response": "age manages javascript does response main created interface.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
