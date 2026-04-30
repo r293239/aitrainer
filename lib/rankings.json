@@ -29,6 +29,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -54,28 +55,19 @@
 =======
     "timestamp": "2026-04-30T12:46:38.756Z",
 >>>>>>> Stashed changes
-    "prompt": "What is AI?",
-    "response": "word improvejs distinctions indicator communication dark generates uncertain.",
-    "score": 2
-  },
-  {
-    "timestamp": "2026-04-30T12:46:43.863Z",
-    "prompt": "How does learning work?",
-    "response": "word improvejs distinctions indicator generates dark communication uncertain.",
-    "score": 1
-<<<<<<< Updated upstream
-  },
-  {
-    "timestamp": "2026-04-30T12:02:23.623Z",
-    "prompt": "How does learning work?",
-    "response": "responses pure improvejs chatjs indicator however help what.",
-    "score": 1
->>>>>>> Stashed changes
 =======
-    "timestamp": "2026-04-30T12:03:48.121Z",
+    "timestamp": "2026-04-30T12:55:07.649Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "neural indicator knowledge logs number my wide network.",
+    "response": "propagation avatars chat network handles intelligence issue impact.",
     "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:55:12.137Z",
+    "prompt": "How does learning work?",
+    "response": "propagation avatars chat network handles intelligence issue impact.",
+    "score": 2
+<<<<<<< Updated upstream
   },
   {
     "timestamp": "2026-04-30T12:03:53.501Z",
@@ -194,6 +186,8 @@
     "prompt": "How does learning work?",
     "response": "logs what indicator different pure around indexjs might.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
