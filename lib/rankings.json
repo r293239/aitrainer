@@ -36,6 +36,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -252,6 +253,18 @@
     "score": 1
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T13:08:02.357Z",
+    "prompt": "What is AI?",
+    "response": "debates pure another userbot play error poised avatars.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T13:08:07.359Z",
+    "prompt": "How does learning work?",
+    "response": "debates pure another userbot play error avatars poised.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
