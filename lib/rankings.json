@@ -32,6 +32,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -44,8 +47,9 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-04-30T14:35:57.851Z",
+    "timestamp": "2026-04-30T14:45:37.285Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -370,5 +374,17 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "response": "do handles celebrated lights your represents think responses.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:45:42.398Z",
+    "prompt": "How does learning work?",
+    "response": "do handles celebrated lights represents your think responses.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
