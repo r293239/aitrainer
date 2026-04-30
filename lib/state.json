@@ -5,6 +5,12 @@
       "hour": 5,
       "score": 55,
       "improvement": 55
+    },
+    {
+      "time": "2026-04-30T06:05:02.798Z",
+      "hour": 6,
+      "score": 65,
+      "improvement": 10
     }
   ],
   "failures": [],
@@ -74,8 +80,17 @@
     5,
     5,
     5,
-    5
+    5,
+    6
   ],
-  "bestScore": 55,
-  "currentScore": 55
+  "bestScore": 65,
+  "currentScore": 65,
+  "trainingSessions": 1,
+  "totalTrainingCycles": 2029106,
+  "trainingPairs": 74,
+  "vocabSize": 443,
+  "apiCalls": 11,
+  "apiSuccesses": 0,
+  "lastTrainingTime": "2026-04-30T06:05:01.616Z",
+  "trainingDuration": 480
 }

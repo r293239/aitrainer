@@ -270,5 +270,29 @@
   {
     "prompt": "How is train.js built?",
     "response": "train.js is 689 lines long. It uses async operations, has error handling with try-catch, and shares its functionality with other files through exports. It uses external modules. It uses loops for processing."
+  },
+  {
+    "prompt": "What does chat.js do?",
+    "response": "handles user messages, matches training data, generates responses, logs uncertain questions"
+  },
+  {
+    "prompt": "What does index.js do?",
+    "response": "the chat interface with user/bot avatars, dark theme, and brain status indicator"
+  },
+  {
+    "prompt": "What does improve.js do?",
+    "response": "evaluates bot intelligence by scoring vocabulary, training data, and error rates"
+  },
+  {
+    "prompt": "What does train.js do?",
+    "response": "trains the neural network using GPT-4o debates, self-talk, and response ranking"
+  },
+  {
+    "prompt": "What does brain.js do?",
+    "response": "a pure JavaScript neural network with forward/backward propagation"
+  },
+  {
+    "prompt": "What does textProcessor.js do?",
+    "response": "converts text to number vectors and manages word vocabulary"
   }
 ]
