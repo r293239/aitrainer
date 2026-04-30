@@ -22,6 +22,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -30,8 +33,9 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-04-30T14:17:10.429Z",
+    "timestamp": "2026-04-30T14:26:32.145Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     "response": "pure avatars neural propagation interface technology responses what.",
 =======
@@ -240,5 +244,17 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "response": "fascinating indicator do number response enriching logs interface.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:26:36.706Z",
+    "prompt": "How does learning work?",
+    "response": "fascinating indicator do number response enriching logs manages.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
