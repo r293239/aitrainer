@@ -13,6 +13,7 @@
   },
   {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:15:53.680Z",
     "prompt": "What is AI?",
     "response": "doing what my neural like network learning artificial.",
@@ -25,12 +26,22 @@
     "score": 2
 =======
     "timestamp": "2026-04-30T11:17:39.156Z",
+=======
+    "timestamp": "2026-04-30T11:18:03.305Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
     "response": "great would neural network learning intelligence growing ai.",
     "score": 2
   },
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:17:44.584Z",
+    "prompt": "How does learning work?",
+    "response": "patterns computers data being problems human when without.",
+    "score": 1
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:18:08.142Z",
     "prompt": "How does learning work?",
     "response": "patterns computers data being problems human when without.",
     "score": 1
