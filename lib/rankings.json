@@ -35,6 +35,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -77,6 +78,13 @@
     "prompt": "What is AI?",
     "response": "gpt4o avatars handles debates number training forwardbackward ranking.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:51:32.686Z",
+    "prompt": "What is AI?",
+    "response": "vocabulary uncertain tasks play more productivity training indicator.",
+>>>>>>> Stashed changes
     "score": 2
 =======
 [
@@ -88,6 +96,7 @@
 >>>>>>> Stashed changes
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     "timestamp": "2026-04-30T14:46:24.082Z",
     "prompt": "How does learning work?",
@@ -413,6 +422,14 @@
     "timestamp": "2026-04-30T14:47:54.641Z",
     "prompt": "How does learning work?",
     "response": "gpt4o avatars handles training number debates forwardbackward ranking.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T14:51:37.577Z",
+    "prompt": "How does learning work?",
+    "response": "vocabulary uncertain tasks play more productivity indicator training.",
     "score": 2
   }
 ]
