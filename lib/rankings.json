@@ -26,6 +26,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -185,6 +186,18 @@
     "timestamp": "2026-04-30T12:39:30.645Z",
     "prompt": "How does learning work?",
     "response": "improvejs call handles book day training you uncertain.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:46:04.364Z",
+    "prompt": "What is AI?",
+    "response": "what generates vibrant propagation messages relationships role plays.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:46:09.028Z",
+    "prompt": "How does learning work?",
+    "response": "what generates vibrant propagation messages role relationships plays.",
     "score": 2
 >>>>>>> Stashed changes
   }
