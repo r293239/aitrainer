@@ -50,6 +50,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -354,6 +355,18 @@
 =======
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T13:36:43.957Z",
+    "prompt": "What is AI?",
+    "response": "allowing stay response manageable rates ranking friends debates.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T13:36:48.994Z",
+    "prompt": "How does learning work?",
+    "response": "allowing stay response manageable rates debates connection friends.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
