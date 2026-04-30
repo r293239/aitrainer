@@ -27,6 +27,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -37,8 +40,9 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-04-30T14:26:32.145Z",
+    "timestamp": "2026-04-30T14:35:57.851Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     "response": "pure avatars neural propagation interface technology responses what.",
@@ -293,5 +297,17 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "response": "trains deeper questions gained shaped indicator bot pure.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:36:03.110Z",
+    "prompt": "How does learning work?",
+    "response": "trains deeper questions shaped gained indicator bot pure.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
