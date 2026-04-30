@@ -38,7 +38,6 @@ function findBestMatch(message, pairs) {
       best = pair;
     }
   }
-
   return bestScore >= 2 ? best : null;
 }
 
@@ -46,30 +45,34 @@ function cleanResponse(text) {
   if (!text) return '';
   return text
     .replace(/^["']|["']$/g, '')
-    .replace(/^(I|As an AI|Sure|Here|Let me|Okay|Alright|Great|Excellent|Absolutely|Of course|Definitely|Certainly|Well|So|Yes|No|Right|Indeed|Actually|Basically|Essentially|Generally|Honestly|Interestingly|Naturally|Obviously|Perhaps|Probably|Really|Truly|Typically|Understandably|Undoubtedly|Unfortunately)[,.]?\s*/i, '')
+    .replace(/^(I|As an AI|Sure|Here|Let me|Okay|Alright|Great|Excellent|Absolutely|Of course|Definitely|Certainly|Well|So|Yes|No|Right|Indeed|Actually|Basically)[,.]?\s*/i, '')
     .trim();
 }
 
 export default async function handler(req, res) {
-  // ONLY accept POST
+  // CRITICAL: Check method first
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { message } = req.body;
-  if (!message || message.trim() === '') {
-    return res.status(200).json({ reply: 'Please say something!' });
+    return res.status(405).json({ error: 'Method not allowed - use POST' });
   }
 
   try {
-    // Load training data
+    const { message } = req.body;
+    
+    if (!message || message.trim() === '') {
+      return res.status(200).json({ reply: 'Please say something!' });
+    }
+
+    // Load training data safely
     let pairs = [];
-    if (fs.existsSync(TRAINING_FILE)) {
-      try {
-        pairs = JSON.parse(fs.readFileSync(TRAINING_FILE, 'utf-8'));
-      } catch (e) {
-        pairs = [];
+    try {
+      if (fs.existsSync(TRAINING_FILE)) {
+        const raw = fs.readFileSync(TRAINING_FILE, 'utf-8');
+        if (raw && raw.trim()) {
+          pairs = JSON.parse(raw);
+        }
       }
+    } catch (e) {
+      console.error('Failed to load training data:', e.message);
     }
 
     // Method 1: Direct match
@@ -83,7 +86,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Method 2: Keyword search in responses
+    // Method 2: Keyword search
     const msgWords = message.toLowerCase().split(/\s+/).filter(w => w.length > 2);
     const relevant = pairs.filter(p => {
       const combined = (p.prompt + ' ' + p.response).toLowerCase();
@@ -100,7 +103,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Method 3: Random training response
+    // Method 3: Random fallback from training
     if (pairs.length > 0) {
       const pick = pairs[Math.floor(Math.random() * pairs.length)];
       const cleaned = cleanResponse(pick.response);
@@ -113,18 +116,14 @@ export default async function handler(req, res) {
 
     // Fallback
     logUncertain(message.trim());
-    const fallbacks = [
-      `I'm learning! I have ${pairs.length} knowledge entries and add more every 10 minutes.`,
-      `Interesting question! My brain has ${pairs.length} memories so far. I log new questions and learn them during training.`,
-      `I don't know that yet, but I've saved your question for my next training cycle! I currently know ${pairs.length} things.`,
-      `Hmm, that's new to me. I learn from conversations like this - your question will help me improve!`
-    ];
-    const reply = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-    return res.status(200).json({ reply });
+    return res.status(200).json({ 
+      reply: `I'm learning! I have ${pairs.length} knowledge entries and add more every 10 minutes. Ask me something else!` 
+    });
 
   } catch (error) {
+    console.error('Fatal error:', error.message);
     return res.status(200).json({ 
-      reply: "My brain hit a small bump! Try asking something else. 🧠" 
+      reply: "My brain hit a small bump! Try again. 🧠" 
     });
   }
 }
