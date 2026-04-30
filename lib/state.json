@@ -8,6 +8,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "totalTrainingCycles": 1310890,
 =======
   "totalTrainingCycles": 1632020,
@@ -37,10 +38,14 @@
 =======
   "totalTrainingCycles": 1270974,
 >>>>>>> Stashed changes
+=======
+  "totalTrainingCycles": 1304442,
+>>>>>>> Stashed changes
   "trainingPairs": 6,
   "vocabSize": 60,
   "apiCalls": 6,
   "apiSuccesses": 0,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -57,46 +62,15 @@
 =======
   "lastTrainingTime": "2026-04-30T15:41:30.770Z",
 >>>>>>> Stashed changes
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T15:41:30.958Z",
 =======
-  "lastTrainingTime": "2026-04-30T15:49:27.046Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T15:49:27.296Z",
+  "lastTrainingTime": "2026-04-30T16:16:43.439Z",
 >>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-04-30T15:50:39.720Z",
   "trainingDuration": 480,
   "successes": [
     {
-      "time": "2026-04-30T15:50:39.929Z",
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-04-30T15:58:30.594Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T15:58:30.884Z",
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-04-30T15:59:37.353Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T15:59:37.519Z",
->>>>>>> Stashed changes
-      "hour": 15,
-=======
-  "lastTrainingTime": "2026-04-30T16:07:33.053Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T16:07:33.274Z",
+      "time": "2026-04-30T16:16:43.727Z",
       "hour": 16,
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
   "lastTrainingTime": "2026-04-30T16:08:42.702Z",
@@ -105,6 +79,8 @@
     {
       "time": "2026-04-30T16:08:42.861Z",
       "hour": 16,
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       "score": 45,
       "improvement": 45
