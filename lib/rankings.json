@@ -5,19 +5,24 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
 >>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:43:59.473Z",
+>>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "lesson ask trains debates uncertain provide do vocabulary.",
+    "response": "status find evaluates gpt4o word solve dark help.",
     "score": 1
   },
   {
-    "timestamp": "2026-04-30T11:35:21.035Z",
+    "timestamp": "2026-04-30T11:44:04.533Z",
     "prompt": "How does learning work?",
-    "response": "lesson ask trains uncertain debates provide do vocabulary.",
+    "response": "status find evaluates solve gpt4o word dark scoring.",
     "score": 1
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
     "timestamp": "2026-04-30T11:26:50.504Z",
@@ -68,6 +73,8 @@
     "prompt": "How does learning work?",
     "response": "based gpt4o textprocessorjs scoring experiences using generate than.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
