@@ -32,6 +32,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -210,6 +211,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:59:03.372Z",
+    "prompt": "What is AI?",
+    "response": "ranking manages interface bot cultural you recognition scoring.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T12:59:08.170Z",
+    "prompt": "How does learning work?",
+    "response": "ranking manages interface bot cultural you recognition scoring.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
