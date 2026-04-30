@@ -18,6 +18,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -52,27 +53,19 @@
     "timestamp": "2026-04-30T11:44:33.377Z",
     "prompt": "What is AI?",
     "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
-    "score": 1
-  },
-  {
-    "timestamp": "2026-04-30T11:44:38.250Z",
-    "prompt": "How does learning work?",
-    "response": "improvejs understand selftalk training brain whether forwardbackward trainjs.",
-    "score": 2
->>>>>>> Stashed changes
 =======
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-04-30T11:52:44.038Z",
+    "timestamp": "2026-04-30T12:20:09.899Z",
     "prompt": "What is AI?",
-    "response": "evaluates data various yourself seeking uncertain trainjs chatjs.",
-    "score": 2
+    "response": "text check let typical manages javascript messages theme.",
+>>>>>>> Stashed changes
+    "score": 1
   },
   {
-    "timestamp": "2026-04-30T11:52:46.552Z",
+    "timestamp": "2026-04-30T12:20:15.108Z",
     "prompt": "How does learning work?",
-    "response": "evaluates data various seeking yourself chatjs uncertain make.",
+    "response": "text check let typical manages javascript messages theme.",
     "score": 1
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
     "timestamp": "2026-04-30T11:53:50.090Z",
@@ -139,6 +132,8 @@
     "prompt": "How does learning work?",
     "response": "age manages javascript does response main created interface.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
