@@ -22,5 +22,17 @@
     "prompt": "How does learning work?",
     "response": "text life brainjs my how word generates did.",
     "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T16:36:45.609Z",
+    "prompt": "What is AI?",
+    "response": "user improvejs theme network status training trains trainjs.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T16:36:51.041Z",
+    "prompt": "How does learning work?",
+    "response": "user theme improvejs network training status trains trainjs.",
+    "score": 2
   }
 ]
