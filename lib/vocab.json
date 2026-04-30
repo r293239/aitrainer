@@ -6,6 +6,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     "1215": 645,
 >>>>>>> Stashed changes
@@ -15,6 +16,8 @@
 >>>>>>> Stashed changes
 =======
     "1776": 199,
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -81,6 +84,7 @@
     "number": 56,
     "vectors": 57,
     "manages": 58,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -1261,6 +1265,9 @@
 =======
     "word": 59
 >>>>>>> Stashed changes
+=======
+    "word": 59
+>>>>>>> Stashed changes
   },
   "indexToWord": {
     "0": "what",
@@ -1322,6 +1329,7 @@
     "56": "number",
     "57": "vectors",
     "58": "manages",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -2502,6 +2510,11 @@
     "389": "reasoning"
   },
   "vocabSize": 390
+>>>>>>> Stashed changes
+=======
+    "59": "word"
+  },
+  "vocabSize": 60
 >>>>>>> Stashed changes
 =======
     "59": "word"
