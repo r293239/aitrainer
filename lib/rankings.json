@@ -8,6 +8,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -80,5 +81,21 @@
 []
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T13:59:11.498Z",
+    "prompt": "What is AI?",
+    "response": "you avatars technology 1776 pure forwardbackward personal chat.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T13:59:16.371Z",
+    "prompt": "How does learning work?",
+    "response": "you avatars technology 1776 pure forwardbackward chat personal.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
