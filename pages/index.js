@@ -23,10 +23,11 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: 'ping' })
       });
-      if (res.ok) {
+      const data = await res.json();
+      if (data.reply && !data.reply.includes('0 knowledge')) {
         setBrainStatus('Active');
       } else {
-        setBrainStatus('Offline');
+        setBrainStatus('Training...');
       }
     } catch {
       setBrainStatus('Offline');
@@ -37,32 +38,25 @@ export default function Home() {
     const message = input.trim();
     if (!message || loading) return;
 
-    // Add user message immediately
     setMessages(prev => [...prev, { role: 'user', text: message }]);
     setInput('');
     setLoading(true);
 
     try {
-      // EXPLICIT POST request
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: message })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
       });
 
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`Status ${res.status}`);
 
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.reply || 'No response received' }]);
+      setMessages(prev => [...prev, { role: 'bot', text: data.reply || 'No response' }]);
       setBrainStatus('Active');
     } catch (err) {
       console.error('Send error:', err);
-      setMessages(prev => [...prev, { role: 'bot', text: 'Connection error. Please try again.' }]);
-      setBrainStatus('Offline');
+      setMessages(prev => [...prev, { role: 'bot', text: 'Connection error. Try again.' }]);
     } finally {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -222,8 +216,8 @@ export default function Home() {
               gap: '4px',
             }}>
               <span style={{ color: '#64748b', fontSize: '12px' }}>●</span>
-              <span style={{ color: '#64748b', fontSize: '12px', animationDelay: '0.2s' }}>●</span>
-              <span style={{ color: '#64748b', fontSize: '12px', animationDelay: '0.4s' }}>●</span>
+              <span style={{ color: '#64748b', fontSize: '12px' }}>●</span>
+              <span style={{ color: '#64748b', fontSize: '12px' }}>●</span>
             </div>
           </div>
         )}
