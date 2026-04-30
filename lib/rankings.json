@@ -28,6 +28,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -53,11 +54,19 @@
     "prompt": "What is AI?",
     "response": "communication essential neural responses medium role gpt4o data.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:36:45.264Z",
+    "prompt": "What is AI?",
+    "response": "word power data algorithms believe gpt4o daily exciting.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-04-30T14:23:32.246Z",
+    "timestamp": "2026-04-30T14:36:50.196Z",
     "prompt": "How does learning work?",
+<<<<<<< Updated upstream
     "response": "communication essential neural responses medium role data gpt4o.",
     "score": 2
   }
@@ -307,6 +316,12 @@
     "timestamp": "2026-04-30T14:36:03.110Z",
     "prompt": "How does learning work?",
     "response": "trains deeper questions shaped gained indicator bot pure.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+    "response": "word data power algorithms believe gpt4o daily exciting.",
     "score": 1
   }
 ]
