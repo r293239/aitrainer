@@ -3,6 +3,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -42,6 +43,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:35:38.836Z",
+    "prompt": "What is AI?",
+    "response": "work indexjs forwardbackward smarter number word scoring understanding.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T11:35:43.463Z",
+    "prompt": "How does learning work?",
+    "response": "work indexjs forwardbackward smarter word number scoring understanding.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
