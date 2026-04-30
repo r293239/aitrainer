@@ -8,6 +8,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -97,6 +98,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:52:44.038Z",
+    "prompt": "What is AI?",
+    "response": "evaluates data various yourself seeking uncertain trainjs chatjs.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T11:52:46.552Z",
+    "prompt": "How does learning work?",
+    "response": "evaluates data various seeking yourself chatjs uncertain make.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
