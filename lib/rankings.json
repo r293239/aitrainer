@@ -19,6 +19,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -136,6 +137,18 @@
 =======
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:21:40.348Z",
+    "prompt": "What is AI?",
+    "response": "get forecasts chat most brain interface do uncertain.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T12:21:45.031Z",
+    "prompt": "How does learning work?",
+    "response": "get chat forecasts most brain interface do uncertain.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
