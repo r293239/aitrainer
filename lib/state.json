@@ -97,6 +97,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "totalTrainingCycles": 1874894,
 =======
   "totalTrainingCycles": 1967982,
@@ -464,62 +465,22 @@
   "successes": [
     {
       "time": "2026-04-30T15:01:04.135Z",
-      "hour": 15,
-      "score": 45,
-      "improvement": 45
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
 =======
->>>>>>> Stashed changes
-=======
-  "totalTrainingCycles": 1298175,
-  "trainingPairs": 6,
-  "vocabSize": 60,
-  "apiCalls": 6,
-  "apiSuccesses": 0,
-  "lastTrainingTime": "2026-04-30T14:15:50.493Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T14:15:50.675Z",
-      "hour": 14,
-      "score": 45,
-      "improvement": 45
->>>>>>> Stashed changes
-=======
-  "totalTrainingCycles": 1267697,
-  "trainingPairs": 6,
-  "vocabSize": 60,
-  "apiCalls": 6,
-  "apiSuccesses": 0,
-  "lastTrainingTime": "2026-04-30T14:17:39.006Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-04-30T14:17:39.886Z",
-      "hour": 14,
-      "score": 45,
-      "improvement": 45
->>>>>>> Stashed changes
-=======
-  "totalTrainingCycles": 1910881,
-=======
-  "totalTrainingCycles": 1787016,
->>>>>>> Stashed changes
+  "totalTrainingCycles": 1852375,
   "trainingPairs": 9,
-  "vocabSize": 393,
+  "vocabSize": 382,
   "apiCalls": 9,
   "apiSuccesses": 9,
-  "lastTrainingTime": "2026-04-30T14:31:51.406Z",
+  "lastTrainingTime": "2026-04-30T15:10:43.245Z",
   "trainingDuration": 480,
   "successes": [
     {
-      "time": "2026-04-30T14:31:52.249Z",
-      "hour": 14,
+      "time": "2026-04-30T15:10:43.581Z",
+>>>>>>> Stashed changes
+      "hour": 15,
       "score": 55,
       "improvement": 55
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
@@ -717,12 +678,14 @@
       "score": 55,
       "improvement": 55
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     }
   ],
   "failures": [],
   "stableHours": [
     15
   ],
-  "bestScore": 45,
-  "currentScore": 45
+  "bestScore": 55,
+  "currentScore": 55
 }

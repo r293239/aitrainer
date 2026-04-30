@@ -41,6 +41,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -467,5 +468,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T15:03:20.412Z",
+    "prompt": "What is AI?",
+    "response": "trainjs play individuals gpt4o javascript responses textprocessorjs status.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T15:03:25.674Z",
+    "prompt": "How does learning work?",
+    "response": "trainjs play individuals gpt4o javascript responses textprocessorjs status.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
