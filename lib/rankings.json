@@ -46,6 +46,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -313,6 +314,18 @@
     "prompt": "How does learning work?",
     "response": "perspective manages theme chatjs regarding converts brain error.",
     "score": 1
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T13:31:15.239Z",
+    "prompt": "What is AI?",
+    "response": "questions harrowing manages forwardbackward deeply search his vectors.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T13:31:20.252Z",
+    "prompt": "How does learning work?",
+    "response": "questions harrowing manages forwardbackward deeply search his vectors.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
