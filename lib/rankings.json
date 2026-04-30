@@ -10,6 +10,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -113,6 +114,22 @@
     "prompt": "How does learning work?",
     "response": "using logs relationships scoring evolve profound textprocessorjs intelligence.",
     "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:04:47.041Z",
+    "prompt": "What is AI?",
+    "response": "vectors word modern manages think 11 instance intelligence.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T14:04:51.954Z",
+    "prompt": "How does learning work?",
+    "response": "vectors word modern manages think 11 instance intelligence.",
+    "score": 1
   }
 ]
 >>>>>>> Stashed changes
