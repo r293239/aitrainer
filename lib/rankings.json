@@ -30,6 +30,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -339,6 +340,22 @@
     "timestamp": "2026-04-30T14:38:27.322Z",
     "prompt": "How does learning work?",
     "response": "manages frankls uncertain changed chat training concentration handles.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:42:13.135Z",
+    "prompt": "What is AI?",
+    "response": "here world referred appreciate text many few have.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T14:42:18.344Z",
+    "prompt": "How does learning work?",
+    "response": "here world referred appreciate text many few have.",
     "score": 1
   }
 ]
