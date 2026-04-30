@@ -34,6 +34,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -69,6 +70,13 @@
     "prompt": "What is AI?",
     "response": "word power data algorithms believe gpt4o daily exciting.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T14:47:50.002Z",
+    "prompt": "What is AI?",
+    "response": "gpt4o avatars handles debates number training forwardbackward ranking.",
+>>>>>>> Stashed changes
     "score": 2
 =======
 [
@@ -80,6 +88,7 @@
 >>>>>>> Stashed changes
   },
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T14:46:24.082Z",
     "prompt": "How does learning work?",
     "response": "response propagation meal brainjs ingenuity historical trains scoring.",
@@ -398,5 +407,13 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T14:47:54.641Z",
+    "prompt": "How does learning work?",
+    "response": "gpt4o avatars handles training number debates forwardbackward ranking.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
