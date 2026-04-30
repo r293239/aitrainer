@@ -15,7 +15,7 @@ const INPUT_SIZE = 100;
 const HIDDEN_SIZE = 200;
 const OUTPUT_SIZE = 100;
 const TRAINING_MINUTES = 10;
-const HARD_STOP_MS = 10 * 60 * 1000;
+const HARD_STOP_MS = 10 * 60 * 1000; // 10 minute hard stop
 
 const MODELS = [
   'gpt-4o-mini',
@@ -34,28 +34,62 @@ const CODE_FILES = [
   'lib/textProcessor.js'
 ];
 
+// ============ DEBUG HELPER ============
 function timeLeft(startTime) {
   return Math.max(0, HARD_STOP_MS - (Date.now() - startTime));
 }
 
-async function callModel(model, messages) {
+// ============ API CALL WITH ERROR LOGGING ============
+async function callModel(model, messages, label = '') {
+  const token = process.env.GITHUB_TOKEN;
+  
+  if (!token) {
+    console.log(`     ❌ [${label || model}] NO GITHUB_TOKEN ENV VAR`);
+    return null;
+  }
+  
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    
     const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ model, messages, temperature: 0.85, max_tokens: 200 })
+      body: JSON.stringify({ model, messages, temperature: 0.85, max_tokens: 200 }),
+      signal: controller.signal
     });
+    
+    clearTimeout(timeout);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log(`     ❌ [${label || model}] HTTP ${response.status}: ${errorText.substring(0, 150)}`);
+      return null;
+    }
+    
     const data = await response.json();
-    if (data.error) throw new Error(data.error.message);
+    
+    if (data.error) {
+      console.log(`     ❌ [${label || model}] API Error: ${JSON.stringify(data.error).substring(0, 150)}`);
+      return null;
+    }
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.log(`     ❌ [${label || model}] Bad response format: ${JSON.stringify(data).substring(0, 100)}`);
+      return null;
+    }
+    
     return data.choices[0].message.content;
   } catch (e) {
+    console.log(`     ❌ [${label || model}] Network/Timeout: ${e.message}`);
     return null;
   }
 }
 
+// ============ CODE AWARENESS ============
 function getCodePurpose(fileName) {
   const purposes = {
     'chat.js': 'handles user messages. It receives chat input, matches it against training data for known answers, uses the neural network to generate new responses, and logs questions it cannot answer for future training.',
@@ -69,8 +103,10 @@ function getCodePurpose(fileName) {
   return purposes[fileName] || 'part of the self-improving chatbot system';
 }
 
+// ============ DYNAMIC TOPIC GENERATION ============
 async function generateNewTopics(count = 5) {
   console.log('\n💡 Generating fresh topics...');
+  
   const topicPrompts = [
     "Give me 3 interesting questions about science that a curious person might ask.",
     "Give me 3 thought-provoking questions about technology and its future.",
@@ -78,13 +114,16 @@ async function generateNewTopics(count = 5) {
     "Give me 3 questions about the natural world and our planet.",
     "Give me 3 questions about learning, knowledge, and education."
   ];
+  
   const allNewTopics = [];
   const usedPrompts = topicPrompts.sort(() => Math.random() - 0.5).slice(0, 3);
+  
   for (const prompt of usedPrompts) {
     const response = await callModel(MODELS[0], [
       { role: 'system', content: 'You generate interesting discussion questions. Output each question on a new line starting with a number like "1. " or "- ". No other text.' },
       { role: 'user', content: prompt }
-    ]);
+    ], 'TopicGen');
+    
     if (response) {
       const lines = response.split('\n')
         .map(l => l.replace(/^\d+[\.\)]\s*|- \s*/, '').trim())
@@ -92,6 +131,7 @@ async function generateNewTopics(count = 5) {
       allNewTopics.push(...lines);
     }
   }
+  
   const uniqueTopics = [...new Set(allNewTopics)].slice(0, count);
   console.log(`  ✅ Generated ${uniqueTopics.length} new topics`);
   return uniqueTopics;
@@ -101,7 +141,8 @@ async function generateSelfTalkTopics(count = 3) {
   const response = await callModel(MODELS[0], [
     { role: 'system', content: 'Generate deep philosophical conversation starters. Output each on a new line starting with "- ". No other text.' },
     { role: 'user', content: `Give me ${count} unique conversation starters for a deep philosophical discussion. They should be different from common topics.` }
-  ]);
+  ], 'SelfTalkTopics');
+  
   if (response) {
     const topics = response.split('\n')
       .map(l => l.replace(/^-\s*/, '').trim())
@@ -115,7 +156,8 @@ async function generateImprovementQuestions(count = 3) {
   const response = await callModel(MODELS[0], [
     { role: 'system', content: 'Generate questions about AI self-improvement and chatbot development. Output each on a new line starting with "- ". No other text.' },
     { role: 'user', content: `Give me ${count} specific questions about how a self-improving AI chatbot can get better at conversations. Make them actionable and specific.` }
-  ]);
+  ], 'ImproveQ');
+  
   if (response) {
     return response.split('\n')
       .map(l => l.replace(/^-\s*/, '').trim())
@@ -124,6 +166,7 @@ async function generateImprovementQuestions(count = 3) {
   return [];
 }
 
+// ============ LEARNING FUNCTIONS ============
 function learnAboutCode() {
   console.log('\n📚 PHASE 1: Code Structure Awareness');
   console.log('-'.repeat(40));
@@ -135,22 +178,9 @@ function learnAboutCode() {
       const code = fs.readFileSync(fullPath, 'utf-8');
       const fileName = path.basename(filePath);
       const lineCount = code.split('\n').length;
-      const hasAsync = code.includes('async');
-      const hasErrorHandling = code.includes('try') && code.includes('catch');
-      const hasLoops = code.includes('for ') || code.includes('while ');
-      const importsModules = code.includes('require(') || code.includes('import ');
-      const exportsModules = code.includes('module.exports') || code.includes('export ');
       codePairs.push({
         prompt: `What does ${fileName} do in the chatbot system?`,
         response: getCodePurpose(fileName)
-      });
-      codePairs.push({
-        prompt: `How is ${fileName} built?`,
-        response: `${fileName} is ${lineCount} lines long. It ${hasAsync ? 'uses async operations' : 'runs synchronously'}, ${hasErrorHandling ? 'has error handling with try-catch' : 'has basic logic flow'}, and ${exportsModules ? 'shares its functionality with other files through exports' : 'works independently'}. It ${importsModules ? 'uses external modules' : 'is self-contained'}. ${hasLoops ? 'It uses loops for processing.' : ''}`
-      });
-      codePairs.push({
-        prompt: `What programming concepts does ${fileName} demonstrate?`,
-        response: `${fileName} shows how to use ${hasAsync ? 'asynchronous operations and ' : ''}${hasErrorHandling ? 'error handling, ' : ''}${hasLoops ? 'loops for iteration, ' : ''}${importsModules ? 'module imports, ' : ''}${exportsModules ? 'module exports, ' : ''}and functional programming patterns in JavaScript.`
       });
       console.log(`  📄 ${fileName}: ${lineCount} lines described`);
     } catch (e) {
@@ -187,24 +217,30 @@ async function askForSelfImprovement() {
 async function multiModelDebate(topic) {
   console.log(`\n  🎤 Multi-Model Debate: "${topic.substring(0, 60)}..."`);
   const results = [];
+  
   for (const model of MODELS.slice(0, 2)) {
     const response = await callModel(model, [
       { role: 'system', content: 'You are a knowledgeable AI. Give a detailed, helpful response.' },
       { role: 'user', content: topic }
-    ]);
+    ], `Debate-${model}`);
+    
     if (response) {
       results.push({ model, response });
       console.log(`     ${model}: "${response.substring(0, 60)}..."`);
     }
     await new Promise(r => setTimeout(r, 500));
   }
+  
   if (results.length < 2) return null;
+  
   const judgePrompt = `Combine the best parts of these two responses into ONE improved response. Keep it under 150 words.\n\nResponse 1: ${results[0].response}\n\nResponse 2: ${results[1].response}`;
   const combined = await callModel(MODELS[0], [
     { role: 'system', content: 'Combine information into clear, concise responses.' },
     { role: 'user', content: judgePrompt }
-  ]);
+  ], 'Combiner');
+  
   if (combined) console.log(`     ✅ COMBINED: "${combined.substring(0, 60)}..."`);
+  
   return { topic, responses: results, combined: combined || results[0].response };
 }
 
@@ -221,30 +257,35 @@ async function gpt4SelfConversation() {
   const topic = topics[Math.floor(Math.random() * topics.length)];
   console.log(`\n💬 Self-Talk Topic: "${topic.substring(0, 80)}..."`);
   const conversation = [];
+  
   const starter = await callModel(MODELS[0], [
     { role: 'system', content: 'You are a thoughtful conversationalist. Start a deep conversation with an open-ended question.' },
     { role: 'user', content: `Start a conversation about: ${topic}` }
-  ]);
+  ], 'SelfTalk-A');
   if (!starter) return [];
   conversation.push({ role: 'Thinker A', content: starter });
+
   const response1 = await callModel(MODELS[1] || MODELS[0], [
     { role: 'system', content: 'You have a completely different perspective. Challenge the assumptions and offer a unique view.' },
     { role: 'user', content: starter }
-  ]);
+  ], 'SelfTalk-B');
   if (!response1) return conversation;
   conversation.push({ role: 'Thinker B', content: response1 });
+
   const response2 = await callModel(MODELS[0], [
     { role: 'system', content: 'Build on their perspective. Find unexpected connections and deepen the conversation.' },
     { role: 'user', content: `You said: ${starter}\nThey said: ${response1}\nFind a surprising connection and continue.` }
-  ]);
+  ], 'SelfTalk-C');
   if (!response2) return conversation;
   conversation.push({ role: 'Thinker A', content: response2 });
+
   const response3 = await callModel(MODELS[1] || MODELS[0], [
     { role: 'system', content: 'Synthesize the entire conversation into a profound concluding insight.' },
     { role: 'user', content: `Conversation:\nA: ${starter}\nB: ${response1}\nA: ${response2}\nProvide a meaningful synthesis.` }
-  ]);
+  ], 'SelfTalk-D');
   if (!response3) return conversation;
   conversation.push({ role: 'Thinker B', content: response3 });
+
   return conversation;
 }
 
@@ -257,12 +298,14 @@ async function generateKnowledgeDebates() {
     "How does evolution by natural selection work?",
     "What is the structure of an atom?"
   ];
+  
   let uncertainQuestions = [];
   try {
     if (fs.existsSync(UNCERTAIN_FILE)) {
       uncertainQuestions = JSON.parse(fs.readFileSync(UNCERTAIN_FILE, 'utf-8'));
     }
   } catch (e) {}
+  
   const recentUncertain = uncertainQuestions.slice(-5).map(q => q.text);
   const allTopics = [...generatedTopics, ...recentUncertain, ...fallbackTopics];
   const shuffled = allTopics.sort(() => Math.random() - 0.5);
@@ -272,10 +315,12 @@ async function generateKnowledgeDebates() {
     const topic = shuffled[Math.floor(Math.random() * shuffled.length)];
     if (!selected.includes(topic)) selected.push(topic);
   }
+  
   console.log('\n🎤 PHASE: Knowledge Debates');
   console.log('-'.repeat(40));
   if (recentUncertain.length > 0) console.log(`  📝 Including ${Math.min(recentUncertain.length, 3)} uncertain question(s)`);
   if (generatedTopics.length > 0) console.log(`  💡 Using ${Math.min(generatedTopics.length, 3)} AI-generated topics`);
+  
   const debates = [];
   for (let i = 0; i < selected.length; i++) {
     console.log(`  Debate ${i + 1}/${selected.length}:`);
@@ -283,6 +328,7 @@ async function generateKnowledgeDebates() {
     if (debate && debate.combined) debates.push({ prompt: selected[i], response: debate.combined });
     await new Promise(r => setTimeout(r, 1000));
   }
+  
   if (uncertainQuestions.length > 0) fs.writeFileSync(UNCERTAIN_FILE, JSON.stringify([], null, 2));
   console.log(`  ✅ Created ${debates.length} debate pairs`);
   return debates;
@@ -317,214 +363,21 @@ async function rankMyAI(brain, tp) {
     const topWords = contentWords.slice(0, 12).map(w => w.word);
     let myResponse = topWords.length >= 3 ? topWords.join(' ') + '.' : "I am still learning about this topic.";
     myResponse = myResponse.charAt(0).toUpperCase() + myResponse.slice(1);
+    
     const ranking = await callModel(MODELS[0], [
       { role: 'system', content: 'Rate this AI response 1-10 for relevance, coherence, helpfulness. Reply ONLY: TOTAL: [number]' },
       { role: 'user', content: `Prompt: "${testPrompt}"\nResponse: "${myResponse}"\nRate:` }
-    ]);
+    ], 'Ranker');
+    
     if (ranking) {
       const scoreMatch = ranking.match(/TOTAL:\s*(\d+)/);
-      newRankings.push({ timestamp: new Date().toISOString(), prompt: testPrompt, response: myResponse, score: scoreMatch ? parseInt(scoreMatch[1]) : 5 });
-      console.log(`  "${testPrompt.substring(0, 40)}..." → Score: ${scoreMatch ? scoreMatch[1] : '?'}/10`);
+      const score = scoreMatch ? parseInt(scoreMatch[1]) : 5;
+      newRankings.push({ timestamp: new Date().toISOString(), prompt: testPrompt, response: myResponse, score });
+      console.log(`  "${testPrompt.substring(0, 40)}..." → Score: ${score}/10`);
     }
     await new Promise(r => setTimeout(r, 500));
   }
   return newRankings;
-}
-
-// ============================================================
-// 🔧 AI-GUIDED CODE & WEIGHT IMPROVEMENT
-// GPT-4o directly modifies your bot's code, vocab, and weights
-// ============================================================
-async function aiGuidedCodeImprovement(brain, tp, trainingPairs, startTime) {
-  if (timeLeft(startTime) < 60000) {
-    console.log('\n🔧 AI-Guided Improvement: SKIPPED (not enough time)');
-    return { brain, tp, trainingPairs, codeChanges: 0, vocabAdded: 0, newWeights: false };
-  }
-
-  console.log('\n🔧 PHASE: AI-Guided Code & Weight Improvement');
-  console.log('-'.repeat(40));
-
-  let codeChanges = 0;
-  let vocabAdded = 0;
-  let newWeights = false;
-
-  // 1. AI reviews chat.js and writes improvements
-  const chatPath = path.join(__dirname, '..', 'pages', 'api', 'chat.js');
-  if (fs.existsSync(chatPath) && timeLeft(startTime) > 45000) {
-    console.log('  📝 AI reviewing chat.js...');
-    const chatCode = fs.readFileSync(chatPath, 'utf-8');
-    
-    const improvedChat = await callModel(MODELS[0], [
-      { 
-        role: 'system', 
-        content: `You are an expert JavaScript developer. Improve this chatbot's response logic. 
-Add better pattern matching, smarter fallbacks, and more natural responses.
-Return ONLY the complete improved code, nothing else. Keep all existing functionality.
-Focus on: making responses more human-like, adding more diverse fallback responses, improving the word matching algorithm.` 
-      },
-      { role: 'user', content: `Here is the current chat.js code:\n\n${chatCode}\n\nReturn the complete improved code.` }
-    ]);
-
-    if (improvedChat && improvedChat.includes('export default') && improvedChat.length > 500) {
-      // Backup original
-      const backupPath = path.join(__dirname, '..', 'pages', 'api', 'chat_backup.js');
-      fs.writeFileSync(backupPath, chatCode);
-      
-      // Write improved version
-      fs.writeFileSync(chatPath, improvedChat);
-      codeChanges++;
-      console.log('  ✅ chat.js improved by AI');
-    } else {
-      console.log('  ⚠️ AI could not improve chat.js (invalid output)');
-    }
-  }
-
-  // 2. AI generates better vocabulary
-  if (timeLeft(startTime) > 45000) {
-    console.log('  📚 AI generating better vocabulary...');
-    
-    // Get current vocab stats
-    const currentWords = tp.getWords ? tp.getWords() : Object.keys(tp.wordToIndex || {});
-    const commonWords = currentWords.slice(0, 50).join(', ');
-    
-    const newVocab = await callModel(MODELS[0], [
-      { 
-        role: 'system', 
-        content: `You are a vocabulary expert. Generate 20 useful words that would help a chatbot have better conversations. 
-These should be common conversation words that might be missing.
-Output format: one word per line, lowercase, no punctuation.` 
-      },
-      { role: 'user', content: `Current vocabulary includes: ${commonWords}\n\nGenerate 20 additional useful words.` }
-    ]);
-
-    if (newVocab) {
-      const words = newVocab.split('\n')
-        .map(w => w.trim().toLowerCase())
-        .filter(w => w.length > 1 && !w.includes(' ') && !w.includes('.'));
-      
-      let added = 0;
-      for (const word of words) {
-        if (word.length > 1 && !(word in tp.wordToIndex)) {
-          tp.wordToIndex[word] = tp.vocabSize;
-          tp.indexToWord[tp.vocabSize] = word;
-          tp.vocabSize++;
-          added++;
-        }
-      }
-      vocabAdded = added;
-      console.log(`  ✅ Added ${added} new words to vocabulary`);
-    }
-  }
-
-  // 3. AI adjusts neural network weights directly
-  if (timeLeft(startTime) > 45000) {
-    console.log('  ⚡ AI adjusting neural network weights...');
-    
-    // Get sample of training data for context
-    const samplePairs = trainingPairs.slice(-20).map(p => 
-      `Q: ${p.prompt.substring(0, 50)}... A: ${p.response.substring(0, 50)}...`
-    ).join('\n');
-    
-    // Get current weight stats
-    const weightStats = {
-      totalWeights: brain.weights1.length * brain.weights1[0].length + brain.weights2.length * brain.weights2[0].length,
-      weightRange: {
-        min1: Math.min(...brain.weights1.flat()),
-        max1: Math.max(...brain.weights1.flat()),
-        min2: Math.min(...brain.weights2.flat()),
-        max2: Math.max(...brain.weights2.flat())
-      }
-    };
-
-    const weightAdvice = await callModel(MODELS[0], [
-      { 
-        role: 'system', 
-        content: `You are a neural network expert. Based on the training data and current weight statistics, suggest specific weight adjustments.
-Output format:
-STRENGTHEN_LAYER1: [row] [col] [new_value]
-WEAKEN_LAYER1: [row] [col]
-STRENGTHEN_LAYER2: [row] [col] [new_value]
-WEAKEN_LAYER2: [row] [col]
-Give 5 specific adjustments total.` 
-      },
-      { role: 'user', content: `Training sample:\n${samplePairs}\n\nWeight stats: ${JSON.stringify(weightStats)}\n\nSuggest weight adjustments.` }
-    ]);
-
-    if (weightAdvice) {
-      let adjustments = 0;
-      const lines = weightAdvice.split('\n');
-      
-      for (const line of lines) {
-        if (timeLeft(startTime) < 30000) break;
-        
-        const strengthenMatch1 = line.match(/STRENGTHEN_LAYER1:\s*(\d+)\s+(\d+)\s+([-\d.]+)/);
-        const weakenMatch1 = line.match(/WEAKEN_LAYER1:\s*(\d+)\s+(\d+)/);
-        const strengthenMatch2 = line.match(/STRENGTHEN_LAYER2:\s*(\d+)\s+(\d+)\s+([-\d.]+)/);
-        const weakenMatch2 = line.match(/WEAKEN_LAYER2:\s*(\d+)\s+(\d+)/);
-        
-        if (strengthenMatch1) {
-          const [, row, col, val] = strengthenMatch1;
-          if (brain.weights1[row] && brain.weights1[row][col] !== undefined) {
-            brain.weights1[row][col] = parseFloat(val);
-            adjustments++;
-          }
-        } else if (weakenMatch1) {
-          const [, row, col] = weakenMatch1;
-          if (brain.weights1[row] && brain.weights1[row][col] !== undefined) {
-            brain.weights1[row][col] *= 0.5;
-            adjustments++;
-          }
-        } else if (strengthenMatch2) {
-          const [, row, col, val] = strengthenMatch2;
-          if (brain.weights2[row] && brain.weights2[row][col] !== undefined) {
-            brain.weights2[row][col] = parseFloat(val);
-            adjustments++;
-          }
-        } else if (weakenMatch2) {
-          const [, row, col] = weakenMatch2;
-          if (brain.weights2[row] && brain.weights2[row][col] !== undefined) {
-            brain.weights2[row][col] *= 0.5;
-            adjustments++;
-          }
-        }
-      }
-      
-      if (adjustments > 0) {
-        newWeights = true;
-        console.log(`  ✅ AI adjusted ${adjustments} neural weights`);
-      } else {
-        console.log('  ⚠️ AI could not parse weight adjustments');
-      }
-    }
-  }
-
-  // 4. AI generates better training pairs from uncertain questions
-  if (timeLeft(startTime) > 30000) {
-    console.log('  💬 AI generating responses for uncertain questions...');
-    
-    let uncertain = [];
-    try {
-      if (fs.existsSync(UNCERTAIN_FILE)) {
-        uncertain = JSON.parse(fs.readFileSync(UNCERTAIN_FILE, 'utf-8'));
-      }
-    } catch (e) {}
-    
-    if (uncertain.length > 0) {
-      const question = uncertain[0].text;
-      const response = await callModel(MODELS[0], [
-        { role: 'system', content: 'Give a helpful, friendly response to this question. Keep it under 3 sentences.' },
-        { role: 'user', content: question }
-      ]);
-      
-      if (response) {
-        trainingPairs.push({ prompt: question, response });
-        console.log(`  ✅ Generated response for: "${question.substring(0, 40)}..."`);
-      }
-    }
-  }
-
-  console.log(`  📊 Summary: ${codeChanges} code changes, ${vocabAdded} words added, weights ${newWeights ? 'adjusted' : 'unchanged'}`);
-  return { brain, tp, trainingPairs, codeChanges, vocabAdded, newWeights };
 }
 
 function getWordOverlap(text1, text2) {
@@ -535,12 +388,19 @@ function getWordOverlap(text1, text2) {
   return words2.filter(w => words1.has(w)).length / words1.size;
 }
 
+// ============ MAIN TRAIN FUNCTION ============
 async function train() {
   const startTime = Date.now();
 
   console.log('='.repeat(70));
   console.log('🧠 DYNAMIC MULTI-MODEL NEURAL NETWORK TRAINING');
   console.log('='.repeat(70));
+  
+  // DEBUG: Check token
+  const token = process.env.GITHUB_TOKEN;
+  console.log(`🔑 GITHUB_TOKEN present: ${token ? 'YES ✅' : 'NO ❌ - Add it to repo secrets!'}`);
+  if (token) console.log(`   Prefix: ${token.substring(0, 6)}... Length: ${token.length}`);
+  
   console.log(`Models: ${MODELS.slice(0, 2).join(' + ')}`);
   console.log(`Training duration: ${TRAINING_MINUTES} minutes (hard stop at 10 min)`);
   console.log(`Network: ${INPUT_SIZE} → ${HIDDEN_SIZE} → ${OUTPUT_SIZE}`);
@@ -606,9 +466,11 @@ async function train() {
       trainingPairs.push({ prompt: selfConvo[i].content, response: selfConvo[i + 1].content });
     }
     console.log(`  Self-talk messages: ${selfConvo.length}`);
+  } else {
+    console.log('  ⚠️ Self-talk skipped');
   }
 
-  // === PHASE 5 ===
+  // === PHASE 5: Accumulating vocabulary ===
   console.log('\n📚 Building Vocabulary');
   console.log('-'.repeat(40));
   let tp = new TextProcessor(500);
@@ -638,18 +500,12 @@ async function train() {
   });
   console.log(`  📚 Total vocabulary: ${tp.vocabSize} words (+${newWordsAdded} new)`);
 
-  // === PHASE 6 ===
+  // === PHASE 6: Rank my AI ===
   const newRankings = await rankMyAI(brain, tp);
   rankings.push(...newRankings);
   if (rankings.length > 100) rankings = rankings.slice(-100);
 
-  // === 🆕 PHASE 6.5: AI-GUIDED CODE & WEIGHT IMPROVEMENT ===
-  const aiImprovements = await aiGuidedCodeImprovement(brain, tp, trainingPairs, startTime);
-  brain = aiImprovements.brain;
-  tp = aiImprovements.tp;
-  trainingPairs = aiImprovements.trainingPairs;
-
-  // === PHASE 7 ===
+  // === PHASE 7: Weighted training with HARD STOP ===
   console.log('\n🔄 PHASE: Neural Network Training');
   console.log('-'.repeat(40));
 
@@ -731,9 +587,8 @@ async function train() {
   state.selfConversations = (state.selfConversations || 0) + 1;
   state.averageRanking = avgRanking;
   state.totalRankings = rankings.length;
-  state.aiCodeChanges = (state.aiCodeChanges || 0) + aiImprovements.codeChanges;
-  state.aiVocabAdded = (state.aiVocabAdded || 0) + aiImprovements.vocabAdded;
-  state.aiWeightAdjustments = (state.aiWeightAdjustments || 0) + (aiImprovements.newWeights ? 1 : 0);
+  state.codeFiles = CODE_FILES.length;
+  state.modelsUsed = MODELS.slice(0, 2);
   state.lastTrainingTime = new Date().toISOString();
   state.bestError = Math.min(bestError, state.bestError || Infinity);
   state.trainingDuration = Math.floor((Date.now() - startTime) / 1000);
@@ -748,27 +603,29 @@ async function train() {
   console.log(`   Sessions: ${state.trainingSessions}`);
   console.log(`   Cycles: ${cycles}`);
   console.log(`   Avg error: ${avgError.toFixed(4)}`);
-  console.log(`   Vocab: ${tp.vocabSize} words (+${newWordsAdded} new, +${aiImprovements.vocabAdded} AI)`);
-  console.log(`   Code changes by AI: ${aiImprovements.codeChanges}`);
-  console.log(`   Weights adjusted by AI: ${aiImprovements.newWeights ? 'Yes' : 'No'}`);
+  console.log(`   Vocab: ${tp.vocabSize} words (+${newWordsAdded} new)`);
   console.log(`   Training pairs: ${uniquePairs.length}`);
-  console.log(`   Avg ranking: ${avgRanking.toFixed(1)}/10`);
+  console.log(`   Rankings: ${rankings.length}, Avg: ${avgRanking.toFixed(1)}/10`);
   console.log('='.repeat(70));
 
+  // Trigger next
   console.log('\n🔄 Triggering next cycle...');
   try {
     const repoInfo = process.env.GITHUB_REPOSITORY;
     if (repoInfo) {
       const [owner, repo] = repoInfo.split('/');
-      await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/trigger.yml/dispatches`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ref: 'main' })
-      });
+      const token2 = process.env.GITHUB_TOKEN;
+      if (token2) {
+        await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/trigger.yml/dispatches`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token2}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main' })
+        });
+      }
     }
   } catch (e) {}
 
@@ -777,5 +634,6 @@ async function train() {
 
 train().catch(error => {
   console.error('\n❌ TRAINING FAILED:', error.message);
+  console.error(error.stack);
   process.exit(1);
 });
