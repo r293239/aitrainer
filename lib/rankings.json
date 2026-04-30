@@ -28,6 +28,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -181,6 +182,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T12:48:11.175Z",
+    "prompt": "What is AI?",
+    "response": "logs what indicator different pure indexjs textprocessorjs might.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-04-30T12:48:16.073Z",
+    "prompt": "How does learning work?",
+    "response": "logs what indicator different pure around indexjs might.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
