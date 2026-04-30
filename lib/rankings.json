@@ -1,6 +1,7 @@
 [
   {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
     "prompt": "What is AI?",
     "response": "network thats forwardbackward avatars 1776 do free conversations.",
@@ -21,6 +22,18 @@
     "timestamp": "2026-04-30T11:26:55.068Z",
     "prompt": "How does learning work?",
     "response": "brain vectors trainjs feel im userbot absolutely network.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:28:42.303Z",
+    "prompt": "What is AI?",
+    "response": "intelligence data vocabulary improvejs status absolutely avatars brain.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T11:28:47.314Z",
+    "prompt": "How does learning work?",
+    "response": "intelligence data vocabulary improvejs status absolutely avatars brain.",
     "score": 2
 >>>>>>> Stashed changes
   }
