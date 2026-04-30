@@ -24,6 +24,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -123,5 +124,21 @@
 []
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-04-30T18:30:53.130Z",
+    "prompt": "What is AI?",
+    "response": "evil traditions indicator tradition questions converts captivating triumph.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T18:30:58.013Z",
+    "prompt": "How does learning work?",
+    "response": "evil traditions indicator tradition questions converts triumph captivating.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
