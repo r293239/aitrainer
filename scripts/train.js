@@ -33,12 +33,13 @@ function timeLeft(startTime) {
   return Math.max(0, HARD_STOP_MS - (Date.now() - startTime));
 }
 
+// 🔑 USE GH_TOKEN INSTEAD OF GITHUB_TOKEN
 async function callGPT4(messages, label = '') {
   apiCallCount++;
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.GH_TOKEN;
   
   if (!token) {
-    console.log(`     ❌ [${label}] No token`);
+    console.log(`     ❌ [${label}] No GH_TOKEN secret found`);
     return null;
   }
   
@@ -77,7 +78,7 @@ async function callGPT4(messages, label = '') {
     }
     
     if (!data.choices?.[0]?.message?.content) {
-      console.log(`     ❌ [${label}] No content in response`);
+      console.log(`     ❌ [${label}] No content`);
       return null;
     }
     
@@ -117,15 +118,12 @@ function learnAboutCode() {
 }
 
 async function generateTopics(startTime) {
-  if (timeLeft(startTime) < 60000) {
-    console.log('  ⏰ Skipping topic generation (low time)');
-    return [];
-  }
+  if (timeLeft(startTime) < 60000) return [];
   
   console.log('\n💡 Generating topics...');
   const response = await callGPT4([
-    { role: 'system', content: 'Generate 5 interesting conversation questions. Output one per line. No numbers or bullets.' },
-    { role: 'user', content: 'Give me 5 diverse and interesting topics for discussion.' }
+    { role: 'system', content: 'Generate 5 interesting conversation questions. Output one per line. No numbers.' },
+    { role: 'user', content: 'Give me 5 diverse topics.' }
   ], 'topics');
   
   if (!response) return [];
@@ -144,14 +142,14 @@ async function debate(topic) {
   const answer = await callGPT4([
     { role: 'system', content: 'Give a detailed, helpful answer under 150 words.' },
     { role: 'user', content: topic }
-  ], 'debate-answer');
+  ], 'debate');
   
   if (!answer) return null;
   
   const improved = await callGPT4([
-    { role: 'system', content: 'Make this response even better. More helpful, engaging, and natural.' },
+    { role: 'system', content: 'Make this response even better. More helpful and natural.' },
     { role: 'user', content: `Original: ${answer}\n\nImproved:` }
-  ], 'debate-improve');
+  ], 'improve');
   
   const final = improved || answer;
   console.log(`     ✅ "${final.substring(0, 60)}..."`);
@@ -180,18 +178,17 @@ async function handleUncertainQuestions(startTime) {
     if (timeLeft(startTime) < 45000) break;
     
     const answer = await callGPT4([
-      { role: 'system', content: 'Give a helpful, personal, and engaging answer. You are a friendly chatbot named after the user who created you. Keep it under 3 sentences.' },
+      { role: 'system', content: 'Give a helpful, natural, and engaging answer. Keep it under 3 sentences.' },
       { role: 'user', content: q.text }
-    ], `uncertain-${q.text.substring(0, 20)}`);
+    ], `q-${q.text.substring(0, 20)}`);
     
     if (answer) {
       results.push({ prompt: q.text, response: answer });
-      console.log(`  ✅ "${q.text.substring(0, 40)}..." → "${answer.substring(0, 40)}..."`);
+      console.log(`  ✅ "${q.text.substring(0, 40)}..."`);
     }
     await new Promise(r => setTimeout(r, 500));
   }
   
-  // Clear answered questions
   const remaining = uncertain.filter(q => !toAnswer.some(a => a.text === q.text));
   fs.writeFileSync(UNCERTAIN_FILE, JSON.stringify(remaining, null, 2));
   
@@ -205,15 +202,15 @@ async function selfTalk(startTime) {
   
   const starter = await callGPT4([
     { role: 'system', content: 'Start a thoughtful conversation with a deep question.' },
-    { role: 'user', content: 'Begin a conversation about intelligence and learning.' }
-  ], 'selftalk-start');
+    { role: 'user', content: 'Begin a conversation about intelligence.' }
+  ], 'self-start');
   
   if (!starter) return [];
   
   const response = await callGPT4([
     { role: 'system', content: 'Respond thoughtfully with a different perspective.' },
     { role: 'user', content: starter }
-  ], 'selftalk-respond');
+  ], 'self-respond');
   
   if (!response) return [{ role: 'A', content: starter }];
   
@@ -268,9 +265,9 @@ async function train() {
   console.log('='.repeat(65));
   console.log('🧠 GPT-4o NEURAL TRAINING');
   console.log('='.repeat(65));
-  console.log(`Token: ${process.env.GITHUB_TOKEN ? '✅ Present' : '❌ MISSING'}`);
+  console.log(`GH_TOKEN: ${process.env.GH_TOKEN ? '✅ Present' : '❌ MISSING'}`);
   console.log(`Start: ${new Date().toISOString()}`);
-  console.log(`Time limit: ${TRAINING_MINUTES}min (hard stop at 9.5min)\n`);
+  console.log(`Time limit: ${TRAINING_MINUTES}min\n`);
 
   // Load brain
   let brain;
@@ -302,15 +299,13 @@ async function train() {
     try { selfTalks = JSON.parse(fs.readFileSync(SELF_TALK_FILE, 'utf-8')); } catch (e) {}
   }
 
-  // === Phase 1: Code awareness (always works, no API) ===
-  const codePairs = learnAboutCode();
-  trainingPairs.push(...codePairs);
+  // Phase 1: Code awareness
+  trainingPairs.push(...learnAboutCode());
 
-  // === Phase 2: Handle uncertain questions (answers real user questions) ===
-  const uncertainPairs = await handleUncertainQuestions(startTime);
-  trainingPairs.push(...uncertainPairs);
+  // Phase 2: Answer uncertain questions
+  trainingPairs.push(...(await handleUncertainQuestions(startTime)));
 
-  // === Phase 3: Generate topics & debate ===
+  // Phase 3: Generate topics & debate
   const topics = await generateTopics(startTime);
   const debateTopics = topics.length >= 2 ? topics : [
     "What is artificial intelligence?",
@@ -321,18 +316,13 @@ async function train() {
   
   console.log(`\n🎤 Debating ${Math.min(4, debateTopics.length)} topics...`);
   for (const topic of debateTopics.slice(0, 4)) {
-    if (timeLeft(startTime) < 45000) {
-      console.log('  ⏰ Time low, stopping debates');
-      break;
-    }
+    if (timeLeft(startTime) < 45000) break;
     const result = await debate(topic);
-    if (result) {
-      trainingPairs.push({ prompt: result.topic, response: result.response });
-    }
+    if (result) trainingPairs.push({ prompt: result.topic, response: result.response });
     await new Promise(r => setTimeout(r, 800));
   }
 
-  // === Phase 4: Self-talk ===
+  // Phase 4: Self-talk
   const convo = await selfTalk(startTime);
   if (convo.length >= 2) {
     selfTalks.push({ timestamp: new Date().toISOString(), conversation: convo });
@@ -341,7 +331,7 @@ async function train() {
     console.log('  ✅ Self-talk added');
   }
 
-  // === Phase 5: Build accumulating vocabulary ===
+  // Phase 5: Vocabulary
   console.log('\n📚 Building vocabulary...');
   let tp = new TextProcessor(500);
   if (fs.existsSync(VOCAB_FILE)) {
@@ -367,12 +357,12 @@ async function train() {
   });
   console.log(`  ${tp.vocabSize} words (+${newWords} new)`);
 
-  // === Phase 6: Rank my AI ===
+  // Phase 6: Ranking
   const newRankings = await rankMyAI(brain, tp, startTime);
   rankings.push(...newRankings);
   if (rankings.length > 50) rankings = rankings.slice(-50);
 
-  // === Phase 7: Neural network training ===
+  // Phase 7: Training
   console.log('\n🔄 Training neural network...');
   const trainingEnd = Math.min(
     startTime + TRAINING_MINUTES * 60 * 1000,
@@ -390,7 +380,6 @@ async function train() {
     brain.forward(inputVector);
     brain.backward(targetVector, 0.1);
     cycles++;
-    
     if (cycles % 200 === 0) {
       const sec = Math.floor((trainingEnd - Date.now()) / 1000);
       process.stdout.write(`\r  Cycles: ${cycles} | ${sec}s left`);
@@ -398,7 +387,7 @@ async function train() {
   }
   console.log(`\r  Cycles: ${cycles} completed`);
 
-  // === SAVE ===
+  // Save
   console.log('\n💾 Saving...');
   fs.writeFileSync(BRAIN_FILE, JSON.stringify(brain.toJSON(), null, 2));
   fs.writeFileSync(VOCAB_FILE, JSON.stringify({
@@ -435,13 +424,10 @@ async function train() {
   
   const duration = Math.floor((Date.now() - startTime) / 1000);
   console.log(`\n${'='.repeat(65)}`);
-  console.log(`✅ COMPLETE`);
+  console.log(`✅ COMPLETE (${duration}s)`);
   console.log(`${'='.repeat(65)}`);
-  console.log(`  Duration: ${duration}s`);
-  console.log(`  API calls: ${apiCallCount} (${apiSuccessCount} success)`);
-  console.log(`  Pairs: ${unique.length}`);
-  console.log(`  Vocab: ${tp.vocabSize} words`);
-  console.log(`  Cycles: ${cycles}`);
+  console.log(`  API: ${apiSuccessCount}/${apiCallCount} calls succeeded`);
+  console.log(`  Pairs: ${unique.length} | Vocab: ${tp.vocabSize} | Cycles: ${cycles}`);
   console.log(`${'='.repeat(65)}\n`);
 
   // Trigger next
@@ -452,7 +438,7 @@ async function train() {
       await fetch(`https://api.github.com/repos/${owner}/${name}/actions/workflows/trigger.yml/dispatches`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+          'Authorization': `Bearer ${process.env.GH_TOKEN}`,
           'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         },
