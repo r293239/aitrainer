@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "timestamp": "2026-04-30T17:05:03.485Z",
+    "prompt": "What is AI?",
+    "response": "brain do ai theme using questions matches dark.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T17:05:08.580Z",
+    "prompt": "How does learning work?",
+    "response": "brain do ai theme using questions matches dark.",
+    "score": 1
+  }
+]
