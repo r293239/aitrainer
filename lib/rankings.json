@@ -4,6 +4,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-04-30T11:26:22.190Z",
 =======
     "timestamp": "2026-04-30T11:35:16.293Z",
@@ -54,6 +55,18 @@
     "timestamp": "2026-04-30T11:35:43.463Z",
     "prompt": "How does learning work?",
     "response": "work indexjs forwardbackward smarter word number scoring understanding.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-04-30T11:37:31.917Z",
+    "prompt": "What is AI?",
+    "response": "based gpt4o textprocessorjs experiences scoring using generate than.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-04-30T11:37:36.697Z",
+    "prompt": "How does learning work?",
+    "response": "based gpt4o textprocessorjs scoring experiences using generate than.",
     "score": 2
 >>>>>>> Stashed changes
   }
