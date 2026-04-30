@@ -7,29 +7,20 @@ const TRAINING_FILE = path.join(__dirname, '..', 'lib', 'training_data.json');
 const RANKINGS_FILE = path.join(__dirname, '..', 'lib', 'rankings.json');
 const UNCERTAIN_FILE = path.join(__dirname, '..', 'lib', 'uncertain_questions.json');
 
-let state = {
-  failures: [],
-  successes: [],
-  stableHours: [],
-  bestScore: 0,
-  currentScore: 0,
-  trainingSessions: 0,
-  lastTrainingError: 1,
-  totalTrainingCycles: 0,
-  trainingPairs: 0,
-  vocabSize: 0,
-  selfConversations: 0,
-  averageRanking: 0,
-  totalRankings: 0,
-  codeFiles: 0
-};
-
+let state = {};
 if (fs.existsSync(STATE_FILE)) {
-  const raw = fs.readFileSync(STATE_FILE, 'utf-8');
-  if (raw.trim()) {
-    try { state = JSON.parse(raw); } catch (e) {}
-  }
+  try {
+    const raw = fs.readFileSync(STATE_FILE, 'utf-8');
+    if (raw.trim()) state = JSON.parse(raw);
+  } catch (e) {}
 }
+
+// Ensure all arrays exist before pushing
+if (!Array.isArray(state.successes)) state.successes = [];
+if (!Array.isArray(state.failures)) state.failures = [];
+if (!Array.isArray(state.stableHours)) state.stableHours = [];
+if (typeof state.bestScore !== 'number') state.bestScore = 0;
+if (typeof state.currentScore !== 'number') state.currentScore = 0;
 
 const timestamp = new Date().toISOString();
 const hour = new Date().getUTCHours();
@@ -38,10 +29,8 @@ console.log('='.repeat(60));
 console.log('📊 REWARD EVALUATION');
 console.log('='.repeat(60));
 
-// Check resources
 const brainExists = fs.existsSync(BRAIN_FILE);
-let brainSize = 0;
-if (brainExists) brainSize = fs.statSync(BRAIN_FILE).size;
+let brainSize = brainExists ? fs.statSync(BRAIN_FILE).size : 0;
 
 let trainingPairs = 0;
 if (fs.existsSync(TRAINING_FILE)) {
@@ -58,37 +47,26 @@ if (fs.existsSync(UNCERTAIN_FILE)) {
   try { uncertainCount = JSON.parse(fs.readFileSync(UNCERTAIN_FILE, 'utf-8')).length; } catch (e) {}
 }
 
-// Score
 let score = 0;
 if (brainExists) score += 15;
 if (brainSize > 50000) score += 15;
 if (brainSize > 100000) score += 10;
 if (trainingPairs > 50) score += 15;
 if (trainingPairs > 200) score += 10;
-if (trainingPairs > 500) score += 10;
-if (rankings > 10) score += 10;
-if (state.averageRanking > 5) score += 10;
-if (state.averageRanking > 7) score += 15;
-if (state.lastTrainingError < 0.1) score += 15;
-if (state.lastTrainingError < 0.05) score += 10;
 if (state.vocabSize > 200) score += 10;
-if (uncertainCount < 10) score += 5; // Fewer uncertain = smarter
+if (uncertainCount < 10) score += 5;
 
-console.log(`Brain: ${brainExists ? '✅' : '❌'} (${(brainSize / 1024).toFixed(1)} KB)`);
+console.log(`Brain: ${brainExists ? '✅' : '❌'} (${(brainSize/1024).toFixed(1)} KB)`);
 console.log(`Training pairs: ${trainingPairs}`);
-console.log(`Rankings: ${rankings}`);
-console.log(`Avg ranking: ${(state.averageRanking || 0).toFixed(1)}/10`);
-console.log(`Training sessions: ${state.trainingSessions || 0}`);
-console.log(`Training error: ${(state.lastTrainingError || 1).toFixed(4)}`);
 console.log(`Vocab size: ${state.vocabSize || 0}`);
 console.log(`Uncertain questions: ${uncertainCount}`);
 console.log(`\n📈 Current score: ${score}/100`);
-console.log(`🏆 Best score: ${state.bestScore || 0}/100`);
+console.log(`🏆 Best score: ${state.bestScore}/100`);
 
-const prevScore = state.currentScore || 0;
+const prevScore = state.currentScore;
 state.currentScore = score;
 
-if (score > (state.bestScore || 0)) {
+if (score > state.bestScore) {
   state.bestScore = score;
   console.log('🟢 NEW BEST SCORE!');
 }
@@ -96,16 +74,18 @@ if (score > (state.bestScore || 0)) {
 const diff = score - prevScore;
 if (diff > 0) {
   state.successes.push({ time: timestamp, hour, score, improvement: diff });
-  console.log(`🟢 REWARD: +${diff} points`);
+  console.log(`🟢 REWARD: +${diff}`);
 } else if (diff < 0) {
   state.failures.push({ time: timestamp, hour, score, decline: Math.abs(diff) });
-  console.log(`🔴 PENALTY: ${diff} points`);
+  console.log(`🔴 PENALTY: ${diff}`);
 } else {
   console.log('⚪ STABLE');
 }
 
-if (!state.stableHours) state.stableHours = [];
 state.stableHours.push(hour);
+if (state.successes.length > 100) state.successes = state.successes.slice(-100);
+if (state.failures.length > 100) state.failures = state.failures.slice(-100);
+if (state.stableHours.length > 200) state.stableHours = state.stableHours.slice(-200);
 
 fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 console.log('✅ Evaluation complete');
