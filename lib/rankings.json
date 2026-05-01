@@ -1,5 +1,6 @@
 [
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-05-01T11:16:39.098Z",
     "prompt": "What is AI?",
     "response": "converts network bot tradition recognition forwardbackward india evila.",
@@ -21,6 +22,17 @@
     "timestamp": "2026-05-01T11:10:13.035Z",
     "prompt": "How does learning work?",
     "response": "matches revolutionizing brain textprocessorjs productivity tools data pieces.",
+=======
+    "timestamp": "2026-05-01T11:18:25.744Z",
+    "prompt": "What is AI?",
+    "response": "textprocessorjs responses why indicator userbot intelligence javascript viktor.",
+>>>>>>> Stashed changes
     "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T11:18:30.213Z",
+    "prompt": "How does learning work?",
+    "response": "textprocessorjs responses why indicator userbot intelligence javascript messages.",
+    "score": 2
   }
 ]
