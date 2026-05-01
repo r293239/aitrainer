@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "timestamp": "2026-05-01T11:00:28.822Z",
+    "prompt": "What is AI?",
+    "response": "converts chatjs ever making how implications manages evaluates.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T11:00:33.824Z",
+    "prompt": "How does learning work?",
+    "response": "converts ever chatjs making how manages implications status.",
+    "score": 1
+  }
+]
