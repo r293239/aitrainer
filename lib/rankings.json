@@ -23,6 +23,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -143,6 +144,22 @@
     "timestamp": "2026-05-01T12:20:01.215Z",
     "prompt": "How does learning work?",
     "response": "responses most logs propagation questions scoring could brainjs.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:24:53.233Z",
+    "prompt": "What is AI?",
+    "response": "brain evaluates network response avatars you messages selftalk.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T12:24:58.276Z",
+    "prompt": "How does learning work?",
+    "response": "brain evaluates network response you avatars delves messages.",
     "score": 2
   }
 ]
