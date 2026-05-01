@@ -31,9 +31,21 @@
     "score": 1
   },
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-05-01T11:18:30.213Z",
     "prompt": "How does learning work?",
     "response": "textprocessorjs responses why indicator userbot intelligence javascript messages.",
+=======
+    "timestamp": "2026-05-01T11:26:19.948Z",
+    "prompt": "What is AI?",
+    "response": "revolutionize using response pivotal theme vectors role data.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T11:26:24.955Z",
+    "prompt": "How does learning work?",
+    "response": "revolutionize using response pivotal theme role vectors data.",
+>>>>>>> Stashed changes
     "score": 2
   }
 ]
