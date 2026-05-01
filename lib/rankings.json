@@ -26,6 +26,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -184,6 +185,22 @@
     "timestamp": "2026-05-01T12:28:21.947Z",
     "prompt": "How does learning work?",
     "response": "you handles data intelligence indicator definitely into burst.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:28:57.332Z",
+    "prompt": "What is AI?",
+    "response": "explore propagation cultural around more selftalk brain word.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:29:02.594Z",
+    "prompt": "How does learning work?",
+    "response": "explore cultural propagation around more selftalk brain word.",
     "score": 2
   }
 ]
