@@ -6,6 +6,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "trainingSessions": 3,
 <<<<<<< Updated upstream
   "totalTrainingCycles": 4461070,
@@ -29,10 +30,15 @@
   "trainingSessions": 1,
   "totalTrainingCycles": 1270886,
 >>>>>>> Stashed changes
+=======
+  "trainingSessions": 1,
+  "totalTrainingCycles": 1266985,
+>>>>>>> Stashed changes
   "trainingPairs": 6,
   "vocabSize": 60,
   "apiCalls": 6,
   "apiSuccesses": 0,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -56,36 +62,15 @@
   "apiCalls": 6,
   "apiSuccesses": 0,
   "lastTrainingTime": "2026-05-01T01:52:36.455Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-<<<<<<< Updated upstream
-      "time": "2026-05-01T01:43:11.599Z",
 =======
-  "lastTrainingTime": "2026-05-01T01:47:42.319Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-01T01:47:42.528Z",
+  "lastTrainingTime": "2026-05-01T02:11:24.334Z",
 >>>>>>> Stashed changes
-=======
-      "time": "2026-05-01T01:52:36.641Z",
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-01T01:57:06.190Z",
   "trainingDuration": 480,
   "successes": [
     {
-      "time": "2026-05-01T01:57:06.359Z",
->>>>>>> Stashed changes
-      "hour": 1,
-=======
-  "lastTrainingTime": "2026-05-01T02:01:53.906Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-01T02:01:54.094Z",
+      "time": "2026-05-01T02:11:24.542Z",
       "hour": 2,
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
   "lastTrainingTime": "2026-05-01T02:06:23.230Z",
@@ -95,12 +80,15 @@
       "time": "2026-05-01T02:06:23.457Z",
       "hour": 2,
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
       "score": 45,
       "improvement": 45
     }
   ],
   "failures": [],
   "stableHours": [
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -119,6 +107,9 @@
 =======
 >>>>>>> Stashed changes
     1
+=======
+    2
+>>>>>>> Stashed changes
 =======
     2
 >>>>>>> Stashed changes
