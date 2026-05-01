@@ -27,6 +27,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -128,14 +129,22 @@
     "timestamp": "2026-05-01T12:19:07.189Z",
     "prompt": "What is AI?",
     "response": "handles responses process matches training decade information improvejs.",
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:29:53.740Z",
+    "prompt": "What is AI?",
+    "response": "debates like neural influence avatars responses platforms tools.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-05-01T12:19:12.487Z",
+    "timestamp": "2026-05-01T12:29:58.669Z",
     "prompt": "How does learning work?",
-    "response": "handles responses process matches training information decade improvejs.",
+    "response": "debates neural influence like avatars responses platforms tools.",
     "score": 2
   }
+<<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
 =======
@@ -203,5 +212,8 @@
     "response": "explore cultural propagation around more selftalk brain word.",
     "score": 2
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
