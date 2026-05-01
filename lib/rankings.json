@@ -41,6 +41,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -189,4 +190,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T16:13:59.860Z",
+    "prompt": "What is AI?",
+    "response": "rates how lives converts strengthen number brain most.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T16:14:05.324Z",
+    "prompt": "How does learning work?",
+    "response": "rates how lives converts strengthen number brain most.",
+    "score": 1
+  }
+]
 >>>>>>> Stashed changes
