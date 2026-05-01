@@ -34,6 +34,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -50,8 +53,9 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-01T12:36:33.122Z",
+    "timestamp": "2026-05-01T12:46:13.020Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
     "response": "data evaluates responses captures userbot do gpt4o text.",
     "score": 2
   },
@@ -300,6 +304,18 @@
     "timestamp": "2026-05-01T12:44:39.391Z",
     "prompt": "How does learning work?",
     "response": "indexjs word selftalk manages what think parks beautiful.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+    "response": "debates importance text significantly had psychiatrist generates textprocessorjs.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:46:18.039Z",
+    "prompt": "How does learning work?",
+    "response": "debates importance text significantly had psychiatrist textprocessorjs generates.",
     "score": 1
   }
 ]
