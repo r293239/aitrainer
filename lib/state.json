@@ -51,6 +51,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "trainingSessions": 11,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -70,33 +71,23 @@
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1930677,
 =======
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1919020,
 >>>>>>> Stashed changes
-=======
   "trainingSessions": 1,
-  "totalTrainingCycles": 1868965,
->>>>>>> Stashed changes
+  "totalTrainingCycles": 1958050,
   "trainingPairs": 9,
-  "vocabSize": 382,
+  "vocabSize": 380,
   "apiCalls": 9,
   "apiSuccesses": 9,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "lastTrainingTime": "2026-05-01T11:56:22.251Z",
-=======
-  "lastTrainingTime": "2026-05-01T12:06:05.149Z",
->>>>>>> Stashed changes
+  "lastTrainingTime": "2026-05-01T12:15:55.071Z",
   "trainingDuration": 480,
   "successes": [
     {
-      "time": "2026-05-01T12:06:05.354Z",
+      "time": "2026-05-01T12:15:55.361Z",
       "hour": 12,
       "score": 55,
       "improvement": 55
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -322,6 +313,8 @@
       "hour": 12,
       "score": 55,
       "improvement": 55
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
   ],
