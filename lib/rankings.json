@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "timestamp": "2026-05-01T18:38:02.553Z",
+    "prompt": "What is AI?",
+    "response": "bot vocabulary brainjs network responses interface various ai.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T18:38:07.625Z",
+    "prompt": "How does learning work?",
+    "response": "bot vocabulary brainjs network responses interface ai various.",
+    "score": 2
+  }
+]
