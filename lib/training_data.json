@@ -23,6 +23,7 @@
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -104,6 +105,8 @@
   {
     "prompt": "Certainly! Let's dive into the topic of intelligence. Here’s a deep question to ponder: \n\nWhat do you think it truly means to be \"intelligent\"? Is it merely the ability to acquire knowledge and solve problems, or does it encompass emotional understanding, creativity, and social skills as well? \n\nI'd love to hear your thoughts on this.",
     "response": "That's a thought-provoking question! While traditional definitions of intelligence often focus on cognitive abilities—such as reasoning, problem-solving, and the capacity to acquire knowledge—it's increasingly recognized that intelligence is a multifaceted concept. \n\nOne perspective is to view intelligence as a spectrum that includes not only cognitive skills but also emotional intelligence (EQ), creativity, social intelligence, and practical wisdom. Emotional intelligence, for instance, involves the ability to understand and manage one’s own emotions while empathizing with others, which can significantly enhance interpersonal relationships and decision-making. \n\nMoreover, creativity should not be overlooked. It reflects the ability to think outside the box, to connect disparate ideas, and to innovate, which can be just as crucial as logical reasoning in many fields. The arts, sciences, and even business benefit from creative thinking, suggesting that intelligence is not solely about what you know, but how you can apply that knowledge in novel ways.\n\nSocial skills also play a vital role. The ability to navigate social complexities, communicate effectively"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
