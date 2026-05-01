@@ -33,6 +33,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -283,6 +284,22 @@
     "timestamp": "2026-05-01T12:39:54.589Z",
     "prompt": "How does learning work?",
     "response": "chanoyu do spot number tea debates error more.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:44:34.469Z",
+    "prompt": "What is AI?",
+    "response": "indexjs word manages selftalk what think parks uncertain.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:44:39.391Z",
+    "prompt": "How does learning work?",
+    "response": "indexjs word selftalk manages what think parks beautiful.",
     "score": 1
   }
 ]
