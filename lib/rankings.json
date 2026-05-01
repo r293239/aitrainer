@@ -28,6 +28,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -215,5 +216,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:34:41.682Z",
+    "prompt": "What is AI?",
+    "response": "userbot uncertain logs bot think ideas cultural 1969.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:34:46.952Z",
+    "prompt": "How does learning work?",
+    "response": "userbot uncertain logs bot ideas think 1969 you.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
