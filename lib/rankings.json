@@ -42,6 +42,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -203,6 +204,22 @@
     "timestamp": "2026-05-01T16:14:05.324Z",
     "prompt": "How does learning work?",
     "response": "rates how lives converts strengthen number brain most.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T16:15:37.543Z",
+    "prompt": "What is AI?",
+    "response": "ways using you coming revolutionize text word number.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T16:15:42.521Z",
+    "prompt": "How does learning work?",
+    "response": "ways using you coming revolutionize text number word.",
     "score": 1
   }
 ]
