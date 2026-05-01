@@ -16,6 +16,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -26,8 +29,9 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-01T15:09:54.334Z",
+    "timestamp": "2026-05-01T15:19:22.497Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
     "response": "brain messages trains immersive play debates theme data.",
     "score": 1
   },
@@ -127,5 +131,17 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "response": "pure avatars textprocessorjs trainjs questions number using scoring.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T15:19:27.532Z",
+    "prompt": "How does learning work?",
+    "response": "pure avatars textprocessorjs trainjs questions number using scoring.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
