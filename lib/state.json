@@ -1,5 +1,6 @@
 {
   "trainingSessions": 1,
+<<<<<<< Updated upstream
   "totalTrainingCycles": 1905101,
   "trainingPairs": 9,
   "vocabSize": 364,
@@ -10,6 +11,18 @@
   "successes": [
     {
       "time": "2026-05-01T14:13:57.867Z",
+=======
+  "totalTrainingCycles": 1861338,
+  "trainingPairs": 9,
+  "vocabSize": 381,
+  "apiCalls": 9,
+  "apiSuccesses": 9,
+  "lastTrainingTime": "2026-05-01T14:18:09.395Z",
+  "trainingDuration": 480,
+  "successes": [
+    {
+      "time": "2026-05-01T14:18:09.611Z",
+>>>>>>> Stashed changes
       "hour": 14,
       "score": 55,
       "improvement": 55

@@ -1,5 +1,6 @@
 [
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-05-01T14:06:33.946Z",
     "prompt": "What is AI?",
     "response": "cuttingedge response forwardbackward bustling modernity my adventure journey.",
@@ -9,6 +10,17 @@
     "timestamp": "2026-05-01T14:06:38.875Z",
     "prompt": "How does learning work?",
     "response": "response cuttingedge forwardbackward bustling modernity my theme adventure.",
+=======
+    "timestamp": "2026-05-01T14:10:45.602Z",
+    "prompt": "What is AI?",
+    "response": "word dynamic questions scoring user identities using propagation.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T14:10:50.851Z",
+    "prompt": "How does learning work?",
+    "response": "word dynamic questions scoring identities user using significant.",
+>>>>>>> Stashed changes
     "score": 1
   }
 ]
