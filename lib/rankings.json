@@ -41,6 +41,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -365,6 +366,22 @@
     "timestamp": "2026-05-01T12:56:36.035Z",
     "prompt": "How does learning work?",
     "response": "does how our future trainjs transformative handles brainjs.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:58:01.239Z",
+    "prompt": "What is AI?",
+    "response": "data debates using strength improvejs scoring impact what.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:58:06.640Z",
+    "prompt": "How does learning work?",
+    "response": "data debates using strength improvejs scoring impact what.",
     "score": 2
   }
 ]
