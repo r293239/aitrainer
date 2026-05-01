@@ -59,6 +59,7 @@
     "number": 56,
     "vectors": 57,
     "manages": 58,
+<<<<<<< Updated upstream
     "word": 59,
     "role": 60,
     "you": 61,
@@ -1287,6 +1288,9 @@
     "blurring": 379,
     "lines": 380
 >>>>>>> Stashed changes
+=======
+    "word": 59
+>>>>>>> Stashed changes
   },
   "indexToWord": {
     "0": "what",
@@ -1348,6 +1352,7 @@
     "56": "number",
     "57": "vectors",
     "58": "manages",
+<<<<<<< Updated upstream
     "59": "word",
     "60": "role",
     "61": "you",
@@ -2328,5 +2333,10 @@
   "vocabSize": 282
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "59": "word"
+  },
+  "vocabSize": 60
 >>>>>>> Stashed changes
 }
