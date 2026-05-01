@@ -22,6 +22,7 @@
   {
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -78,6 +79,8 @@
   {
     "prompt": "Intelligence is a fascinating topic that encompasses so many dimensions. One deep question we might consider is: What do you think is the most important aspect of intelligence—cognitive ability, emotional intelligence, or social intelligence—and why? How do you think these forms of intelligence interact with each other in our daily lives?",
     "response": "That's a compelling question, and while many might emphasize cognitive ability due to its traditional association with IQ and academic success, I would argue that emotional intelligence (EQ) may hold a more significant role in shaping our day-to-day experiences and interactions.\n\nEmotional intelligence enables us to understand and manage our own emotions, as well as empathize with others. In many scenarios, such as navigating personal relationships or working in collaborative settings, EQ can be the decisive factor in achieving successful outcomes. For instance, a highly intelligent person (in the cognitive sense) might struggle in social situations if they lack emotional awareness, leading to misunderstandings or conflicts that could have been avoided through better emotional navigation.\n\nMoreover, emotional intelligence can enhance cognitive abilities by fostering a healthier mental state. Individuals with high EQ often experience lower levels of stress and anxiety, allowing greater focus and creativity in their cognitive endeavors. This interaction illustrates how emotional intelligence can actually elevate cognitive performance.\n\nSocial intelligence, on the other hand, integrates aspects of both cognitive and emotional"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
