@@ -1,21 +1,17 @@
 <<<<<<< Updated upstream
 [
   {
-<<<<<<< Updated upstream
-    "timestamp": "2026-05-01T14:06:33.946Z",
+    "timestamp": "2026-05-01T14:21:01.671Z",
     "prompt": "What is AI?",
-    "response": "cuttingedge response forwardbackward bustling modernity my adventure journey.",
+    "response": "forwardbackward training next brainjs avatars questions advancements trains.",
     "score": 2
   },
   {
-    "timestamp": "2026-05-01T14:06:38.875Z",
+    "timestamp": "2026-05-01T14:21:07.179Z",
     "prompt": "How does learning work?",
-    "response": "response cuttingedge forwardbackward bustling modernity my theme adventure.",
-=======
-    "timestamp": "2026-05-01T14:10:45.602Z",
-    "prompt": "What is AI?",
-    "response": "word dynamic questions scoring user identities using propagation.",
+    "response": "forwardbackward training next brainjs avatars questions advancements trains.",
     "score": 2
+<<<<<<< Updated upstream
   },
   {
     "timestamp": "2026-05-01T14:10:50.851Z",
@@ -35,6 +31,8 @@
     "prompt": "How does learning work?",
     "response": "handles data vibrant training evaluates neural network converts.",
     "score": 2
+=======
+>>>>>>> Stashed changes
   }
 ]
 =======
