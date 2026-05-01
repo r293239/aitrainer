@@ -8,6 +8,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -47,13 +48,22 @@
     "prompt": "What is AI?",
     "response": "triumph vocabulary light how think diwali using textprocessorjs.",
     "score": 1
+=======
+[
+  {
+    "timestamp": "2026-05-01T11:55:26.645Z",
+    "prompt": "What is AI?",
+    "response": "theme collaborate interface network role can user next.",
+    "score": 2
+>>>>>>> Stashed changes
   },
   {
-    "timestamp": "2026-05-01T11:39:25.515Z",
+    "timestamp": "2026-05-01T11:55:31.871Z",
     "prompt": "How does learning work?",
-    "response": "light vocabulary triumph how think using diwali textprocessorjs.",
+    "response": "theme collaborate interface network role can user where.",
     "score": 1
   }
+<<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
 =======
@@ -108,5 +118,8 @@
     "response": "could user brainjs converts responses indicator ranking me.",
     "score": 2
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
