@@ -43,6 +43,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -75,14 +76,22 @@
     "prompt": "What is AI?",
     "response": "brainjs machine evaluates ai last text network what.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:04:24.271Z",
+    "prompt": "What is AI?",
+    "response": "scoring vocabulary level user brain generates manages empathy.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-05-01T12:48:13.354Z",
+    "timestamp": "2026-05-01T13:04:29.129Z",
     "prompt": "How does learning work?",
-    "response": "brainjs machine ai evaluates last text network what.",
+    "response": "scoring vocabulary level user brain manages generates empathy.",
     "score": 2
   }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -393,6 +402,9 @@
     "response": "data debates using strength improvejs scoring impact what.",
     "score": 2
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
 =======
