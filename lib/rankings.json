@@ -51,6 +51,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -96,14 +97,22 @@
     "prompt": "What is AI?",
     "response": "scoring vocabulary level user brain generates manages empathy.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:18:06.263Z",
+    "prompt": "What is AI?",
+    "response": "likely userbot these network interface messages avatars scoring.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-05-01T13:04:29.129Z",
+    "timestamp": "2026-05-01T13:18:11.693Z",
     "prompt": "How does learning work?",
-    "response": "scoring vocabulary level user brain manages generates empathy.",
+    "response": "likely userbot network these interface messages avatars scoring.",
     "score": 2
   }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -370,5 +379,8 @@
     "response": "pure what propagation your status significance selftalk paulo.",
     "score": 1
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
