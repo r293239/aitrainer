@@ -18,6 +18,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "trainingSessions": 3,
 <<<<<<< Updated upstream
   "totalTrainingCycles": 4464226,
@@ -31,50 +32,19 @@
 =======
 =======
 >>>>>>> Stashed changes
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1313330,
-  "trainingPairs": 6,
-  "vocabSize": 60,
-  "apiCalls": 6,
-  "apiSuccesses": 0,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "lastTrainingTime": "2026-05-01T18:23:13.157Z",
-=======
-  "lastTrainingTime": "2026-05-01T18:25:07.697Z",
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-01T18:33:05.122Z",
->>>>>>> Stashed changes
-=======
 =======
 >>>>>>> Stashed changes
   "trainingSessions": 1,
-  "totalTrainingCycles": 1953925,
-=======
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1279612,
->>>>>>> Stashed changes
-=======
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1238695,
->>>>>>> Stashed changes
-=======
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1240976,
->>>>>>> Stashed changes
-  "trainingPairs": 9,
-  "vocabSize": 386,
-  "apiCalls": 6,
-  "apiSuccesses": 0,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "lastTrainingTime": "2026-05-01T18:55:26.711Z",
+  "totalTrainingCycles": 1634725,
+  "trainingPairs": 14,
+  "vocabSize": 715,
+  "apiCalls": 9,
+  "apiSuccesses": 6,
+  "lastTrainingTime": "2026-05-01T19:42:53.330Z",
   "trainingDuration": 480,
   "successes": [
     {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
       "time": "2026-05-01T18:35:21.222Z",
@@ -239,12 +209,17 @@
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+      "time": "2026-05-01T19:42:53.644Z",
+      "hour": 19,
+>>>>>>> Stashed changes
       "score": 55,
       "improvement": 55
     }
   ],
   "failures": [],
   "stableHours": [
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -279,6 +254,9 @@
 =======
 >>>>>>> Stashed changes
     18
+=======
+    19
+>>>>>>> Stashed changes
 =======
     19
 >>>>>>> Stashed changes
