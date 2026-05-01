@@ -40,6 +40,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -349,6 +350,22 @@
     "prompt": "How does learning work?",
     "response": "debates we response chatjs reality gpt4o what questions.",
     "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:56:31.093Z",
+    "prompt": "What is AI?",
+    "response": "does how future our trainjs transformative handles brainjs.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:56:36.035Z",
+    "prompt": "How does learning work?",
+    "response": "does how our future trainjs transformative handles brainjs.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
