@@ -45,6 +45,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -422,6 +423,22 @@
     "timestamp": "2026-05-01T13:06:09.016Z",
     "prompt": "How does learning work?",
     "response": "generates background chatjs experiences brainjs word user using.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:06:28.891Z",
+    "prompt": "What is AI?",
+    "response": "significant messages wider generates responses rates have pure.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T13:06:33.856Z",
+    "prompt": "How does learning work?",
+    "response": "significant messages wider generates responses rates have pure.",
     "score": 2
   }
 ]
