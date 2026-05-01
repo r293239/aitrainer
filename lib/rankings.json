@@ -66,6 +66,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -556,5 +557,15 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:56:25.895Z",
+    "prompt": "How does learning work?",
+    "response": "enable manages avatars family brainjs responses chatjs connectivity.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
