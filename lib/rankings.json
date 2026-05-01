@@ -4,6 +4,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -40,5 +41,21 @@
 []
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T14:40:29.802Z",
+    "prompt": "What is AI?",
+    "response": "vectors gpt4o generates meaningful trains good brainjs do.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T14:40:34.770Z",
+    "prompt": "How does learning work?",
+    "response": "vectors gpt4o generates meaningful brainjs good trains dark.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
