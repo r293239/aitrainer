@@ -23,6 +23,7 @@
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -90,6 +91,8 @@
 =======
     "prompt": "Absolutely! Intelligence is a fascinating and multifaceted topic. To kick things off, here's a deep question: \n\nWhat do you believe is the most significant distinction between emotional intelligence and cognitive intelligence, and how do you think each type contributes to our overall understanding of what it means to be \"intelligent\"?",
     "response": "That's a great question! While emotional intelligence (EI) and cognitive intelligence (IQ) are often seen as distinct aspects of overall intelligence, it's interesting to consider how they intersect and complement each other rather than solely focusing on their differences.\n\nCognitive intelligence, typically measured through standardized tests, encompasses analytical thinking, problem-solving abilities, and logical reasoning. It's often associated with academic success and intellectual achievements. However, this form of intelligence doesn't fully capture the complexities of human experience and interaction.\n\nOn the other hand, emotional intelligence refers to the ability to recognize, understand, and manage our own emotions, as well as the emotions of others. EI plays a crucial role in social interactions, empathy, and effective communication. It's about understanding the human experience, which is often messy and not easily quantifiable.\n\nNow, if we look at the relationship between the two, one might argue that emotional intelligence is increasingly vital in contexts that require collaboration, leadership, and conflict resolution. In many professional environments, for instance, cognitive skills"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
