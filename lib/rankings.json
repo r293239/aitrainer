@@ -27,6 +27,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -208,6 +209,22 @@
     "timestamp": "2026-05-01T15:39:48.715Z",
     "prompt": "How does learning work?",
     "response": "powerful beliefs vectors data forwardbackward logs avatars histories.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T15:42:43.885Z",
+    "prompt": "What is AI?",
+    "response": "interface search brain error using mans chat scoring.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T15:42:48.533Z",
+    "prompt": "How does learning work?",
+    "response": "interface brain search error using mans chat scoring.",
     "score": 2
   }
 ]
