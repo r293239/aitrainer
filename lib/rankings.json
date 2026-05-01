@@ -57,6 +57,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -454,6 +455,22 @@
     "timestamp": "2026-05-01T13:28:54.551Z",
     "prompt": "How does learning work?",
     "response": "manages vocabulary ranking handles utilize intelligence curate questions.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:34:33.306Z",
+    "prompt": "What is AI?",
+    "response": "brainjs debates think change response data biodiversity pollution.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T13:34:38.378Z",
+    "prompt": "How does learning work?",
+    "response": "brainjs debates think response data change manages biodiversity.",
     "score": 2
   }
 ]
