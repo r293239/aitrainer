@@ -3,6 +3,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -44,6 +45,22 @@
     "timestamp": "2026-05-01T11:39:25.515Z",
     "prompt": "How does learning work?",
     "response": "light vocabulary triumph how think using diwali textprocessorjs.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T11:45:45.492Z",
+    "prompt": "What is AI?",
+    "response": "remote trainjs like expect does play reality ways.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T11:45:50.645Z",
+    "prompt": "How does learning work?",
+    "response": "remote trainjs like expect does play ways reality.",
     "score": 1
   }
 ]
