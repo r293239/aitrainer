@@ -20,6 +20,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -94,5 +95,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:18:28.759Z",
+    "prompt": "What is AI?",
+    "response": "propagation generates converts javascript textprocessorjs believe together your.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:18:33.629Z",
+    "prompt": "How does learning work?",
+    "response": "converts propagation generates javascript textprocessorjs your believe together.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
