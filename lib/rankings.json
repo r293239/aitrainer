@@ -50,6 +50,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -351,6 +352,22 @@
     "timestamp": "2026-05-01T13:16:04.803Z",
     "prompt": "How does learning work?",
     "response": "also dark vectors individual vocabulary interface word chatjs.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:16:30.810Z",
+    "prompt": "What is AI?",
+    "response": "what pure your propagation significance selftalk status paulo.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T13:16:35.371Z",
+    "prompt": "How does learning work?",
+    "response": "pure what propagation your status significance selftalk paulo.",
     "score": 1
   }
 ]
