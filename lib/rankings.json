@@ -26,6 +26,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -193,5 +194,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T15:39:43.677Z",
+    "prompt": "What is AI?",
+    "response": "powerful beliefs vectors data avatars logs forwardbackward histories.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T15:39:48.715Z",
+    "prompt": "How does learning work?",
+    "response": "powerful beliefs vectors data forwardbackward logs avatars histories.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
