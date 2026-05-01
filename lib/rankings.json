@@ -60,6 +60,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -496,5 +497,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T13:39:04.234Z",
+    "prompt": "What is AI?",
+    "response": "scoring forwardbackward uncertain supportive converts improvejs handles data.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-01T13:39:09.444Z",
+    "prompt": "How does learning work?",
+    "response": "scoring forwardbackward uncertain supportive converts improvejs handles serve.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
