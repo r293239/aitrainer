@@ -38,6 +38,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -316,6 +317,22 @@
     "prompt": "How does learning work?",
     "response": "gpt4o while scoring pure forwardbackward chatjs evaluates network.",
     "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-01T12:54:26.332Z",
+    "prompt": "What is AI?",
+    "response": "trains vocabulary avatars reshaped such trainjs truly follows.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-01T12:54:31.457Z",
+    "prompt": "How does learning work?",
+    "response": "trains vocabulary avatars such reshaped follows truly trainjs.",
+    "score": 1
   }
 ]
 >>>>>>> Stashed changes
