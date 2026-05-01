@@ -65,6 +65,7 @@
     "manages": 58,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "word": 59,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -2027,6 +2028,9 @@
 =======
     "word": 59
 >>>>>>> Stashed changes
+=======
+    "word": 59
+>>>>>>> Stashed changes
   },
   "indexToWord": {
     "0": "what",
@@ -2088,6 +2092,7 @@
     "56": "number",
     "57": "vectors",
     "58": "manages",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     "59": "word",
@@ -3881,6 +3886,11 @@
     "388": "effectively"
   },
   "vocabSize": 389
+>>>>>>> Stashed changes
+=======
+    "59": "word"
+  },
+  "vocabSize": 60
 >>>>>>> Stashed changes
 =======
     "59": "word"
