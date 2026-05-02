@@ -1,11 +1,11 @@
 {
-  "trainingSessions": 1,
-  "totalTrainingCycles": 1917939,
-  "trainingPairs": 9,
-  "vocabSize": 399,
-  "apiCalls": 9,
-  "apiSuccesses": 9,
-  "lastTrainingTime": "2026-05-02T14:21:17.485Z",
+  "trainingSessions": 2,
+  "totalTrainingCycles": 4690193,
+  "trainingPairs": 12,
+  "vocabSize": 591,
+  "apiCalls": 18,
+  "apiSuccesses": 18,
+  "lastTrainingTime": "2026-05-02T14:31:27.262Z",
   "trainingDuration": 480,
   "successes": [
     {
@@ -17,6 +17,7 @@
   ],
   "failures": [],
   "stableHours": [
+    14,
     14
   ],
   "bestScore": 55,
