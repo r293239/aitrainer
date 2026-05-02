@@ -22,6 +22,7 @@
   {
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -256,6 +257,8 @@
 =======
     "prompt": "Absolutely! Intelligence is a fascinating topic. To start us off, I’d like to pose a deep question: Do you think intelligence is solely defined by cognitive abilities, such as problem-solving and reasoning, or do emotional and social intelligence play an equally important role in how we define a truly intelligent person? How do you think these different types of intelligence interact in our daily lives?",
     "response": "That's an intriguing question that opens up a broader discussion about the nature of intelligence itself. While cognitive abilities like problem-solving and reasoning are often emphasized in traditional definitions of intelligence—especially in academic and professional contexts—emotional and social intelligence are equally crucial in understanding a person's overall capability to navigate life effectively.\n\nFrom a different perspective, one might argue that intelligence cannot be compartmentalized neatly into distinct categories. Cognitive intelligence is certainly valuable for tasks requiring analytical thinking, but emotional intelligence—our ability to understand and manage our own emotions and those of others—plays a significant role in human interactions, decision-making, and leadership. Social intelligence further enhances our ability to relate to others, fostering collaboration and teamwork, which are essential in many contexts, especially in today's increasingly interconnected world.\n\nIn our daily lives, these intelligences interact in ways that can profoundly affect outcomes. For example, a highly intelligent individual in terms of cognitive prowess might struggle to connect with colleagues or maintain relationships if they lack emotional intelligence. Conversely, someone"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
