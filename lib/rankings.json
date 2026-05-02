@@ -1,5 +1,6 @@
 [
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-05-02T14:50:21.066Z",
     "prompt": "What is AI?",
     "response": "indicator textprocessorjs shaping our what future theme uncertain.",
@@ -22,11 +23,17 @@
     "timestamp": "2026-05-02T14:24:03.121Z",
     "prompt": "What is AI?",
     "response": "about indexjs one theme most intelligence traditions diwali.",
+=======
+    "timestamp": "2026-05-02T14:51:33.243Z",
+    "prompt": "What is AI?",
+    "response": "practice traditions generates cultures you number debates userbot.",
+>>>>>>> Stashed changes
     "score": 1
   },
   {
-    "timestamp": "2026-05-02T14:24:08.317Z",
+    "timestamp": "2026-05-02T14:51:38.276Z",
     "prompt": "How does learning work?",
+<<<<<<< Updated upstream
     "response": "interface theme indexjs do trainjs improvejs scoring trains.",
     "score": 1
   },
@@ -79,6 +86,10 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "response": "practice traditions generates you cultures debates userbot number.",
+    "score": 2
 >>>>>>> Stashed changes
   }
 ]
