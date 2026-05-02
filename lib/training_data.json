@@ -22,6 +22,7 @@
   {
     "prompt": "What does textProcessor.js do?",
     "response": "converts text to number vectors and manages word vocabulary"
+<<<<<<< Updated upstream
   },
   {
 <<<<<<< Updated upstream
@@ -200,6 +201,8 @@
 =======
     "prompt": "Absolutely, intelligence is a fascinating topic. To start our conversation, let me pose a deep question: \n\nWhat do you believe differentiates emotional intelligence from analytical intelligence, and how do you think each one influences our ability to connect with others and navigate the complexities of life?",
     "response": "That's a compelling question, and exploring the nuances between emotional intelligence (EI) and analytical intelligence (AI) can reveal a lot about human interaction and personal development. \n\nEmotional intelligence primarily revolves around the ability to recognize, understand, and manage our own emotions, as well as to empathize with the emotions of others. It plays a critical role in social interactions, allowing individuals to build and maintain relationships, resolve conflicts, and exhibit compassion and understanding. Emotional intelligence fosters deeper connections and creates an environment of trust and collaboration, which is vital in both personal and professional settings.\n\nOn the other hand, analytical intelligence refers to the cognitive abilities measured by IQ tests, such as logical reasoning, problem-solving, and critical thinking. This type of intelligence helps us navigate complex situations that require structured thinking and decision-making based on facts and data. Analytical intelligence can be essential for academic success and in fields that require rigorous analysis, innovation, and strategic planning.\n\nWhile both intelligences are distinct, they are not mutually exclusive;"
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
