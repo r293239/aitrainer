@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [
   {
 <<<<<<< Updated upstream
@@ -37,18 +38,21 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
-  },
+=======
+[
   {
-    "timestamp": "2026-05-02T14:45:30.335Z",
+    "timestamp": "2026-05-02T15:27:58.488Z",
     "prompt": "What is AI?",
-    "response": "about indexjs theme one traditions text interface lights.",
-    "score": 1
+    "response": "scoring we neural response internet some smart vectors.",
+    "score": 2
+>>>>>>> Stashed changes
   },
   {
-    "timestamp": "2026-05-02T14:45:34.483Z",
+    "timestamp": "2026-05-02T15:28:03.017Z",
     "prompt": "How does learning work?",
-    "response": "interface theme trainjs brainjs neural trains pure indexjs.",
+    "response": "scoring neural we response internet some smart vectors.",
     "score": 2
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -109,4 +113,8 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+  }
+]
 >>>>>>> Stashed changes
