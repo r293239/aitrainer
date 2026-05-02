@@ -55,6 +55,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -75,10 +76,13 @@
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-02T13:02:55.757Z",
+    "timestamp": "2026-05-02T13:13:51.532Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
     "response": "convenience converts easier way ranking stay do hand.",
     "score": 1
   },
@@ -535,6 +539,18 @@
     "prompt": "How does learning work?",
     "response": "brain indicator ranking messages representation converts enriching trains.",
     "score": 3
+  }
+]
+>>>>>>> Stashed changes
+=======
+    "response": "matches chatjs family brainjs apps video trains profound.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:13:56.485Z",
+    "prompt": "How does learning work?",
+    "response": "matches family chatjs brainjs apps video trains profound.",
+    "score": 1
   }
 ]
 >>>>>>> Stashed changes
