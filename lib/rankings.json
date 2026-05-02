@@ -31,6 +31,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -226,4 +227,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:26:35.496Z",
+    "prompt": "What is AI?",
+    "response": "error trainjs daily deeper training dive ranking generates.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:26:43.890Z",
+    "prompt": "How does learning work?",
+    "response": "error trainjs daily deeper training dive ranking generates.",
+    "score": 1
+  }
+]
 >>>>>>> Stashed changes
