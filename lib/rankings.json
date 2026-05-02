@@ -25,6 +25,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -191,6 +192,22 @@
     "timestamp": "2026-05-02T12:14:43.034Z",
     "prompt": "What is AI?",
     "response": "will number questions dark brain play education bot.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:15:52.042Z",
+    "prompt": "What is AI?",
+    "response": "matches indicator questions think using improvejs does enchanting.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T12:15:57.032Z",
+    "prompt": "How does learning work?",
+    "response": "indicator matches questions using think does improvejs enchanting.",
     "score": 1
   }
 ]
