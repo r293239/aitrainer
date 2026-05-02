@@ -7,14 +7,18 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-02T11:31:32.005Z",
+    "timestamp": "2026-05-02T11:42:03.794Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
     "response": "outlook life rates word debates experiences impact one.",
     "score": 1
   },
@@ -117,5 +121,17 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+    "response": "user generates data what questions believe status interface.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T11:42:08.829Z",
+    "prompt": "How does learning work?",
+    "response": "user generates data questions what believe status interface.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
