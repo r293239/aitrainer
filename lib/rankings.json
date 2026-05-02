@@ -1,6 +1,6 @@
-<<<<<<< Updated upstream
 [
   {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -103,8 +103,17 @@
     "response": "brainjs paulo word number shepherd neural scoring selftalk.",
     "score": 2
 >>>>>>> Stashed changes
+=======
+    "timestamp": "2026-05-02T15:06:41.263Z",
+    "prompt": "What is AI?",
+    "response": "think one questions logs most impacts improvejs does.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T15:06:46.345Z",
+    "prompt": "How does learning work?",
+    "response": "think one questions logs most impacts does profoundly.",
+    "score": 2
+>>>>>>> Stashed changes
   }
 ]
-=======
-[]
->>>>>>> Stashed changes
