@@ -68,6 +68,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "totalTrainingCycles": 1248837,
 =======
   "totalTrainingCycles": 1241746,
@@ -303,10 +304,14 @@
 =======
   "totalTrainingCycles": 1199396,
 >>>>>>> Stashed changes
+=======
+  "totalTrainingCycles": 1225243,
+>>>>>>> Stashed changes
   "trainingPairs": 20,
   "vocabSize": 991,
   "apiCalls": 6,
   "apiSuccesses": 0,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -400,178 +405,15 @@
 =======
   "lastTrainingTime": "2026-05-02T01:53:58.592Z",
 >>>>>>> Stashed changes
+=======
+  "lastTrainingTime": "2026-05-02T02:14:48.831Z",
+>>>>>>> Stashed changes
   "trainingDuration": 480,
   "successes": [
     {
-      "time": "2026-05-02T01:53:58.875Z",
-      "hour": 1,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:03:11.720Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:03:11.990Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:05:29.855Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:05:30.056Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:06:55.979Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:06:56.244Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:13:28.090Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:13:28.395Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:15:48.009Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:15:48.287Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:17:13.766Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:17:13.947Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:23:51.041Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:23:51.204Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:25:54.866Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:25:55.036Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:27:33.440Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:27:33.599Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:34:14.620Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:34:14.774Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:35:56.459Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:35:56.746Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:38:03.289Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:38:03.584Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:44:41.141Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:44:41.335Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:46:22.468Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:46:22.735Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:48:06.412Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:48:06.720Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:55:02.183Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:55:02.330Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:56:38.164Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:56:38.314Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T01:58:23.716Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T01:58:23.938Z",
-      "hour": 1,
->>>>>>> Stashed changes
-=======
-  "lastTrainingTime": "2026-05-02T02:04:16.783Z",
-  "trainingDuration": 480,
-  "successes": [
-    {
-      "time": "2026-05-02T02:04:16.979Z",
+      "time": "2026-05-02T02:14:49.027Z",
       "hour": 2,
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
   "lastTrainingTime": "2026-05-02T02:05:29.290Z",
@@ -596,6 +438,8 @@
     {
       "time": "2026-05-02T02:08:42.430Z",
       "hour": 2,
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       "score": 55,
       "improvement": 55
