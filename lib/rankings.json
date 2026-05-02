@@ -3,6 +3,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -123,6 +124,22 @@
     "timestamp": "2026-05-02T15:34:04.709Z",
     "prompt": "How does learning work?",
     "response": "user brain platforms like intelligence facilitating training forwardbackward.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T15:36:11.860Z",
+    "prompt": "What is AI?",
+    "response": "personalized responses support ways indicator vocabulary gpt4o evolve.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T15:36:17.182Z",
+    "prompt": "How does learning work?",
+    "response": "personalized responses support indicator ways vocabulary gpt4o evolve.",
     "score": 2
   }
 ]
