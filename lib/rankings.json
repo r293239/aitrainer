@@ -3,6 +3,7 @@
   {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-05-02T14:50:21.066Z",
 =======
     "timestamp": "2026-05-02T15:00:54.180Z",
@@ -88,6 +89,18 @@
     "timestamp": "2026-05-02T15:00:59.101Z",
     "prompt": "How does learning work?",
     "response": "handles brainjs forwardbackward dark known intelligence improvejs communities.",
+    "score": 2
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-05-02T15:02:06.705Z",
+    "prompt": "What is AI?",
+    "response": "brainjs paulo word number neural shepherd scoring selftalk.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T15:02:11.756Z",
+    "prompt": "How does learning work?",
+    "response": "brainjs paulo word number shepherd neural scoring selftalk.",
     "score": 2
 >>>>>>> Stashed changes
   }
