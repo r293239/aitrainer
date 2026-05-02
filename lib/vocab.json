@@ -8,6 +8,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "1776": 191,
 =======
     "1776": 192,
@@ -31,6 +32,8 @@
 >>>>>>> Stashed changes
 =======
     "1776": 205,
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     "what": 0,
     "does": 1,
@@ -91,6 +94,7 @@
     "number": 56,
     "vectors": 57,
     "manages": 58,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -2676,6 +2680,9 @@
     "cultural": 390,
     "contextual": 391
 >>>>>>> Stashed changes
+=======
+    "word": 59
+>>>>>>> Stashed changes
   },
   "indexToWord": {
     "0": "what",
@@ -2737,6 +2744,7 @@
     "56": "number",
     "57": "vectors",
     "58": "manages",
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -4529,5 +4537,10 @@
     "391": "contextual"
   },
   "vocabSize": 392
+>>>>>>> Stashed changes
+=======
+    "59": "word"
+  },
+  "vocabSize": 60
 >>>>>>> Stashed changes
 }
