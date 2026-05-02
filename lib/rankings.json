@@ -9,6 +9,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -21,31 +22,22 @@
     "prompt": "What is AI?",
 <<<<<<< Updated upstream
     "response": "outlook life rates word debates experiences impact one.",
-    "score": 1
-  },
-  {
-    "timestamp": "2026-05-02T11:31:37.379Z",
-    "prompt": "How does learning work?",
-    "response": "outlook life word rates debates experiences impact one.",
-    "score": 2
-  }
-<<<<<<< Updated upstream
-]
->>>>>>> Stashed changes
 =======
 [
   {
-    "timestamp": "2026-05-02T11:22:48.134Z",
+    "timestamp": "2026-05-02T11:45:48.748Z",
     "prompt": "What is AI?",
-    "response": "rates brain what vocabulary brainjs indexjs frankls chat.",
+    "response": "plays questions training dark text indexjs fostering propagation.",
+>>>>>>> Stashed changes
     "score": 1
   },
   {
-    "timestamp": "2026-05-02T11:22:53.128Z",
+    "timestamp": "2026-05-02T11:45:53.733Z",
     "prompt": "How does learning work?",
-    "response": "rates brain what vocabulary brainjs indexjs chat frankls.",
+    "response": "plays questions training dark text indexjs fostering propagation.",
     "score": 1
   }
+<<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
 =======
@@ -138,4 +130,7 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+]
 >>>>>>> Stashed changes
