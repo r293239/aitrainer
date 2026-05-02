@@ -16,6 +16,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -166,5 +167,21 @@
 []
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:02:16.852Z",
+    "prompt": "What is AI?",
+    "response": "improvejs scoring 431 has avatars life frankl capacity.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:02:21.773Z",
+    "prompt": "How does learning work?",
+    "response": "improvejs scoring 431 avatars has life chatjs javascript.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
