@@ -40,6 +40,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -311,5 +312,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:45:03.300Z",
+    "prompt": "What is AI?",
+    "response": "such responses will decade technological automation manages revolutionize.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:45:08.391Z",
+    "prompt": "How does learning work?",
+    "response": "such responses technological will decade automation revolutionize manages.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
