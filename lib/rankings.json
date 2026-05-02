@@ -58,6 +58,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -557,5 +558,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:20:24.586Z",
+    "prompt": "What is AI?",
+    "response": "vocabulary leader avatars appreciate interface does training changing.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:20:29.433Z",
+    "prompt": "How does learning work?",
+    "response": "vocabulary leader avatars appreciate interface does training changing.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
