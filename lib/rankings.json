@@ -47,6 +47,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -153,14 +154,22 @@
     "prompt": "What is AI?",
     "response": "selftalk brain next logs handles manages error trains.",
 >>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:57:04.594Z",
+    "prompt": "What is AI?",
+    "response": "user will does questions improvejs important teach rapidly.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-05-02T12:34:24.858Z",
+    "timestamp": "2026-05-02T12:57:09.108Z",
     "prompt": "How does learning work?",
-    "response": "selftalk brain next logs handles error manages trains.",
+    "response": "user will questions does improvejs important teach scoring.",
     "score": 2
   }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
@@ -420,5 +429,8 @@
     "response": "most shape generates responses than error brainjs key.",
     "score": 2
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
