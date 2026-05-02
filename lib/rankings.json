@@ -4,6 +4,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 [
@@ -60,43 +61,22 @@
     "timestamp": "2026-05-02T15:02:06.705Z",
     "prompt": "What is AI?",
     "response": "brainjs paulo word number neural shepherd scoring selftalk.",
-    "score": 1
-  },
-  {
-    "timestamp": "2026-05-02T15:02:11.756Z",
-    "prompt": "How does learning work?",
-    "response": "brainjs paulo word number shepherd neural scoring selftalk.",
-    "score": 2
->>>>>>> Stashed changes
 =======
-    "timestamp": "2026-05-02T15:06:41.263Z",
+[
+  {
+    "timestamp": "2026-05-02T15:38:39.487Z",
     "prompt": "What is AI?",
-    "response": "think one questions logs most impacts improvejs does.",
+    "response": "scoring number da gpt4o avatars mexican vocabulary primarily.",
     "score": 1
   },
   {
-    "timestamp": "2026-05-02T15:06:46.345Z",
+    "timestamp": "2026-05-02T15:38:44.576Z",
     "prompt": "How does learning work?",
-    "response": "think one questions logs most impacts does profoundly.",
-    "score": 2
+    "response": "scoring number da gpt4o avatars mexican vocabulary primarily.",
 >>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-05-02T15:12:43.669Z",
-    "prompt": "What is AI?",
-    "response": "indicator brain dark neural error trainjs more impact.",
     "score": 1
-  },
-  {
-    "timestamp": "2026-05-02T15:12:48.681Z",
-    "prompt": "How does learning work?",
-    "response": "indicator brain dark neural error trainjs more impact.",
-    "score": 1
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   }
+<<<<<<< Updated upstream
 ]
 =======
 []
@@ -142,5 +122,8 @@
     "response": "personalized responses support indicator ways vocabulary gpt4o evolve.",
     "score": 2
   }
+]
+>>>>>>> Stashed changes
+=======
 ]
 >>>>>>> Stashed changes
