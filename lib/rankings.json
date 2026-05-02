@@ -28,6 +28,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -187,5 +188,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:23:37.946Z",
+    "prompt": "What is AI?",
+    "response": "selftalk responses interface messages debates 1776 evolution avatars.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T12:23:43.243Z",
+    "prompt": "How does learning work?",
+    "response": "selftalk responses evolution messages debates interface 1776 avatars.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
