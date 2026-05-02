@@ -7,6 +7,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-05-02T14:50:21.066Z",
 =======
     "timestamp": "2026-05-02T15:00:54.180Z",
@@ -14,44 +15,19 @@
 =======
     "timestamp": "2026-05-02T15:11:32.581Z",
 >>>>>>> Stashed changes
-    "prompt": "What is AI?",
-    "response": "trains social status data people today breaking plays.",
-    "score": 1
-  },
-  {
-    "timestamp": "2026-05-02T15:11:37.399Z",
-    "prompt": "How does learning work?",
-    "response": "trains social status data today people breaking plays.",
-    "score": 1
-<<<<<<< Updated upstream
-  },
-  {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    "timestamp": "2026-05-02T14:34:56.105Z",
 =======
-    "timestamp": "2026-05-02T14:39:49.236Z",
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-05-02T14:40:52.021Z",
+    "timestamp": "2026-05-02T15:22:15.379Z",
 >>>>>>> Stashed changes
     "prompt": "What is AI?",
-    "response": "about indexjs one theme most diwali traditions word.",
+    "response": "tradition logs vectors textprocessorjs error questions status tranquility.",
     "score": 1
   },
   {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    "timestamp": "2026-05-02T14:35:00.809Z",
+    "timestamp": "2026-05-02T15:22:20.455Z",
     "prompt": "How does learning work?",
-    "response": "interface theme scoring textprocessorjs trainjs do trains brainjs.",
-    "score": 1
-<<<<<<< Updated upstream
-=======
-    "timestamp": "2026-05-02T14:39:54.269Z",
-    "prompt": "How does learning work?",
-    "response": "interface theme textprocessorjs scoring trainjs do trains brainjs.",
+    "response": "tradition vectors logs textprocessorjs error questions status tranquility.",
     "score": 2
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
     "timestamp": "2026-05-02T14:40:57.075Z",
@@ -122,6 +98,8 @@
     "prompt": "How does learning work?",
     "response": "indicator brain dark neural error trainjs more impact.",
     "score": 1
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
