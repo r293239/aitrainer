@@ -1,9 +1,16 @@
 [
   {
-    "timestamp": "2026-05-02T14:13:53.372Z",
+    "timestamp": "2026-05-02T14:50:21.066Z",
     "prompt": "What is AI?",
-    "response": "text five logs javascript training tradition responses known.",
+    "response": "indicator textprocessorjs shaping our what future theme uncertain.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T14:50:25.933Z",
+    "prompt": "How does learning work?",
+    "response": "indicator our textprocessorjs shaping what theme uncertain future.",
     "score": 2
+<<<<<<< Updated upstream
   },
   {
     "timestamp": "2026-05-02T14:13:58.357Z",
@@ -70,6 +77,8 @@
     "prompt": "How does learning work?",
     "response": "interface theme trainjs brainjs neural trains pure indexjs.",
     "score": 2
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 ]
