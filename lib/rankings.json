@@ -42,6 +42,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -343,6 +344,22 @@
     "timestamp": "2026-05-02T12:46:00.660Z",
     "prompt": "How does learning work?",
     "response": "mockingbird impact do chat word userbot most movie.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:46:23.099Z",
+    "prompt": "What is AI?",
+    "response": "gas bot trainjs gpt4o how primarily questions brain.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:46:28.272Z",
+    "prompt": "How does learning work?",
+    "response": "gas bot trainjs gpt4o how primarily questions rates.",
     "score": 1
   }
 ]
