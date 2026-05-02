@@ -68,6 +68,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -641,5 +642,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:42:06.161Z",
+    "prompt": "What is AI?",
+    "response": "textprocessorjs indispensable evaluates communication indexjs debates number intelligence.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:42:11.362Z",
+    "prompt": "How does learning work?",
+    "response": "textprocessorjs indispensable evaluates communication indexjs number debates intelligence.",
+    "score": 1
+  }
 ]
 >>>>>>> Stashed changes
