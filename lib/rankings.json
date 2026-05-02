@@ -1,6 +1,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 [
@@ -46,6 +47,22 @@
     "timestamp": "2026-05-02T11:26:54.198Z",
     "prompt": "How does learning work?",
     "response": "your intelligence do meaning transformative number vocabulary one.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:30:48.466Z",
+    "prompt": "What is AI?",
+    "response": "trains debates vectors questions indicator handles neural bot.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T11:30:53.501Z",
+    "prompt": "How does learning work?",
+    "response": "trains debates vectors questions indicator handles neural leader.",
     "score": 1
   }
 ]
