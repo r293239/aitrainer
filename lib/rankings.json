@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 [
@@ -29,6 +30,22 @@
     "timestamp": "2026-05-02T11:22:53.128Z",
     "prompt": "How does learning work?",
     "response": "rates brain what vocabulary brainjs indexjs chat frankls.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:26:49.300Z",
+    "prompt": "What is AI?",
+    "response": "your intelligence transformative vocabulary do meaning number ranking.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T11:26:54.198Z",
+    "prompt": "How does learning work?",
+    "response": "your intelligence do meaning transformative number vocabulary one.",
     "score": 1
   }
 ]
