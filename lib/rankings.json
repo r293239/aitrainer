@@ -5,6 +5,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "timestamp": "2026-05-02T14:50:21.066Z",
 =======
     "timestamp": "2026-05-02T15:00:54.180Z",
@@ -108,6 +109,18 @@
     "score": 2
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+    "timestamp": "2026-05-02T15:12:43.669Z",
+    "prompt": "What is AI?",
+    "response": "indicator brain dark neural error trainjs more impact.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T15:12:48.681Z",
+    "prompt": "How does learning work?",
+    "response": "indicator brain dark neural error trainjs more impact.",
+    "score": 1
 >>>>>>> Stashed changes
   }
 ]
