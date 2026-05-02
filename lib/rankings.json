@@ -37,6 +37,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -93,4 +94,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T17:00:00.226Z",
+    "prompt": "What is AI?",
+    "response": "selftalk extraordinary who search handles one matches personal.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T17:00:05.547Z",
+    "prompt": "How does learning work?",
+    "response": "selftalk extraordinary handles who search one matches personal.",
+    "score": 2
+  }
+]
 >>>>>>> Stashed changes
