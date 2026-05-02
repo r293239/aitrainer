@@ -29,6 +29,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -203,6 +204,22 @@
     "prompt": "How does learning work?",
     "response": "selftalk responses evolution messages debates interface 1776 avatars.",
     "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:24:22.820Z",
+    "prompt": "What is AI?",
+    "response": "matches generates bot intelligence healthcare what avatars interface.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T12:24:28.346Z",
+    "prompt": "How does learning work?",
+    "response": "matches generates healthcare bot intelligence what avatars role.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
