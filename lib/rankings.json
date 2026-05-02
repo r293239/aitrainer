@@ -38,6 +38,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -285,6 +286,22 @@
     "timestamp": "2026-05-02T12:37:19.387Z",
     "prompt": "How does learning work?",
     "response": "make indexjs forwardbackward most environment user number addressing.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:38:53.139Z",
+    "prompt": "What is AI?",
+    "response": "technology evaluates will generates status believe manages responses.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T12:38:58.719Z",
+    "prompt": "How does learning work?",
+    "response": "technology evaluates will generates status believe responses manages.",
     "score": 2
   }
 ]
