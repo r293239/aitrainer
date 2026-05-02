@@ -73,6 +73,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -99,10 +100,13 @@
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-02T13:39:38.701Z",
+    "timestamp": "2026-05-02T13:50:40.056Z",
     "prompt": "What is AI?",
+<<<<<<< Updated upstream
     "response": "network up how trains does forwardbackward trainjs world.",
     "score": 1
   },
@@ -712,6 +716,18 @@
     "prompt": "How does learning work?",
     "response": "witnessing bot daily chat trains your training intelligence.",
     "score": 4
+  }
+]
+>>>>>>> Stashed changes
+=======
+    "response": "brainjs training industries evaluates you do response error.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:50:45.164Z",
+    "prompt": "How does learning work?",
+    "response": "brainjs training industries evaluates you do error response.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
