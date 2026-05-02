@@ -5,6 +5,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -47,14 +48,22 @@
     "timestamp": "2026-05-02T11:26:49.300Z",
     "prompt": "What is AI?",
     "response": "your intelligence transformative vocabulary do meaning number ranking.",
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:37:17.163Z",
+    "prompt": "What is AI?",
+    "response": "trainjs debates manages response rates word logs training.",
+>>>>>>> Stashed changes
     "score": 2
   },
   {
-    "timestamp": "2026-05-02T11:26:54.198Z",
+    "timestamp": "2026-05-02T11:37:22.183Z",
     "prompt": "How does learning work?",
-    "response": "your intelligence do meaning transformative number vocabulary one.",
-    "score": 1
+    "response": "trainjs debates manages response word rates logs reshape.",
+    "score": 2
   }
+<<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
 =======
@@ -94,4 +103,7 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+]
 >>>>>>> Stashed changes
