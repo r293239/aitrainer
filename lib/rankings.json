@@ -41,6 +41,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -326,6 +327,22 @@
     "timestamp": "2026-05-02T12:45:08.391Z",
     "prompt": "How does learning work?",
     "response": "such responses technological will decade automation revolutionize manages.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:45:55.368Z",
+    "prompt": "What is AI?",
+    "response": "impact mockingbird do chat word interface most debates.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:46:00.660Z",
+    "prompt": "How does learning work?",
+    "response": "mockingbird impact do chat word userbot most movie.",
     "score": 1
   }
 ]
