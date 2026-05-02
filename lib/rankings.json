@@ -51,6 +51,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -473,5 +474,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:06:41.897Z",
+    "prompt": "What is AI?",
+    "response": "mental data access javascript next indicator gpt4o interface.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:06:46.996Z",
+    "prompt": "How does learning work?",
+    "response": "mental data access javascript next indicator gpt4o interface.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
