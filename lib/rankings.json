@@ -1,1 +1,18 @@
+<<<<<<< Updated upstream
 []
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:21:00.201Z",
+    "prompt": "What is AI?",
+    "response": "youve response memoir brain propagation chat while can.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T11:21:05.212Z",
+    "prompt": "How does learning work?",
+    "response": "youve response memoir brain propagation chat life impactful.",
+    "score": 2
+  }
+]
+>>>>>>> Stashed changes
