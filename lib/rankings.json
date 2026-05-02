@@ -69,6 +69,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -656,6 +657,22 @@
     "timestamp": "2026-05-02T13:42:11.362Z",
     "prompt": "How does learning work?",
     "response": "textprocessorjs indispensable evaluates communication indexjs number debates intelligence.",
+    "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:43:44.983Z",
+    "prompt": "What is AI?",
+    "response": "plays dark platforms like matches textprocessorjs error rates.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:43:49.945Z",
+    "prompt": "How does learning work?",
+    "response": "plays dark platforms like matches error textprocessorjs rates.",
     "score": 1
   }
 ]
