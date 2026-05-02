@@ -7,6 +7,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -138,6 +139,22 @@
 =======
     "response": "what trainjs can generates response propagation user questions.",
     "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T15:46:50.445Z",
+    "prompt": "What is AI?",
+    "response": "avatars fundamentally evaluates text chat data language impacted.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T15:46:55.248Z",
+    "prompt": "How does learning work?",
+    "response": "avatars fundamentally evaluates text chat data language has.",
+    "score": 3
   }
 ]
 >>>>>>> Stashed changes
