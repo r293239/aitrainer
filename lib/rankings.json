@@ -27,6 +27,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> Stashed changes
 =======
@@ -152,5 +153,21 @@
 []
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T16:38:18.468Z",
+    "prompt": "What is AI?",
+    "response": "number engage uncertain theme pure network generates you.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T16:38:23.519Z",
+    "prompt": "How does learning work?",
+    "response": "number theme uncertain engage pure generates next network.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
