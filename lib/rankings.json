@@ -1,34 +1,22 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 [
   {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    "timestamp": "2026-05-02T14:50:21.066Z",
-=======
-    "timestamp": "2026-05-02T15:00:54.180Z",
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-05-02T15:11:32.581Z",
->>>>>>> Stashed changes
-=======
-    "timestamp": "2026-05-02T15:22:15.379Z",
->>>>>>> Stashed changes
+    "timestamp": "2026-05-02T15:32:54.100Z",
     "prompt": "What is AI?",
-    "response": "tradition logs vectors textprocessorjs error questions status tranquility.",
-    "score": 1
+    "response": "userbot interface gpt4o scoring beliefs bot serving you.",
+    "score": 2
   },
   {
-    "timestamp": "2026-05-02T15:22:20.455Z",
+    "timestamp": "2026-05-02T15:32:58.555Z",
     "prompt": "How does learning work?",
-    "response": "tradition vectors logs textprocessorjs error questions status tranquility.",
+    "response": "userbot interface gpt4o scoring serving bot beliefs you.",
     "score": 2
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
@@ -113,6 +101,10 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+  }
+]
 >>>>>>> Stashed changes
 =======
   }
