@@ -71,6 +71,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -680,4 +681,20 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:47:21.908Z",
+    "prompt": "What is AI?",
+    "response": "ranking word search many theme way userbot generates.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:47:26.797Z",
+    "prompt": "How does learning work?",
+    "response": "ranking word search many way theme userbot generates.",
+    "score": 2
+  }
+]
 >>>>>>> Stashed changes
