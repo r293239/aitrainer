@@ -6,6 +6,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -72,14 +73,22 @@
     "timestamp": "2026-05-02T11:30:48.466Z",
     "prompt": "What is AI?",
     "response": "trains debates vectors questions indicator handles neural bot.",
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:41:19.845Z",
+    "prompt": "What is AI?",
+    "response": "what logs uncertain word play do communication training.",
     "score": 2
   },
   {
-    "timestamp": "2026-05-02T11:30:53.501Z",
+    "timestamp": "2026-05-02T11:41:24.856Z",
     "prompt": "How does learning work?",
-    "response": "trains debates vectors questions indicator handles neural leader.",
-    "score": 1
+    "response": "what logs uncertain word do training communication play.",
+>>>>>>> Stashed changes
+    "score": 2
   }
+<<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
 =======
@@ -103,6 +112,9 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+]
 >>>>>>> Stashed changes
 =======
 ]
