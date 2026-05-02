@@ -26,6 +26,9 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -38,17 +41,18 @@
 >>>>>>> Stashed changes
 [
   {
-    "timestamp": "2026-05-02T16:19:20.357Z",
+    "timestamp": "2026-05-02T16:37:35.145Z",
     "prompt": "What is AI?",
-    "response": "generates profoundly ranking book search such matches movie.",
+    "response": "messages forwardbackward status word dark text opportunities maintain.",
     "score": 1
   },
   {
-    "timestamp": "2026-05-02T16:19:25.445Z",
+    "timestamp": "2026-05-02T16:37:40.115Z",
     "prompt": "How does learning work?",
-    "response": "generates profoundly ranking book search such matches movie.",
-    "score": 2
+    "response": "messages forwardbackward status word dark text opportunities maintain.",
+    "score": 1
   }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 ]
 >>>>>>> Stashed changes
@@ -146,4 +150,7 @@
 >>>>>>> Stashed changes
 =======
 []
+>>>>>>> Stashed changes
+=======
+]
 >>>>>>> Stashed changes
