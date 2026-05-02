@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 [
@@ -13,6 +14,22 @@
     "prompt": "How does learning work?",
     "response": "youve response memoir brain propagation chat life impactful.",
     "score": 2
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T11:22:48.134Z",
+    "prompt": "What is AI?",
+    "response": "rates brain what vocabulary brainjs indexjs frankls chat.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T11:22:53.128Z",
+    "prompt": "How does learning work?",
+    "response": "rates brain what vocabulary brainjs indexjs chat frankls.",
+    "score": 1
   }
 ]
 >>>>>>> Stashed changes
