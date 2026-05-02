@@ -76,6 +76,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -753,5 +754,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:54:37.006Z",
+    "prompt": "What is AI?",
+    "response": "trainjs festival scoring while matches questions evaluates number.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:54:42.005Z",
+    "prompt": "How does learning work?",
+    "response": "trainjs festival matches scoring while questions evaluates number.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
