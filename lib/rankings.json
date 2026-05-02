@@ -49,6 +49,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -448,6 +449,22 @@
     "prompt": "How does learning work?",
     "response": "logs about trains selftalk matches more handles your.",
     "score": 1
+  }
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T13:00:14.736Z",
+    "prompt": "What is AI?",
+    "response": "indicator brain content training trains word media responses.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T13:00:19.556Z",
+    "prompt": "How does learning work?",
+    "response": "indicator brain trains training content word media responses.",
+    "score": 2
   }
 ]
 >>>>>>> Stashed changes
