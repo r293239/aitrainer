@@ -84,6 +84,7 @@
     "score": 2
   },
   {
+<<<<<<< Updated upstream
     "timestamp": "2026-05-02T10:59:17.275Z",
     "prompt": "What is AI?",
     "response": "role shaping trains text vocabulary using converts dark.",
@@ -94,5 +95,17 @@
     "prompt": "How does learning work?",
     "response": "role shaping trains text vocabulary using converts dark.",
     "score": 1
+=======
+    "timestamp": "2026-05-02T11:02:00.554Z",
+    "prompt": "What is AI?",
+    "response": "textprocessorjs evaluates converts uncertain manages pure training indexjs.",
+    "score": 2
+  },
+  {
+    "timestamp": "2026-05-02T11:02:05.608Z",
+    "prompt": "How does learning work?",
+    "response": "textprocessorjs evaluates converts uncertain pure manages indexjs training.",
+    "score": 2
+>>>>>>> Stashed changes
   }
 ]
