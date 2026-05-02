@@ -35,6 +35,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 []
 =======
 =======
@@ -236,5 +237,21 @@
 ]
 >>>>>>> Stashed changes
 =======
+]
+>>>>>>> Stashed changes
+=======
+[
+  {
+    "timestamp": "2026-05-02T12:35:08.936Z",
+    "prompt": "What is AI?",
+    "response": "number one movie user does vocabulary changed he.",
+    "score": 1
+  },
+  {
+    "timestamp": "2026-05-02T12:35:14.097Z",
+    "prompt": "How does learning work?",
+    "response": "one number movie user does vocabulary he changed.",
+    "score": 2
+  }
 ]
 >>>>>>> Stashed changes
