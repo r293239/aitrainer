@@ -10,21 +10,13 @@ const TRAINING_DATA = path.join(__dirname, '..', 'lib', 'training_data.json');
 const RANKINGS_FILE = path.join(__dirname, '..', 'lib', 'rankings.json');
 const SELF_TALK_FILE = path.join(__dirname, '..', 'lib', 'self_talk.json');
 const UNCERTAIN_FILE = path.join(__dirname, '..', 'lib', 'uncertain_questions.json');
+const CONVERSATION_LOG = path.join(__dirname, '..', 'lib', 'conversation_log.json');
 
 const INPUT_SIZE = 100;
 const HIDDEN_SIZE = 200;
 const OUTPUT_SIZE = 100;
 const TRAINING_MINUTES = 8;
 const HARD_STOP_MS = 9.5 * 60 * 1000;
-
-const CODE_FILES = [
-  'pages/api/chat.js',
-  'pages/index.js',
-  'scripts/improve.js',
-  'scripts/train.js',
-  'lib/brain.js',
-  'lib/textProcessor.js'
-];
 
 let apiCallCount = 0;
 let apiSuccessCount = 0;
@@ -37,10 +29,9 @@ function timeLeft(startTime) {
 async function callGPT4(messages, label = '') {
   apiCallCount++;
   
-  // Rate limit: wait to ensure max 12 calls per minute
   const now = Date.now();
   const timeSinceLastCall = now - lastApiCallTime;
-  const minDelay = 5000; // 5 seconds between calls
+  const minDelay = 5000;
   if (timeSinceLastCall < minDelay && lastApiCallTime > 0) {
     const waitTime = minDelay - timeSinceLastCall;
     await new Promise(r => setTimeout(r, waitTime));
@@ -76,7 +67,6 @@ async function callGPT4(messages, label = '') {
     clearTimeout(timeout);
     
     if (response.status === 429) {
-      // Rate limited — wait and retry once
       console.log(`     ⏳ [${label}] Rate limited, waiting 30s...`);
       await new Promise(r => setTimeout(r, 30000));
       
@@ -135,71 +125,53 @@ async function callGPT4(messages, label = '') {
   }
 }
 
+// Practical everyday topics
+const practicalTopics = [
+  "What is the best way to learn something new?",
+  "How does the internet actually work?",
+  "What causes rain and thunderstorms?",
+  "How do airplanes stay in the sky?",
+  "What is the difference between a virus and bacteria?",
+  "How do solar panels generate electricity?",
+  "What makes food spicy?",
+  "Why do we need sleep?",
+  "How do vaccines protect us?",
+  "What is climate change and what causes it?",
+  "How does a microwave heat food?",
+  "Why is the ocean salty?",
+  "How do birds navigate during migration?",
+  "What causes earthquakes?",
+  "How does blockchain technology work?",
+  "What is artificial intelligence?",
+  "How do touchscreens detect fingers?",
+  "Why do leaves change color in autumn?",
+  "How does GPS know where you are?",
+  "What is the difference between weather and climate?"
+];
+
 function getCodePurpose(fileName) {
   const purposes = {
-    'chat.js': 'handles user messages, matches training data, generates responses, logs uncertain questions',
-    'index.js': 'the chat interface with user/bot avatars, dark theme, and brain status indicator',
-    'improve.js': 'evaluates bot intelligence by scoring vocabulary, training data, and error rates',
-    'train.js': 'trains the neural network using GPT-4o debates, self-talk, and response ranking',
-    'brain.js': 'a pure JavaScript neural network with forward/backward propagation',
-    'textProcessor.js': 'converts text to number vectors and manages word vocabulary'
+    'chat.js': 'handles user messages',
+    'index.js': 'the chat interface',
+    'improve.js': 'evaluates intelligence',
+    'train.js': 'the training loop',
+    'brain.js': 'neural network',
+    'textProcessor.js': 'text to vectors'
   };
-  return purposes[fileName] || 'part of the self-improving chatbot system';
+  return purposes[fileName] || '';
 }
 
 function learnAboutCode() {
   console.log('\n📚 Phase 1: Code Awareness');
-  const pairs = [];
-  for (const filePath of CODE_FILES) {
+  for (const filePath of ['pages/api/chat.js', 'pages/index.js', 'scripts/improve.js', 'scripts/train.js', 'lib/brain.js', 'lib/textProcessor.js']) {
     try {
       const fullPath = path.join(__dirname, '..', filePath);
       if (!fs.existsSync(fullPath)) continue;
       const fileName = path.basename(filePath);
-      pairs.push({ prompt: `What does ${fileName} do?`, response: getCodePurpose(fileName) });
-      console.log(`  📄 ${fileName}`);
+      console.log(`  📄 ${fileName}: ${getCodePurpose(fileName)}`);
     } catch (e) {}
   }
-  return pairs;
-}
-
-async function generateTopics(startTime) {
-  if (timeLeft(startTime) < 60000) return [];
-  
-  console.log('\n💡 Generating topics...');
-  const response = await callGPT4([
-    { role: 'system', content: 'Generate 3 interesting conversation questions. Output one per line. No numbers.' },
-    { role: 'user', content: 'Give me 3 diverse topics.' }
-  ], 'topics');
-  
-  if (!response) return [];
-  
-  const topics = response.split('\n')
-    .map(l => l.replace(/^[-\d\.\s]+/, '').trim())
-    .filter(l => l.length > 15 && l.includes('?'));
-  
-  console.log(`  ✅ ${topics.length} topics`);
-  return topics.slice(0, 3);
-}
-
-async function debate(topic) {
-  console.log(`  🎤 "${topic.substring(0, 55)}..."`);
-  
-  const answer = await callGPT4([
-    { role: 'system', content: 'Give a detailed, helpful answer under 150 words.' },
-    { role: 'user', content: topic }
-  ], 'debate');
-  
-  if (!answer) return null;
-  
-  const improved = await callGPT4([
-    { role: 'system', content: 'Make this response even better. More helpful and natural.' },
-    { role: 'user', content: `Original: ${answer}\n\nImproved:` }
-  ], 'improve');
-  
-  const final = improved || answer;
-  console.log(`     ✅ "${final.substring(0, 60)}..."`);
-  
-  return { topic, response: final };
+  return []; // Don't add code descriptions to training pairs
 }
 
 async function handleUncertainQuestions(startTime) {
@@ -223,12 +195,12 @@ async function handleUncertainQuestions(startTime) {
     if (timeLeft(startTime) < 45000) break;
     
     const answer = await callGPT4([
-      { role: 'system', content: 'Give a helpful, natural, and engaging answer. Keep it under 3 sentences.' },
+      { role: 'system', content: 'Give a helpful, direct, and concise answer. Keep it 2-4 sentences. Answer the question directly without being philosophical.' },
       { role: 'user', content: q.text }
     ], `q-${q.text.substring(0, 20)}`);
     
     if (answer) {
-      results.push({ prompt: q.text, response: answer });
+      results.push({ prompt: q.text, response: answer, weight: 2 });
       console.log(`  ✅ "${q.text.substring(0, 40)}..."`);
     }
   }
@@ -239,6 +211,113 @@ async function handleUncertainQuestions(startTime) {
   return results;
 }
 
+async function rateAndImproveConversations(startTime) {
+  if (timeLeft(startTime) < 90000) {
+    console.log('\n📝 Conversation Review: SKIPPED (low time)');
+    return [];
+  }
+
+  let conversations = [];
+  try {
+    if (fs.existsSync(CONVERSATION_LOG)) {
+      conversations = JSON.parse(fs.readFileSync(CONVERSATION_LOG, 'utf-8'));
+    }
+  } catch (e) {}
+
+  if (conversations.length === 0) {
+    console.log('\n📝 Conversation Review: No conversations yet');
+    return [];
+  }
+
+  console.log(`\n📝 Reviewing ${Math.min(3, conversations.length)} past conversations...`);
+  console.log('-'.repeat(40));
+
+  const improved = [];
+  const toReview = conversations.slice(-3);
+
+  for (const convo of toReview) {
+    if (timeLeft(startTime) < 45000) break;
+
+    console.log(`  Q: "${convo.prompt.substring(0, 50)}..."`);
+
+    const rating = await callGPT4([
+      {
+        role: 'system',
+        content: `Rate this chatbot response 1-10. Consider:
+1. Does it directly answer the question?
+2. Is it relevant?
+3. Is it clear and helpful?
+4. Is it the right length?
+Output: SCORE: [number]`
+      },
+      {
+        role: 'user',
+        content: `Question: "${convo.prompt}"\n\nResponse: "${convo.reply}"\n\nRate:`
+      }
+    ], `rate-${convo.prompt.substring(0, 15)}`);
+
+    if (!rating) continue;
+
+    const scoreMatch = rating.match(/SCORE:\s*(\d+)/);
+    const score = scoreMatch ? parseInt(scoreMatch[1]) : 5;
+
+    console.log(`     Score: ${score}/10`);
+
+    if (score < 7) {
+      console.log(`     🔧 Improving...`);
+      
+      const betterAnswer = await callGPT4([
+        {
+          role: 'system',
+          content: `Write a BETTER response that directly answers the question. Keep it 2-4 sentences. Be clear and concise. Do NOT write an essay.`
+        },
+        {
+          role: 'user',
+          content: `Question: "${convo.prompt}"\n\nBad response: "${convo.reply}"\n\nBetter response:`
+        }
+      ], `improve-${convo.prompt.substring(0, 15)}`);
+
+      if (betterAnswer && betterAnswer.length < convo.reply.length) {
+        improved.push({
+          prompt: convo.prompt,
+          response: betterAnswer,
+          weight: 3
+        });
+        console.log(`     ✅ Improved`);
+      }
+    } else {
+      improved.push({
+        prompt: convo.prompt,
+        response: convo.reply,
+        weight: 2
+      });
+      console.log(`     ✅ Keeping`);
+    }
+
+    await new Promise(r => setTimeout(r, 500));
+  }
+
+  const remaining = conversations.slice(0, -3);
+  fs.writeFileSync(CONVERSATION_LOG, JSON.stringify(remaining, null, 2));
+
+  console.log(`  ✅ ${improved.length} conversations processed`);
+  return improved;
+}
+
+async function debate(topic) {
+  console.log(`  🎤 "${topic.substring(0, 55)}..."`);
+  
+  const answer = await callGPT4([
+    { role: 'system', content: 'Give a helpful, clear answer. 2-4 sentences. Be practical and direct.' },
+    { role: 'user', content: topic }
+  ], 'debate');
+  
+  if (!answer) return null;
+  console.log(`     ✅ "${answer.substring(0, 60)}..."`);
+  
+  return { topic, response: answer };
+}
+
 async function selfTalk(startTime) {
   if (timeLeft(startTime) < 45000) return [];
   
@@ -246,7 +325,7 @@ async function selfTalk(startTime) {
   
   const starter = await callGPT4([
     { role: 'system', content: 'Start a thoughtful conversation with a deep question.' },
-    { role: 'user', content: 'Begin a conversation about intelligence.' }
+    { role: 'user', content: 'Begin a philosophical conversation about intelligence and learning.' }
   ], 'self-start');
   
   if (!starter) return [];
@@ -264,44 +343,6 @@ async function selfTalk(startTime) {
   ];
 }
 
-async function rankMyAI(brain, tp, startTime) {
-  if (timeLeft(startTime) < 45000) return [];
-  
-  console.log('\n⭐ Ranking...');
-  
-  const prompts = ["What is AI?", "How does learning work?"];
-  const rankings = [];
-  
-  for (const prompt of prompts) {
-    if (timeLeft(startTime) < 30000) break;
-    
-    const inputVector = tp.textToVector(prompt, INPUT_SIZE);
-    const outputVector = brain.forward(inputVector);
-    const words = tp.getWords();
-    
-    const wordScores = words.map((w, i) => ({ word: w, score: outputVector[i] || 0 }));
-    wordScores.sort((a, b) => b.score - a.score);
-    
-    const stopWords = new Set(['the','a','an','is','was','are','be','to','of','in','for','on','with','at','by','from','as','and','or','but','if','that','this','it','its','so','very','just','not','no']);
-    const contentWords = wordScores.filter(w => !stopWords.has(w.word) && w.score > 0.001);
-    const myResponse = contentWords.slice(0, 8).map(w => w.word).join(' ') + '.';
-    
-    const rating = await callGPT4([
-      { role: 'system', content: 'Rate this AI response 1-10. Output ONLY: TOTAL: [number]' },
-      { role: 'user', content: `Q: "${prompt}"\nA: "${myResponse}"\nRating:` }
-    ], 'rank');
-    
-    if (rating) {
-      const match = rating.match(/TOTAL:\s*(\d+)/);
-      const score = match ? parseInt(match[1]) : 5;
-      rankings.push({ timestamp: new Date().toISOString(), prompt, response: myResponse, score });
-      console.log(`  "${prompt}" → ${score}/10`);
-    }
-  }
-  
-  return rankings;
-}
-
 async function train() {
   const startTime = Date.now();
 
@@ -312,7 +353,6 @@ async function train() {
   console.log(`Start: ${new Date().toISOString()}`);
   console.log(`Time limit: ${TRAINING_MINUTES}min\n`);
 
-  // Load brain
   let brain;
   if (fs.existsSync(BRAIN_FILE)) {
     try {
@@ -325,7 +365,6 @@ async function train() {
     brain = new NeuralNetwork(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE);
   }
 
-  // Load data
   let trainingPairs = [];
   if (fs.existsSync(TRAINING_DATA)) {
     try { trainingPairs = JSON.parse(fs.readFileSync(TRAINING_DATA, 'utf-8')); } catch (e) {}
@@ -342,36 +381,34 @@ async function train() {
     try { selfTalks = JSON.parse(fs.readFileSync(SELF_TALK_FILE, 'utf-8')); } catch (e) {}
   }
 
-  // Phase 1: Code awareness
-  trainingPairs.push(...learnAboutCode());
+  // Phase 1: Code awareness (no training pairs added)
+  learnAboutCode();
 
-  // Phase 2: Answer uncertain questions (reduced to 2 max)
+  // Phase 2: Answer uncertain questions
   trainingPairs.push(...(await handleUncertainQuestions(startTime)));
 
-  // Phase 3: Generate topics & debate (reduced to 2 topics)
-  const topics = await generateTopics(startTime);
-  const debateTopics = topics.length >= 2 ? topics : [
-    "What is artificial intelligence?",
-    "How does learning work?"
-  ];
-  
-  console.log(`\n🎤 Debating ${Math.min(2, debateTopics.length)} topics...`);
-  for (const topic of debateTopics.slice(0, 2)) {
+  // Phase 3: Rate & improve past conversations 🆕
+  trainingPairs.push(...(await rateAndImproveConversations(startTime)));
+
+  // Phase 4: Practical topic debates
+  const selectedTopics = practicalTopics.sort(() => Math.random() - 0.5).slice(0, 2);
+  console.log(`\n🎤 Debating ${selectedTopics.length} topics...`);
+  for (const topic of selectedTopics) {
     if (timeLeft(startTime) < 45000) break;
     const result = await debate(topic);
-    if (result) trainingPairs.push({ prompt: result.topic, response: result.response });
+    if (result) trainingPairs.push({ prompt: result.topic, response: result.response, weight: 1 });
   }
 
-  // Phase 4: Self-talk
+  // Phase 5: Self-talk (philosophical)
   const convo = await selfTalk(startTime);
   if (convo.length >= 2) {
     selfTalks.push({ timestamp: new Date().toISOString(), conversation: convo });
     if (selfTalks.length > 20) selfTalks = selfTalks.slice(-20);
-    trainingPairs.push({ prompt: convo[0].content, response: convo[1].content });
+    trainingPairs.push({ prompt: convo[0].content, response: convo[1].content, weight: 1 });
     console.log('  ✅ Self-talk added');
   }
 
-  // Phase 5: Vocabulary
+  // Phase 6: Vocabulary
   console.log('\n📚 Building vocabulary...');
   let tp = new TextProcessor(500);
   if (fs.existsSync(VOCAB_FILE)) {
@@ -397,11 +434,6 @@ async function train() {
   });
   console.log(`  ${tp.vocabSize} words (+${newWords} new)`);
 
-  // Phase 6: Ranking (reduced to only if enough time)
-  const newRankings = await rankMyAI(brain, tp, startTime);
-  rankings.push(...newRankings);
-  if (rankings.length > 50) rankings = rankings.slice(-50);
-
   // Phase 7: Training
   console.log('\n🔄 Training neural network...');
   const trainingEnd = Math.min(
@@ -415,10 +447,12 @@ async function train() {
 
   while (Date.now() < trainingEnd) {
     const pair = trainingPairs[Math.floor(Math.random() * trainingPairs.length)];
+    const weight = pair.weight || 1;
     const inputVector = tp.textToVector(pair.prompt, INPUT_SIZE);
     const targetVector = tp.textToVector(pair.response, OUTPUT_SIZE);
+    const lr = 0.1 * weight;
     brain.forward(inputVector);
-    brain.backward(targetVector, 0.1);
+    brain.backward(targetVector, lr);
     cycles++;
     if (cycles % 200 === 0) {
       const sec = Math.floor((trainingEnd - Date.now()) / 1000);
@@ -439,7 +473,7 @@ async function train() {
   const unique = [];
   const seen = new Set();
   for (const p of trainingPairs) {
-    const key = (p.prompt + p.response).substring(0, 100);
+    const key = (p.prompt + (p.response || '')).substring(0, 100);
     if (!seen.has(key)) { seen.add(key); unique.push(p); }
   }
   fs.writeFileSync(TRAINING_DATA, JSON.stringify(unique.slice(-1500), null, 2));
@@ -475,7 +509,7 @@ async function train() {
     const repo = process.env.GITHUB_REPOSITORY;
     if (repo) {
       const [owner, name] = repo.split('/');
-      await fetch(`https://api.github.com/repos/${owner}/${name}/actions/workflows/trigger.yml/dispatches`, {
+      await fetch(`https://api.github.com/repos/${owner}/${name}/actions/workflows/improve.yml/dispatches`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${process.env.GH_TOKEN}`,
