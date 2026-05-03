@@ -87,6 +87,12 @@ if (state.successes.length > 100) state.successes = state.successes.slice(-100);
 if (state.failures.length > 100) state.failures = state.failures.slice(-100);
 if (state.stableHours.length > 200) state.stableHours = state.stableHours.slice(-200);
 
+// Signal whether to merge to main (used by workflow)
+const avgRanking = state.averageRanking || 0;
+const shouldMerge = avgRanking >= 5 && state.trainingPairs > 50;
+console.log(`\n📊 Merge recommendation: ${shouldMerge ? 'MERGE ✅' : 'HOLD ⏳'}`);
+console.log(`   (Avg ranking: ${avgRanking.toFixed(1)}/10, Pairs: ${state.trainingPairs || 0})`);
+
 fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 console.log('✅ Evaluation complete');
 console.log('='.repeat(60));
