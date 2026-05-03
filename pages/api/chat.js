@@ -3,8 +3,7 @@ const path = require('path');
 
 const TRAINING_FILE = path.join(process.cwd(), 'lib', 'training_data.json');
 const UNCERTAIN_FILE = path.join(process.cwd(), 'lib', 'uncertain_questions.json');
-const BRAIN_FILE = path.join(process.cwd(), 'lib', 'brain_weights.json');
-const VOCAB_FILE = path.join(process.cwd(), 'lib', 'vocab.json');
+const CONVERSATION_LOG = path.join(process.cwd(), 'lib', 'conversation_log.json');
 
 function logUncertain(question) {
   if (!question || question.trim().length < 3) return;
@@ -18,6 +17,18 @@ function logUncertain(question) {
       if (uncertain.length > 50) uncertain = uncertain.slice(-50);
       fs.writeFileSync(UNCERTAIN_FILE, JSON.stringify(uncertain, null, 2));
     }
+  } catch (e) {}
+}
+
+function logConversation(prompt, reply) {
+  try {
+    let log = [];
+    if (fs.existsSync(CONVERSATION_LOG)) {
+      log = JSON.parse(fs.readFileSync(CONVERSATION_LOG, 'utf-8'));
+    }
+    log.push({ prompt, reply, timestamp: new Date().toISOString() });
+    if (log.length > 100) log = log.slice(-100);
+    fs.writeFileSync(CONVERSATION_LOG, JSON.stringify(log, null, 2));
   } catch (e) {}
 }
 
@@ -50,7 +61,6 @@ function cleanResponse(text) {
 }
 
 export default async function handler(req, res) {
-  // CRITICAL: Check method first
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed - use POST' });
   }
@@ -68,7 +78,22 @@ export default async function handler(req, res) {
       if (fs.existsSync(TRAINING_FILE)) {
         const raw = fs.readFileSync(TRAINING_FILE, 'utf-8');
         if (raw && raw.trim()) {
-          pairs = JSON.parse(raw);
+          const allPairs = JSON.parse(raw);
+          // Filter out code description responses
+          pairs = allPairs.filter(p => {
+            const resp = (p.response || '').toLowerCase();
+            return !resp.includes('lines long') &&
+                   !resp.includes('handles user') &&
+                   !resp.includes('chat interface') &&
+                   !resp.includes('pure javascript neural') &&
+                   !resp.includes('converts text to number') &&
+                   !resp.includes('evaluates bot intelligence') &&
+                   !resp.includes('trains the neural network') &&
+                   !resp.includes('monitors training') &&
+                   !resp.includes('file that') &&
+                   !resp.includes('imports dependencies') &&
+                   !resp.includes('functional programming style');
+          });
         }
       }
     } catch (e) {
@@ -80,9 +105,9 @@ export default async function handler(req, res) {
     if (match && match.response) {
       const cleaned = cleanResponse(match.response);
       if (cleaned.length > 3) {
-        return res.status(200).json({ 
-          reply: cleaned.charAt(0).toUpperCase() + cleaned.slice(1) 
-        });
+        const finalReply = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        logConversation(message, finalReply);
+        return res.status(200).json({ reply: finalReply });
       }
     }
 
@@ -97,9 +122,9 @@ export default async function handler(req, res) {
       const pick = relevant[Math.floor(Math.random() * relevant.length)];
       const cleaned = cleanResponse(pick.response);
       if (cleaned.length > 5) {
-        return res.status(200).json({ 
-          reply: cleaned.charAt(0).toUpperCase() + cleaned.slice(1) 
-        });
+        const finalReply = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        logConversation(message, finalReply);
+        return res.status(200).json({ reply: finalReply });
       }
     }
 
@@ -108,17 +133,17 @@ export default async function handler(req, res) {
       const pick = pairs[Math.floor(Math.random() * pairs.length)];
       const cleaned = cleanResponse(pick.response);
       if (cleaned.length > 5) {
-        return res.status(200).json({ 
-          reply: cleaned.charAt(0).toUpperCase() + cleaned.slice(1) 
-        });
+        const finalReply = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        logConversation(message, finalReply);
+        return res.status(200).json({ reply: finalReply });
       }
     }
 
     // Fallback
     logUncertain(message.trim());
-    return res.status(200).json({ 
-      reply: `I'm learning! I have ${pairs.length} knowledge entries and add more every 10 minutes. Ask me something else!` 
-    });
+    const fallbackReply = `I'm learning! I have ${pairs.length} knowledge entries and add more every 10 minutes.`;
+    logConversation(message, fallbackReply);
+    return res.status(200).json({ reply: fallbackReply });
 
   } catch (error) {
     console.error('Fatal error:', error.message);
