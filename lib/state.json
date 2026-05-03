@@ -1,11 +1,11 @@
 {
-  "trainingSessions": 5,
-  "totalTrainingCycles": 8629777,
+  "trainingSessions": 6,
+  "totalTrainingCycles": 10691996,
   "trainingPairs": 27,
   "vocabSize": 1178,
-  "apiCalls": 15,
+  "apiCalls": 18,
   "apiSuccesses": 0,
-  "lastTrainingTime": "2026-05-03T06:18:33.059Z",
+  "lastTrainingTime": "2026-05-03T06:29:28.896Z",
   "trainingDuration": 480,
   "successes": [
     {
@@ -20,6 +20,7 @@
     5,
     5,
     5,
+    6,
     6,
     6
   ],
